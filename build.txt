@@ -1,0 +1,7 @@
+author = hamstar
+version = 1.0.0
+displayName = Rewards
+modReferences = HamstarHelpers
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
+includePDB = true
+homepage = https://forums.terraria.org/index.php?threads/time-limit-apply-game-altering-effects-after-a-set-duration.64893/

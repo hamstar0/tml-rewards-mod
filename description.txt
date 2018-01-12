@@ -1,0 +1,1 @@
+Rewards is what it says on the tin: Points for game progression. Consult the Wayfarer town npc for spending your points. Configurable.

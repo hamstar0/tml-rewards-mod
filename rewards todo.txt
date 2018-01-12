@@ -1,0 +1,39 @@
+v1
+-	Implement API
+-	Restrict rewards to 1st occurrence only
+
+-	Implement 'Pack' items (non-resellable, openable)
+	-	@Test
+	-	Implement opening
+	-	Implement shop rendering
+	-	Define item
+-	@Test point accruing
+-	Wayfarer NPC
+	-	Create sprite
+	-	Define shop
+	-	Define npc
+-	Progress Points (PP)
+	-	Implement event point sources
+		-	Invasion completions
+		-	Invasion npc deaths
+		-	Boss npc deaths
+	-	Implement points display
+	-	Implement points store
+-	Setup config
+-	Create project
+
+
+@Shop items
+-	5 coins - 99 Iron Bars
+-	10 coins - 99 Gold Coins
+-	 15 coins - 99 Demonite/Crimtane Bars
+-	25 coins - 99 Shadow Orbs/Tissue Samples
+-	50 coins - 99 Hellstone Bars
+-	25 coins - Traveler's Pack - Spectre Boots, Ivy Whip, Obsidian Horseshoe
+-	 25 coins - Autonomous Worker Unit - See below
+-	75 coins - Jungle Key
+-	50 coins - Clentaminator, 999 Green Solution
+-	 35 coins - The Holy Handgrenade of Antioch - Deals 10k damage to a single target
+-	100 coins - Cultist's Pack - 1 of each event summon item (including moons)
+-	150 coins - Godslayer's Pack - 99 Chlorophyte Bars, 99 Ectoplasm, Turtle armor
+-	35 coins - Time Capsule - Saves 1 item between world changes. Reusable.
