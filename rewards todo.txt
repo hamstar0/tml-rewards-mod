@@ -1,7 +1,12 @@
+v1.1
+-	Add world-specific points
 v1
--	Implement API
--	Restrict rewards to 1st occurrence only
+-	Revise loadout
 
+-	Detect invasion kills
+-	Implement API
+-	Add npc dialog
+-	Restrict rewards to 1st occurrence only
 -	Implement 'Pack' items (non-resellable, openable)
 	-	@Test
 	-	Implement opening

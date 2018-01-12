@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.WorldHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -81,25 +81,27 @@ namespace Rewards {
 		////////////////
 
 		public override void PreUpdate() {
-			if( Main.myPlayer == this.player.whoAmI ) {
-				int pack_type = this.mod.ItemType<ShopPackItem>();
+			if( Main.myPlayer != this.player.whoAmI ) { return; }
 
-				for( int i = 0; i < this.player.inventory.Length; i++ ) {
-					Item item = this.player.inventory[i];
-					if( item == null || !item.active ) { continue; }
-					if( item.type != pack_type ) { continue; }
+			int pack_type = this.mod.ItemType<ShopPackItem>();
 
-					var myitem = (ShopPackItem)item.modItem;
-					myitem.OpenPack( (RewardsMod)this.mod, this.player );
+			for( int i = 0; i < this.player.inventory.Length; i++ ) {
+				Item item = this.player.inventory[i];
+				if( item == null || !item.active ) { continue; }
+				if( item.type != pack_type ) { continue; }
+
+				var myitem = (ShopPackItem)item.modItem;
+				myitem.OpenPack( (RewardsMod)this.mod, this.player );
 					
-					if( myitem.IsClone(Main.mouseItem) ) {
-						ItemHelpers.DestroyItem( Main.mouseItem );
-						Main.mouseItem = new Item();
-					}
-
-					break;
+				if( myitem.IsClone(Main.mouseItem) ) {
+					ItemHelpers.DestroyItem( Main.mouseItem );
+					Main.mouseItem = new Item();
 				}
+
+				break;
 			}
+
+			this.Logic.UpdateInvasions();
 		}
 
 

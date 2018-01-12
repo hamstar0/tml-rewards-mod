@@ -1,5 +1,4 @@
 using Rewards.Items;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -9,9 +8,17 @@ using Terraria.ModLoader;
 namespace Rewards.NPCs {
 	[AutoloadHead]
 	class WayfarerTownNPC : ModNPC {
-		public readonly static IReadOnlyList<string> PossibleNames = new List<string>( new string[] {
+		public readonly static IList<string> PossibleNames = new List<string>( new string[] {
 			"Croft", "Grylls", "Jack", "Jones", "Shiren", "Yukino", "Wander"
-		} ).AsReadOnly();
+		} );
+		public readonly static IList<string> ChatReplies = new List<string>( new string[] {
+			"The winds shall guide you, and always be at your back.",
+			"Fortune and glory, kid. Fortune and glory.",
+			"With fate guiding my every move, I strode valiantly toward my destiny, and felt the gods smiling upon me.",
+			"Survival can be summed up in three words – never give up.",
+			"The line between life or death is determined by what we are willing to do.",
+			"A famous explorer once said, that the extraordinary is in what we do, not who we are."
+		} );
 
 
 
@@ -92,7 +99,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public override string GetChat() {
-			return "Hi!";
+			return WayfarerTownNPC.ChatReplies[Main.rand.Next( WayfarerTownNPC.ChatReplies.Count )];
 		}
 
 

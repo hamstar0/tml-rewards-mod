@@ -21,8 +21,10 @@ namespace Rewards {
 		public int PointsDisplayX = -92;
 		public int PointsDisplayY = -48;
 		public Color PointsDisplayColor = Color.YellowGreen;
-
+		
 		public bool CommunismMode = false;
+
+		public float GrindKillMultiplier = 0.1f;
 
 		public float GoblinInvasionReward = 15f;
 		public float FrostLegionInvasionReward = 25f;
@@ -129,7 +131,7 @@ namespace Rewards {
 				} ),
 				new ShopPackDefinition( "Cultist's Pack", 150, new ShopPackItemDefinition[] {
 					new ShopPackItemDefinition( "Golem Fist", 1 ),
-					new ShopPackItemDefinition( "Treasure Map", 2 ),
+					new ShopPackItemDefinition( "Pirate Map", 2 ),
 					new ShopPackItemDefinition( "Solar Tablet", 1 ),
 					new ShopPackItemDefinition( "Pumpkin Moon Medallion", 2 ),
 					new ShopPackItemDefinition( "Naughty Present", 2 )
