@@ -10,7 +10,7 @@ using Terraria.ModLoader.IO;
 namespace Rewards {
 	class RewardsLogic {
 		internal IDictionary<string, float> WorldPoints = new Dictionary<string, float>();
-		internal IDictionary<string, ISet<int>> WorldKills = new Dictionary<string, ISet<int>>();
+		internal IDictionary<string, IDictionary<int, int>> WorldKills = new Dictionary<string, IDictionary<int, int>>();
 		internal IDictionary<string, int> WorldGolinsConquered = new Dictionary<string, int>();
 		internal IDictionary<string, int> WorldFrostLegionConquered = new Dictionary<string, int>();
 		internal IDictionary<string, int> WorldPiratesConquered = new Dictionary<string, int>();
@@ -18,7 +18,7 @@ namespace Rewards {
 		internal IDictionary<string, int> WorldPumpkinMoonWavesConquered = new Dictionary<string, int>();
 		internal IDictionary<string, int> WorldFrostMoonWavesConquered = new Dictionary<string, int>();
 
-		private ISet<int> KilledNpcs { get {
+		private IDictionary<int, int> KilledNpcs { get {
 			return this.WorldKills[ WorldHelpers.GetUniqueId() ];
 		} }
 		
@@ -38,13 +38,13 @@ namespace Rewards {
 		public void Load( TagCompound tags ) {
 			string curr_world_id = WorldHelpers.GetUniqueId();
 
-			this.WorldKills[curr_world_id] = new HashSet<int>();
-			this.WorldGolinsConquered[curr_world_id] = 0;
-			this.WorldFrostLegionConquered[curr_world_id] = 0;
-			this.WorldPiratesConquered[curr_world_id] = 0;
-			this.WorldMartiansConquered[curr_world_id] = 0;
-			this.WorldPumpkinMoonWavesConquered[curr_world_id] = 0;
-			this.WorldFrostMoonWavesConquered[curr_world_id] = 0;
+			this.WorldKills[ curr_world_id ] = new Dictionary<int, int>();
+			this.WorldGolinsConquered[ curr_world_id ] = 0;
+			this.WorldFrostLegionConquered[ curr_world_id ] = 0;
+			this.WorldPiratesConquered[ curr_world_id ] = 0;
+			this.WorldMartiansConquered[ curr_world_id ] = 0;
+			this.WorldPumpkinMoonWavesConquered[ curr_world_id ] = 0;
+			this.WorldFrostMoonWavesConquered[ curr_world_id ] = 0;
 
 			if( tags.ContainsKey( "world_uid_count" ) ) {
 				int world_count = tags.GetInt( "world_uid_count" );
@@ -59,8 +59,15 @@ namespace Rewards {
 						this.ProgressPoints = pp;
 					}
 
-					if( tags.ContainsKey( "world_kills_"+i ) ) {
-						this.WorldKills[ world_uid ] = new HashSet<int>( tags.GetList<int>( "world_kills_" + i ) );
+					if( tags.ContainsKey( "world_kills_"+i+"_count" ) ) {
+						int killed_types = tags.GetInt( "world_kills_" + i + "_count" );
+
+						this.WorldKills[world_uid] = new Dictionary<int, int>();
+
+						for( int j=0; j<killed_types; j++ ) {
+							int npc_type = tags.GetInt( "world_kills_" + i + "_type_" + j );
+							this.WorldKills[ world_uid ][ npc_type ] = tags.GetInt( "world_kills_" + i + "_type_" + j + "_killed" );
+						}
 					}
 					if( tags.ContainsKey( "world_goblins_" + i ) ) {
 						this.WorldGolinsConquered[ world_uid ] = tags.GetInt( "world_goblins_" + i );
@@ -86,24 +93,54 @@ namespace Rewards {
 
 		public TagCompound Save() {
 			var tags = new TagCompound { { "world_uid_count", this.WorldPoints.Count } };
+			string curr_world_uid = WorldHelpers.GetUniqueId();
 
-			this.WorldPoints[ WorldHelpers.GetUniqueId() ] = this.ProgressPoints;
+			this.WorldPoints[ curr_world_uid ] = this.ProgressPoints;
 
 			int i = 0;
 			foreach( var kv in this.WorldPoints ) {
-				tags.Set( "world_uid_" + i, kv.Key );
-				tags.Set( "world_pp_" + i, kv.Value );
-				tags.Set( "world_kills_" + i, this.WorldKills[ kv.Key ] );
-				tags.Set( "world_goblins_" + i, this.WorldGolinsConquered[ kv.Key ] );
-				tags.Set( "world_frostlegion_" + i, this.WorldFrostLegionConquered[ kv.Key ] );
-				tags.Set( "world_pirates_" + i, this.WorldPiratesConquered[ kv.Key ] );
-				tags.Set( "world_martians_" + i, this.WorldMartiansConquered[ kv.Key ] );
-				tags.Set( "world_pumpkinmoon_waves_" + i, this.WorldPumpkinMoonWavesConquered[ kv.Key ] );
-				tags.Set( "world_frostmoon_waves_" + i, this.WorldFrostMoonWavesConquered[ kv.Key ] );
+				string world_uid = kv.Key;
+				float points = kv.Value;
+
+				tags.Set( "world_uid_" + i, world_uid );
+				tags.Set( "world_pp_" + i, points );
+
+				tags.Set( "world_goblins_" + i, this.WorldGolinsConquered[ world_uid ] );
+				tags.Set( "world_frostlegion_" + i, this.WorldFrostLegionConquered[ world_uid ] );
+				tags.Set( "world_pirates_" + i, this.WorldPiratesConquered[ world_uid ] );
+				tags.Set( "world_martians_" + i, this.WorldMartiansConquered[ world_uid ] );
+				tags.Set( "world_pumpkinmoon_waves_" + i, this.WorldPumpkinMoonWavesConquered[ world_uid ] );
+				tags.Set( "world_frostmoon_waves_" + i, this.WorldFrostMoonWavesConquered[ world_uid ] );
+
+				tags.Set( "world_kills_" + i + "_count", this.WorldKills.Count );
+
+				int j = 0;
+				foreach( var kv2 in this.WorldKills[ curr_world_uid ] ) {
+					int npc_type = kv2.Key;
+					int killed = kv2.Value;
+
+					tags.Set( "world_kills_" + i + "_type_" + j, npc_type );
+					tags.Set( "world_kills_" + i + "_type_" + j + "_killed", killed );
+					j++;
+				}
 				i++;
 			}
 
 			return tags;
+		}
+
+		public void OnEnterWorld() {
+			string curr_world_uid = WorldHelpers.GetUniqueId();
+
+			if( !this.WorldKills.ContainsKey( curr_world_uid ) ) {
+				this.WorldKills[ curr_world_uid ] = new Dictionary<int, int>();
+				this.WorldGolinsConquered[ curr_world_uid ] = 0;
+				this.WorldFrostLegionConquered[ curr_world_uid ] = 0;
+				this.WorldPiratesConquered[ curr_world_uid ] = 0;
+				this.WorldMartiansConquered[ curr_world_uid ] = 0;
+				this.WorldPumpkinMoonWavesConquered[ curr_world_uid ] = 0;
+				this.WorldFrostMoonWavesConquered[ curr_world_uid ] = 0;
+			}
 		}
 
 
@@ -192,7 +229,11 @@ namespace Rewards {
 		}
 
 		public void AddKillReward( RewardsMod mymod, NPC npc, Player player ) {
-			this.KilledNpcs.Add( npc.type );
+			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
+				this.KilledNpcs[ npc.type ]++;
+			} else {
+				this.KilledNpcs[ npc.type ] = 1;
+			}
 			
 			float reward = this.CalculateKillReward( mymod, npc );
 
@@ -233,7 +274,14 @@ namespace Rewards {
 				if( mymod.Config.NpcRewards.ContainsKey( npc.TypeName ) ) {
 					points = mymod.Config.NpcRewards[ npc.TypeName ];
 				}
-				grind = this.KilledNpcs.Contains( npc.type );
+			}
+
+			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
+				if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( npc.TypeName ) ) {
+					grind = this.KilledNpcs[npc.type] > mymod.Config.NpcRewardRequiredMinimumKills[ npc.TypeName ];
+				} else if( this.KilledNpcs[ npc.type ] > 1 ) {
+					grind = true;
+				}
 			}
 
 			if( grind ) {

@@ -9,11 +9,14 @@ namespace Rewards {
 		}
 
 
-		public static bool HasKilled( Player player, int npc_type ) {
+		public static int KillsOfNpcOnCurrentWorld( Player player, int npc_type ) {
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 			string world_uid = WorldHelpers.GetUniqueId();
 
-			return myplayer.Logic.WorldKills[ world_uid ].Contains( npc_type );
+			if( myplayer.Logic.WorldKills[ world_uid ].ContainsKey( npc_type ) ) {
+				return myplayer.Logic.WorldKills[world_uid][npc_type];
+			}
+			return 0;
 		}
 
 		public static float GetPoints( Player player ) {

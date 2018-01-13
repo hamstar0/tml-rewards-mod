@@ -27,7 +27,7 @@ namespace Rewards.Items {
 
 		public override bool CloneNewInstances { get { return true; } }
 
-		private ShopPackDefinition Info = null;
+		internal ShopPackDefinition? Info = null;
 
 
 		////////////////
@@ -36,7 +36,9 @@ namespace Rewards.Items {
 			if( !(item.modItem is ShopPackItem) ) { return false; }
 
 			var other_mod_item = (ShopPackItem)item.modItem;
-			return other_mod_item.Info.IsSameAs( this.Info );
+			var def = (ShopPackDefinition)other_mod_item.Info;
+
+			return def.IsSameAs( (ShopPackDefinition)this.Info );
 		}
 		
 		public override ModItem Clone() {
@@ -65,34 +67,33 @@ namespace Rewards.Items {
 
 			tooltips.RemoveRange( 1, tooltips.Count - 1 );
 
+			var info = (ShopPackDefinition)this.Info;
 			var item_set_tip = new TooltipLine( this.mod, "Items", "Items included:" );
 			tooltips.Add( item_set_tip );
 
-			for( int i=0; i<this.Info.Items.Length; i++ ) {
+			for( int i=0; i< info.Items.Length; i++ ) {
 				Item item = new Item();
-				item.SetDefaults( this.Info.Items[i].ItemType );
+				item.SetDefaults( info.Items[i].ItemType );
 
-				var item_tip = new TooltipLine( this.mod, "Item "+i, "  "+ this.Info.Items[i].Stack + " " + this.Info.Items[i].Name );
+				var item_tip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
 				item_tip.overrideColor = MiscHelpers.GetRarityColor( item.rare );
 
 				tooltips.Add( item_tip );
 			}
 
-			Color tip_color = this.Info.Price <= 10 ?
+			Color tip_color = info.Price <= 10 ?
 				Colors.CoinCopper :
-				( this.Info.Price < 100 ?
+				( info.Price < 100 ?
 					Colors.CoinSilver :
-					( this.Info.Price < 1000 ?
+					( info.Price < 1000 ?
 						Colors.CoinGold :
 						Colors.CoinPlatinum ) );
-			var pp_tip = new TooltipLine( this.mod, "Custom Price", "Progress Points needed: " + this.Info.Price ) {
+			var pp_tip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
 				overrideColor = tip_color
 			};
 			tooltips.Add( pp_tip );
 
-			var instruct_tip = new TooltipLine( this.mod, "Items", "Click to purchase." ) {
-				overrideColor = Color.Red
-			};
+			var instruct_tip = new TooltipLine( this.mod, "Items", "Click to purchase" );
 			tooltips.Add( instruct_tip );
 		}
 
@@ -103,20 +104,52 @@ namespace Rewards.Items {
 			int bag_item_type = this.GetItemTypeOfIcon();
 			if( bag_item_type == -1 ) { return; }
 			
-			Texture2D tex = Main.itemTexture[ bag_item_type ];
-			var rect = new Rectangle( (int)pos.X, (int)pos.Y, tex.Width / 2, tex.Height / 2 );
+			Texture2D tex = Main.itemTexture[bag_item_type];
+			float sub_scale = scale;
 
-			sb.Draw( tex, rect, Color.White );
+			if( tex.Width >= tex.Height ) {
+				if( tex.Width > 20 ) {
+					sub_scale /= (float)tex.Width / 20f;
+				}
+			} else {
+				if( tex.Height > 20 ) {
+					sub_scale /= (float)tex.Height / 20f;
+				}
+			}
+
+			var rect = new Rectangle( 0, 0, tex.Width, tex.Height );
+			pos.X += (float)frame.Width * 0.5f * scale;
+			pos.Y += (float)( frame.Height + 6 ) * 0.5f * scale;
+			origin = new Vector2( (float)tex.Width, (float)tex.Height ) * 0.5f;
+
+			sb.Draw( tex, pos, rect, draw_color, 0f, origin, sub_scale, SpriteEffects.None, 1f );
 		}
 
-		public override void PostDrawInWorld( SpriteBatch sb, Color light_color, Color alpha_olor, float rotation, float scale, int whoAmI ) {
+
+		public override void PostDrawInWorld( SpriteBatch sb, Color light_color, Color alpha_color, float rotation, float scale, int whoAmI ) {
 			int bag_item_type = this.GetItemTypeOfIcon();
 			if( bag_item_type == -1 ) { return; }
 			
 			Texture2D tex = Main.itemTexture[ bag_item_type ];
-			var rect = new Rectangle( (int)this.item.position.X, (int)this.item.position.Y, (int)( (float)tex.Width * scale ), (int)( (float)tex.Height * scale ) );
+			float sub_scale = scale;
 
-			sb.Draw( tex, rect, Color.White );
+			if( tex.Width >= tex.Height ) {
+				if( tex.Width > 20 ) {
+					sub_scale /= (float)tex.Width / 20f;
+				}
+			} else {
+				if( tex.Height > 20 ) {
+					sub_scale /= (float)tex.Height / 20f;
+				}
+			}
+
+			var rect = new Rectangle( 0, 0, tex.Width, tex.Height );
+			var pos = new Vector2();
+			pos.X += (float)item.width * 0.5f * scale;
+			pos.Y += (float)(item.height + 6) * 0.5f * scale;
+			var origin = new Vector2( (float)tex.Width, (float)tex.Height ) * 0.5f;
+
+			sb.Draw( tex, pos, rect, light_color, 0f, origin, sub_scale, SpriteEffects.None, 1f );
 		}
 
 
@@ -125,11 +158,13 @@ namespace Rewards.Items {
 		public int GetItemTypeOfIcon() {
 			if( this.Info == null ) { return -1; }
 
-			for( int i = 0; i < this.Info.Items.Length; i++ ) {
-				ShopPackItemDefinition item_info = this.Info.Items[i];
+			var info = (ShopPackDefinition)this.Info;
+			if( !info.Validate() ) { return -1; }
+
+			for( int i = 0; i < info.Items.Length; i++ ) {
+				ShopPackItemDefinition item_info = info.Items[i];
 				int bag_item_type = item_info.ItemType;
 
-				if( !item_info.IsValidItem() ) { continue; }
 				if( bag_item_type <= 0 ) { continue; }
 				if( bag_item_type >= Main.itemTexture.Length ) { continue; }
 				if( Main.itemTexture[ bag_item_type ] == null ) { continue; }
@@ -145,23 +180,28 @@ namespace Rewards.Items {
 		public void OpenPack( RewardsMod mymod, Player player ) {
 			ItemHelpers.DestroyItem( this.item );
 
-			if( this.Info == null ) {
-				return;
-			}
+			if( this.Info == null ) { return; }
+			var info = (ShopPackDefinition)this.Info;
+
+			//bool hm = (bool)this.Info.Hardmode;
+			//if( this.Info.Hardmode != null && hm != Main.hardMode ) {
+			//	Main.NewText( "Item cannot be acquired during " + (hm ? "pre-hardmode" : "hardmode"), Color.Red );
+			//	return;
+			//}
 
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 			
-			if( !myplayer.ChargePlayer(this.Info.Price) ) {
+			if( !myplayer.ChargePlayer( info.Price) ) {
 				return;
 			}
 			
-			foreach( ShopPackItemDefinition info in this.Info.Items ) {
-				if( !info.IsValidItem() ) { continue; }
+			foreach( ShopPackItemDefinition item_info in info.Items ) {
+				if( !item_info.Validate() ) { continue; }
 
 				Item new_item = new Item();
-				new_item.SetDefaults( info.ItemType );
+				new_item.SetDefaults( item_info.ItemType );
 
-				ItemHelpers.CreateItem( player.position, info.ItemType, info.Stack, new_item.width, new_item.height );
+				ItemHelpers.CreateItem( player.position, item_info.ItemType, item_info.Stack, new_item.width, new_item.height );
 			}
 
 			Main.PlaySound( SoundID.Coins );

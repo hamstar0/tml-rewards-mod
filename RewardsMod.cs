@@ -33,6 +33,7 @@ namespace Rewards {
 
 		////////////////
 
+		public bool IsContentSetup { get; private set; }
 		internal JsonConfig<RewardsConfigData> JsonConfig;
 		public RewardsConfigData Config { get { return JsonConfig.Data; } }
 
@@ -40,12 +41,13 @@ namespace Rewards {
 		////////////////
 
 		public RewardsMod() {
+			this.IsContentSetup = false;
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
-
+			
 			this.JsonConfig = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new RewardsConfigData() );
 		}
@@ -58,12 +60,9 @@ namespace Rewards {
 			if( hamhelpmod.Version < min_vers ) {
 				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
-		}
-		
-		public override void PostSetupContent() {
+
 			this.LoadConfigs();
 		}
-
 
 		private void LoadConfigs() {
 			if( !this.JsonConfig.LoadFile() ) {
@@ -75,6 +74,12 @@ namespace Rewards {
 				this.JsonConfig.SaveFile();
 			}
 		}
+
+
+		public override void PostSetupContent() {
+			this.IsContentSetup = true;
+		}
+
 
 		public override void Unload() {
 			RewardsMod.Instance = null;

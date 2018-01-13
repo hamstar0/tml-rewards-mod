@@ -1,8 +1,7 @@
-v1.1
--	Add world-specific points
 v1
--	Revise loadout
+-	Create icon
 
+-	Revise loadout
 -	Detect invasion kills
 -	Implement API
 -	Add npc dialog

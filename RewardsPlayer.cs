@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.ItemHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -55,6 +56,8 @@ namespace Rewards {
 					mymod.JsonConfig.SaveFile();
 				}
 			}
+
+			this.Logic.OnEnterWorld();
 		}
 
 
@@ -91,7 +94,7 @@ namespace Rewards {
 
 				var myitem = (ShopPackItem)item.modItem;
 				myitem.OpenPack( (RewardsMod)this.mod, this.player );
-					
+				
 				if( myitem.IsClone(Main.mouseItem) ) {
 					ItemHelpers.DestroyItem( Main.mouseItem );
 					Main.mouseItem = new Item();

@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System.Collections.Generic;
 using Terraria;
@@ -99,7 +100,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public override string GetChat() {
-			return WayfarerTownNPC.ChatReplies[Main.rand.Next( WayfarerTownNPC.ChatReplies.Count )];
+			return WayfarerTownNPC.ChatReplies[ Main.rand.Next( WayfarerTownNPC.ChatReplies.Count ) ];
 		}
 
 
@@ -118,11 +119,18 @@ namespace Rewards.NPCs {
 
 		public override void SetupShop( Chest shop, ref int next_slot ) {
 			var mymod = (RewardsMod)this.mod;
-
+			
 			for( int i = 0; i < shop.item.Length - 1; i++ ) {
 				if( i >= mymod.Config.ShopLoadout.Count ) { break; }
-				
-				shop.item[ next_slot++ ] = ShopPackItem.CreateItem( mymod.Config.ShopLoadout[i] );
+
+				ShopPackDefinition def = mymod.Config.ShopLoadout[i];
+				if( !def.Validate() ) {
+					Main.NewText( "Could not load shop item " + def.Name, Color.Red );
+					continue;
+				}
+				if( !def.IsValidMode() ) { continue; }
+
+				shop.item[next_slot++] = ShopPackItem.CreateItem( def );
 			}
 		}
 	}
