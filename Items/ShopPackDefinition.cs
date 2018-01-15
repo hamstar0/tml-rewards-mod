@@ -48,6 +48,26 @@ namespace Rewards.Items {
 			this.PostMoonLord = post_moonlord;
 		}
 
+		internal ShopPackDefinition( string name, int price, ShopPackItemDefinition[] items ) {
+			this.Name = name;
+			this.Price = price;
+			this.Items = items;
+
+			this.PostKingSlime = false;
+			this.PostEyeOfCthulhu = false;
+			this.PostGoblins = false;
+			this.PostQueenBee = false;
+			this.PostEvilBiome = false;
+			this.PostSkeletron = false;
+			this.PostWof = false;
+			this.PostDestroyer = false;
+			this.PostTwins = false;
+			this.PostSkeletronPrime = false;
+			this.PostPlantera = false;
+			this.PostGolem = false;
+			this.PostMoonLord = false;
+		}
+
 		////////////////
 
 		public bool Validate() {
@@ -129,7 +149,7 @@ namespace Rewards.Items {
 
 		////////////////
 
-		public bool Validate() {
+		public bool IsAvailable() {
 			if( this.CrimsonWorldOnly != null ) {
 				if( this.CrimsonWorldOnly == false ) {
 					if( WorldGen.crimson ) { return false; }
@@ -137,6 +157,10 @@ namespace Rewards.Items {
 					if( !WorldGen.crimson ) { return false; }
 				}
 			}
+			return true;
+		}
+
+		public bool Validate() {
 			return this.ItemType > 0;
 		}
 

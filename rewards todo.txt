@@ -1,6 +1,14 @@
+v1.2
+-	Add MeritMode (points are split; requires jopo's mod)
+-	Add string fields to use to check pack availability (instead of a buttload of bools)
+
+v1.1
+-	Add commands for editing shop item
+-	Fix npc weapon; prehardmode and hardmode
+-	Add API method for adding shop packs
+-	Set API to work with Mod.Call
 v1
 -	Create icon
-
 -	Revise loadout
 -	Detect invasion kills
 -	Implement API
@@ -25,6 +33,7 @@ v1
 	-	Implement points store
 -	Setup config
 -	Create project
+
 
 
 @Shop items

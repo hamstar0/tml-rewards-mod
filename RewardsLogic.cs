@@ -95,7 +95,9 @@ namespace Rewards {
 			var tags = new TagCompound { { "world_uid_count", this.WorldPoints.Count } };
 			string curr_world_uid = WorldHelpers.GetUniqueId();
 
-			this.WorldPoints[ curr_world_uid ] = this.ProgressPoints;
+			if( !string.IsNullOrEmpty(curr_world_uid) ) {
+				this.WorldPoints[curr_world_uid] = this.ProgressPoints;
+			}
 
 			int i = 0;
 			foreach( var kv in this.WorldPoints ) {

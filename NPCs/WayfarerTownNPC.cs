@@ -32,6 +32,9 @@ namespace Rewards.NPCs {
 			return mod.Properties.Autoload;
 		}
 
+
+		////////////////
+
 		public override void SetStaticDefaults() {
 			int npc_type = this.npc.type;
 
@@ -60,7 +63,7 @@ namespace Rewards.NPCs {
 			this.npc.HitSound = SoundID.NPCHit1;
 			this.npc.DeathSound = SoundID.NPCDeath1;
 			this.npc.knockBackResist = 0.5f;
-			this.animationType = NPCID.Guide;
+			this.animationType = NPCID.TravellingMerchant;
 		}
 
 		////////////////
@@ -69,9 +72,48 @@ namespace Rewards.NPCs {
 			return true;
 		}
 
+		public override void NPCLoot() {
+			Item.NewItem( npc.getRect(), ItemID.ArchaeologistsHat );
+		}
+
+		////////////////
+
+		private bool IsFiring = false;
+		
+		public override void AI() {
+			if( this.npc.ai[0] == 12 ) {
+				if( !this.IsFiring ) {
+					this.IsFiring = true;
+					if( !Main.hardMode ) {
+						Main.PlaySound( SoundID.Item11, this.npc.position );
+					}
+				}
+			} else {
+				if( this.IsFiring ) { this.IsFiring = false; }
+			}
+		}
+
+		public override void DrawTownAttackGun( ref float scale, ref int item, ref int closeness ) {
+			if( Main.hardMode ) {
+				closeness = 18;
+				item = ItemID.PulseBow;
+			} else {
+				if( this.npc.ai[2] < -0.1f ) {
+					closeness = 28;
+				}
+				scale = 0.75f;
+				item = ItemID.Revolver;
+			}
+		}
+
 		public override void TownNPCAttackStrength( ref int damage, ref float knockback ) {
-			damage = 20;
-			knockback = 4f;
+			if( Main.hardMode ) {
+				damage = 50;
+				knockback = 4f;
+			} else {
+				damage = 20;
+				knockback = 4f;
+			}
 		}
 
 		public override void TownNPCAttackCooldown( ref int cooldown, ref int randExtraCooldown ) {
@@ -80,14 +122,21 @@ namespace Rewards.NPCs {
 		}
 
 		public override void TownNPCAttackProj( ref int projType, ref int attackDelay ) {
-			projType = 1;
-			attackDelay = 1;
+			if( Main.hardMode ) {
+				projType = ProjectileID.Bullet;
+				attackDelay = 1;
+			} else {
+				projType = ProjectileID.PulseBolt;
+				attackDelay = 1;
+			}
 		}
 
 		public override void TownNPCAttackProjSpeed( ref float multiplier, ref float gravityCorrection, ref float randomOffset ) {
 			multiplier = 12f;
-			randomOffset = 2f;
+			randomOffset = 0f;
 		}
+
+		////////////////
 
 		public override string TownNPCName() {
 			return WayfarerTownNPC.PossibleNames[ Main.rand.Next(WayfarerTownNPC.PossibleNames.Count) ];

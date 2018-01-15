@@ -1,7 +1,7 @@
 author = hamstar
-version = 1.0.0
+version = 1.1.0
 displayName = Rewards
-modReferences = HamstarHelpers
+modReferences = HamstarHelpers@1.2.8
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = true
-homepage = https://forums.terraria.org/index.php?threads/time-limit-apply-game-altering-effects-after-a-set-duration.64893/
+homepage = https://forums.terraria.org/index.php?threads/rewards-receive-non-transferable-spendable-points-for-game-progress.65384/

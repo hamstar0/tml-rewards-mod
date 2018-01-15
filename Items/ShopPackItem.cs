@@ -176,7 +176,7 @@ namespace Rewards.Items {
 
 		////////////////
 
-		
+
 		public void OpenPack( RewardsMod mymod, Player player ) {
 			ItemHelpers.DestroyItem( this.item );
 
@@ -190,13 +190,14 @@ namespace Rewards.Items {
 			//}
 
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
-			
-			if( !myplayer.ChargePlayer( info.Price) ) {
+
+			if( !myplayer.ChargePlayer( info.Price ) ) {
+				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
 			}
-			
+
 			foreach( ShopPackItemDefinition item_info in info.Items ) {
-				if( !item_info.Validate() ) { continue; }
+				if( !item_info.Validate() || !item_info.IsAvailable() ) { continue; }
 
 				Item new_item = new Item();
 				new_item.SetDefaults( item_info.ItemType );
