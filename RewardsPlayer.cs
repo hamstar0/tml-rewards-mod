@@ -103,6 +103,10 @@ namespace Rewards {
 				break;
 			}
 
+			if( Main.mouseItem.active && Main.mouseItem.modItem is ShopPackItem ) {
+				ItemHelpers.DestroyItem( Main.mouseItem );
+			}
+
 			this.Logic.UpdateInvasions();
 		}
 

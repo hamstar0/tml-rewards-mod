@@ -34,10 +34,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
+    <Compile Include="Commands\CheatToggleCommand.cs" />
     <Compile Include="Commands\ShopRemoveLastCommand.cs" />
     <Compile Include="Commands\ShopAddCommand.cs" />
     <Compile Include="Commands\ShopClearCommand.cs" />
-    <Compile Include="Commands\CheatRewardsCommand.cs" />
+    <Compile Include="Commands\AddPointsCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Items\ShopPackDefinition.cs" />
     <Compile Include="Items\ShopPackItem.cs" />

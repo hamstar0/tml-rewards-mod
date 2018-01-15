@@ -1,5 +1,7 @@
 ﻿using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Utilities.Messages;
 using HamstarHelpers.WorldHelpers;
+using Microsoft.Xna.Framework;
 using Rewards.NetProtocol;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,18 @@ namespace Rewards {
 			return this.WorldKills[ WorldHelpers.GetUniqueId() ];
 		} }
 		
-		public float ProgressPoints = 0;
+		public float ProgressPoints {
+			get {
+				string world_uid = WorldHelpers.GetUniqueId();
+				if( this.WorldPoints.ContainsKey( world_uid ) ) {
+					return this.WorldPoints[WorldHelpers.GetUniqueId()];
+				}
+				return -1;
+			}
+			set {
+				this.WorldPoints[ WorldHelpers.GetUniqueId() ] = value;
+			}
+		}
 
 		private VanillaInvasionType CurrentInvasion = VanillaInvasionType.None;
 
@@ -39,6 +52,7 @@ namespace Rewards {
 			string curr_world_id = WorldHelpers.GetUniqueId();
 
 			this.WorldKills[ curr_world_id ] = new Dictionary<int, int>();
+			this.WorldPoints[curr_world_id] = 0;
 			this.WorldGolinsConquered[ curr_world_id ] = 0;
 			this.WorldFrostLegionConquered[ curr_world_id ] = 0;
 			this.WorldPiratesConquered[ curr_world_id ] = 0;
@@ -55,10 +69,6 @@ namespace Rewards {
 
 					this.WorldPoints[ world_uid ] = pp;
 
-					if( world_uid.Equals( curr_world_id ) ) {
-						this.ProgressPoints = pp;
-					}
-
 					if( tags.ContainsKey( "world_kills_"+i+"_count" ) ) {
 						int killed_types = tags.GetInt( "world_kills_" + i + "_count" );
 
@@ -66,7 +76,9 @@ namespace Rewards {
 
 						for( int j=0; j<killed_types; j++ ) {
 							int npc_type = tags.GetInt( "world_kills_" + i + "_type_" + j );
-							this.WorldKills[ world_uid ][ npc_type ] = tags.GetInt( "world_kills_" + i + "_type_" + j + "_killed" );
+							int kills = tags.GetInt( "world_kills_" + i + "_type_" + j + "_killed" );
+
+							this.WorldKills[ world_uid ][ npc_type ] = kills;
 						}
 					}
 					if( tags.ContainsKey( "world_goblins_" + i ) ) {
@@ -96,16 +108,15 @@ namespace Rewards {
 			string curr_world_uid = WorldHelpers.GetUniqueId();
 
 			if( !string.IsNullOrEmpty(curr_world_uid) ) {
-				if( !this.WorldPoints.ContainsKey(curr_world_uid) ) {
+				if( !this.WorldKills.ContainsKey(curr_world_uid) ) {
+					this.WorldKills[curr_world_uid] = new Dictionary<int, int>();
 					this.WorldGolinsConquered[curr_world_uid] = 0;
 					this.WorldFrostLegionConquered[curr_world_uid] = 0;
 					this.WorldPiratesConquered[curr_world_uid] = 0;
 					this.WorldMartiansConquered[curr_world_uid] = 0;
 					this.WorldPumpkinMoonWavesConquered[curr_world_uid] = 0;
 					this.WorldFrostMoonWavesConquered[curr_world_uid] = 0;
-					this.WorldKills[curr_world_uid] = new Dictionary<int, int>();
 				}
-				this.WorldPoints[curr_world_uid] = this.ProgressPoints;
 			}
 
 			int i = 0;
@@ -126,7 +137,7 @@ namespace Rewards {
 				tags.Set( "world_kills_" + i + "_count", this.WorldKills.Count );
 
 				int j = 0;
-				foreach( var kv2 in this.WorldKills[ curr_world_uid ] ) {
+				foreach( var kv2 in this.WorldKills[world_uid] ) {
 					int npc_type = kv2.Key;
 					int killed = kv2.Value;
 
@@ -164,25 +175,25 @@ namespace Rewards {
 			case VanillaInvasionType.Goblins:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldGolinsConquered[WorldHelpers.GetUniqueId()]++;
+					this.WorldGolinsConquered[ WorldHelpers.GetUniqueId() ]++;
 				}
 				break;
 			case VanillaInvasionType.FrostLegion:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldFrostLegionConquered[WorldHelpers.GetUniqueId()]++;
+					this.WorldFrostLegionConquered[ WorldHelpers.GetUniqueId() ]++;
 				}
 				break;
 			case VanillaInvasionType.Pirates:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldPiratesConquered[WorldHelpers.GetUniqueId()]++;
+					this.WorldPiratesConquered[ WorldHelpers.GetUniqueId() ]++;
 				}
 				break;
 			case VanillaInvasionType.Martians:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldMartiansConquered[WorldHelpers.GetUniqueId()]++;
+					this.WorldMartiansConquered[ WorldHelpers.GetUniqueId() ]++;
 				}
 				break;
 			case VanillaInvasionType.PumpkinMoon:
@@ -240,13 +251,21 @@ namespace Rewards {
 		}
 
 		public void AddKillReward( RewardsMod mymod, NPC npc, Player player ) {
-			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
-				this.KilledNpcs[ npc.type ]++;
+			IDictionary<int, int> killed_npcs = this.KilledNpcs;
+
+			if( killed_npcs.ContainsKey( npc.type ) ) {
+				killed_npcs[ npc.type ]++;
 			} else {
-				this.KilledNpcs[ npc.type ] = 1;
+				killed_npcs[ npc.type ] = 1;
 			}
+
+			bool is_grind;
+			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
 			
-			float reward = this.CalculateKillReward( mymod, npc );
+			string msg = "+" + Math.Round(reward, 2) + " PP";
+			Color color = !is_grind ? Color.GreenYellow : Color.Gray;
+
+			PlayerMessage.AddPlayerLabel( player, msg, color, 60 * 3, true );
 
 			this.ProgressPoints += reward;
 		}
@@ -254,30 +273,30 @@ namespace Rewards {
 
 		////////////////
 		
-		private float CalculateKillReward( RewardsMod mymod, NPC npc ) {
+		private float CalculateKillReward( RewardsMod mymod, NPC npc, out bool is_grind ) {
 			string world_uid = WorldHelpers.GetUniqueId();
 			float points = 0;
-			bool grind = false;
+			is_grind = false;
 
 			if( this.CurrentInvasion != VanillaInvasionType.None ) {
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
 					points = mymod.Config.GoblinInvasionReward / Main.invasionSizeStart;
-					grind = this.WorldGolinsConquered[world_uid] > 0;
+					is_grind = this.WorldGolinsConquered[world_uid] > 0;
 				} else if( NPCIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
 					points = mymod.Config.FrostLegionInvasionReward / Main.invasionSizeStart;
-					grind = this.WorldFrostLegionConquered[world_uid] > 0;
+					is_grind = this.WorldFrostLegionConquered[world_uid] > 0;
 				} else if( NPCIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
 					points = mymod.Config.PirateInvasionReward / Main.invasionSizeStart;
-					grind = this.WorldPiratesConquered[world_uid] > 0;
+					is_grind = this.WorldPiratesConquered[world_uid] > 0;
 				} else if( NPCIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
 					points = mymod.Config.MartianInvasionReward / Main.invasionSizeStart;
-					grind = this.WorldMartiansConquered[world_uid] > 0;
+					is_grind = this.WorldMartiansConquered[world_uid] > 0;
 				} else if( NPCIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
 					points = mymod.Config.PumpkingMoonWaveReward / Main.invasionSizeStart;
-					grind = NPC.waveNumber < this.WorldPumpkinMoonWavesConquered[world_uid];
+					is_grind = NPC.waveNumber < this.WorldPumpkinMoonWavesConquered[world_uid];
 				} else if( NPCIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
 					points = mymod.Config.FrostMoonWaveReward / Main.invasionSizeStart;
-					grind = NPC.waveNumber < this.WorldFrostMoonWavesConquered[world_uid];
+					is_grind = NPC.waveNumber < this.WorldFrostMoonWavesConquered[world_uid];
 				}
 			}
 
@@ -285,17 +304,19 @@ namespace Rewards {
 				if( mymod.Config.NpcRewards.ContainsKey( npc.TypeName ) ) {
 					points = mymod.Config.NpcRewards[ npc.TypeName ];
 				}
-			}
 
-			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
-				if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( npc.TypeName ) ) {
-					grind = this.KilledNpcs[npc.type] > mymod.Config.NpcRewardRequiredMinimumKills[ npc.TypeName ];
-				} else if( this.KilledNpcs[ npc.type ] > 1 ) {
-					grind = true;
+				IDictionary<int, int> killed_npcs = this.KilledNpcs;
+
+				if( killed_npcs.ContainsKey( npc.type ) ) {
+					if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( npc.TypeName ) ) {
+						is_grind = killed_npcs[ npc.type ] >= mymod.Config.NpcRewardRequiredMinimumKills[ npc.TypeName ];
+					} else if( killed_npcs[ npc.type ] > 1 ) {
+						is_grind = true;
+					}
 				}
 			}
 
-			if( grind ) {
+			if( is_grind ) {
 				points *= mymod.Config.GrindKillMultiplier;
 			}
 

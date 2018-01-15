@@ -4,10 +4,10 @@ using Terraria.ModLoader;
 
 
 namespace Rewards.Commands {
-	class CheatRewardsCommand : ModCommand {
+	class AddPointsCommand : ModCommand {
 		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rewardscheat"; } }
-		public override string Usage { get { return "/rewardscheat"; } }
+		public override string Command { get { return "rewardsaddpoints"; } }
+		public override string Usage { get { return "/rewardsaddpoints"; } }
 		public override string Description { get { return "Adds +100 progress points."; } }
 
 
@@ -22,7 +22,7 @@ namespace Rewards.Commands {
 			var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 			myplayer.Logic.ProgressPoints += 100;
 
-			caller.Reply( "Cheater!", Color.YellowGreen );
+			caller.Reply( "+100 PP added. Cheater!", Color.YellowGreen );
 		}
 	}
 }
