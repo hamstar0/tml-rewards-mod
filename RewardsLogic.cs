@@ -96,6 +96,15 @@ namespace Rewards {
 			string curr_world_uid = WorldHelpers.GetUniqueId();
 
 			if( !string.IsNullOrEmpty(curr_world_uid) ) {
+				if( !this.WorldPoints.ContainsKey(curr_world_uid) ) {
+					this.WorldGolinsConquered[curr_world_uid] = 0;
+					this.WorldFrostLegionConquered[curr_world_uid] = 0;
+					this.WorldPiratesConquered[curr_world_uid] = 0;
+					this.WorldMartiansConquered[curr_world_uid] = 0;
+					this.WorldPumpkinMoonWavesConquered[curr_world_uid] = 0;
+					this.WorldFrostMoonWavesConquered[curr_world_uid] = 0;
+					this.WorldKills[curr_world_uid] = new Dictionary<int, int>();
+				}
 				this.WorldPoints[curr_world_uid] = this.ProgressPoints;
 			}
 
