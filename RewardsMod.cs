@@ -56,7 +56,7 @@ namespace Rewards {
 			RewardsMod.Instance = this;
 
 			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 8, 1 );
+			var min_vers = new Version( 1, 2, 9 );
 			if( hamhelpmod.Version < min_vers ) {
 				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
@@ -85,6 +85,8 @@ namespace Rewards {
 			RewardsMod.Instance = null;
 		}
 
+
+		////////////////
 
 		public override object Call( params object[] args ) {
 			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }

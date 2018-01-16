@@ -123,10 +123,10 @@ namespace Rewards.NPCs {
 
 		public override void TownNPCAttackProj( ref int projType, ref int attackDelay ) {
 			if( Main.hardMode ) {
-				projType = ProjectileID.Bullet;
+				projType = ProjectileID.PulseBolt;
 				attackDelay = 1;
 			} else {
-				projType = ProjectileID.PulseBolt;
+				projType = ProjectileID.Bullet;
 				attackDelay = 1;
 			}
 		}

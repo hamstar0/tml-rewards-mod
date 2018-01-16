@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Rewards.Items;
+using Rewards.Logic;
 using Rewards.NetProtocol;
 using Terraria;
 using Terraria.ModLoader;
@@ -103,8 +104,11 @@ namespace Rewards {
 				break;
 			}
 
-			if( Main.mouseItem.active && Main.mouseItem.modItem is ShopPackItem ) {
-				ItemHelpers.DestroyItem( Main.mouseItem );
+			if( Main.mouseItem.active ) {
+				var myitem = Main.mouseItem.modItem as ShopPackItem;
+				if( myitem != null && myitem.Info == null ) {
+					ItemHelpers.DestroyItem( Main.mouseItem );
+				}
 			}
 
 			this.Logic.UpdateInvasions();

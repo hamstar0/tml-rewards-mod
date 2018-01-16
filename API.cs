@@ -15,6 +15,8 @@ namespace Rewards {
 				RewardsAPI.SaveModSettingsChanges();
 				return null;
 			case "KillsOfNpcOnCurrentWorld":
+				if( args.Length < 2 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
 				var player1 = args[0] as Player;
 				if( player1 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
 
@@ -23,11 +25,15 @@ namespace Rewards {
 
 				return RewardsAPI.KillsOfNpcOnCurrentWorld( player1, npc_type );
 			case "GetPoints":
+				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
 				var player2 = args[0] as Player;
 				if( player2 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
 
 				return RewardsAPI.GetPoints( player2 );
 			case "AddPoints":
+				if( args.Length < 2 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
 				var player3 = args[0] as Player;
 				if( player3 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
 
@@ -43,6 +49,8 @@ namespace Rewards {
 				RewardsAPI.ShopRemoveLastPack();
 				return null;
 			case "ShopAddPack":
+				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
 				if( !( args[0] is ShopPackDefinition ) ) { throw new Exception( "Invalid parameter pack for API call " + call_type ); }
 				var pack = (ShopPackDefinition)args[0];
 
