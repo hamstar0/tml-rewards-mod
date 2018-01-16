@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.NPCHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.WorldHelpers;
 using System.Collections.Generic;
 using Terraria.ModLoader.IO;
@@ -46,21 +47,29 @@ namespace Rewards.Logic {
 
 
 		public void Initialize() {
-			string curr_world_id = WorldHelpers.GetUniqueId();
+			string curr_world_uid = WorldHelpers.GetUniqueId();
 
-			this.WorldKills[curr_world_id] = new Dictionary<int, int>();
-			this.WorldPoints[curr_world_id] = 0;
-			this.WorldGolinsConquered[curr_world_id] = 0;
-			this.WorldFrostLegionConquered[curr_world_id] = 0;
-			this.WorldPiratesConquered[curr_world_id] = 0;
-			this.WorldMartiansConquered[curr_world_id] = 0;
-			this.WorldPumpkinMoonWavesConquered[curr_world_id] = 0;
-			this.WorldFrostMoonWavesConquered[curr_world_id] = 0;
+			this.WorldKills[curr_world_uid] = new Dictionary<int, int>();
+			this.WorldPoints[curr_world_uid] = 0;
+			this.WorldGolinsConquered[curr_world_uid] = 0;
+			this.WorldFrostLegionConquered[curr_world_uid] = 0;
+			this.WorldPiratesConquered[curr_world_uid] = 0;
+			this.WorldMartiansConquered[curr_world_uid] = 0;
+			this.WorldPumpkinMoonWavesConquered[curr_world_uid] = 0;
+			this.WorldFrostMoonWavesConquered[curr_world_uid] = 0;
 		}
 
 
-		public void Load( TagCompound tags ) {
-			this.Initialize();
+		public void Load( RewardsMod mymod, TagCompound tags ) {
+			string curr_world_uid = WorldHelpers.GetUniqueId();
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Player Load - current world id: " + curr_world_uid );
+			}
+
+			if( !this.WorldKills.ContainsKey( curr_world_uid ) ) {
+				this.Initialize();
+			}
 
 			if( tags.ContainsKey( "world_uid_count" ) ) {
 				int world_count = tags.GetInt( "world_uid_count" );
@@ -78,9 +87,13 @@ namespace Rewards.Logic {
 
 						for( int j=0; j<killed_types; j++ ) {
 							int npc_type = tags.GetInt( "world_kills_" + i + "_type_" + j );
-							int kills = tags.GetInt( "world_kills_" + i + "_type_" + j + "_killed" );
+							int killed = tags.GetInt( "world_kills_" + i + "_type_" + j + "_killed" );
 
-							this.WorldKills[ world_uid ][ npc_type ] = kills;
+							this.WorldKills[ world_uid ][ npc_type ] = killed;
+
+							if( mymod.Config.DebugModeInfo ) {
+								LogHelpers.Log( "Player Load - world id: " + world_uid + " (" + i + "), npc kill of: " + npc_type + " (" + j + "), total: " + killed );
+							}
 						}
 					}
 					if( tags.ContainsKey( "world_goblins_" + i ) ) {
@@ -105,21 +118,20 @@ namespace Rewards.Logic {
 			}
 		}
 
-		public TagCompound Save() {
-			var tags = new TagCompound { { "world_uid_count", this.WorldPoints.Count } };
+		public TagCompound Save( RewardsMod mymod) {
 			string curr_world_uid = WorldHelpers.GetUniqueId();
 
-			if( !string.IsNullOrEmpty(curr_world_uid) ) {
-				if( !this.WorldKills.ContainsKey(curr_world_uid) ) {
-					this.WorldKills[curr_world_uid] = new Dictionary<int, int>();
-					this.WorldGolinsConquered[curr_world_uid] = 0;
-					this.WorldFrostLegionConquered[curr_world_uid] = 0;
-					this.WorldPiratesConquered[curr_world_uid] = 0;
-					this.WorldMartiansConquered[curr_world_uid] = 0;
-					this.WorldPumpkinMoonWavesConquered[curr_world_uid] = 0;
-					this.WorldFrostMoonWavesConquered[curr_world_uid] = 0;
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Player Save - current world id: " + curr_world_uid );
+			}
+
+			if( !string.IsNullOrEmpty( curr_world_uid ) ) {
+				if( !this.WorldKills.ContainsKey( curr_world_uid ) ) {
+					this.Initialize();
 				}
 			}
+
+			var tags = new TagCompound { { "world_uid_count", this.WorldPoints.Count } };
 
 			int i = 0;
 			foreach( var kv in this.WorldPoints ) {
@@ -145,6 +157,10 @@ namespace Rewards.Logic {
 
 					tags.Set( "world_kills_" + i + "_type_" + j, npc_type );
 					tags.Set( "world_kills_" + i + "_type_" + j + "_killed", killed );
+
+					if( mymod.Config.DebugModeInfo ) {
+						LogHelpers.Log( "Player Save - world id: " + world_uid + " (" + i + "), npc kill of: " + npc_type + " (" + j + "), total: " + killed );
+					}
 					j++;
 				}
 				i++;
@@ -153,17 +169,12 @@ namespace Rewards.Logic {
 			return tags;
 		}
 
+
 		public void OnEnterWorld() {
 			string curr_world_uid = WorldHelpers.GetUniqueId();
 
 			if( !this.WorldKills.ContainsKey( curr_world_uid ) ) {
-				this.WorldKills[ curr_world_uid ] = new Dictionary<int, int>();
-				this.WorldGolinsConquered[ curr_world_uid ] = 0;
-				this.WorldFrostLegionConquered[ curr_world_uid ] = 0;
-				this.WorldPiratesConquered[ curr_world_uid ] = 0;
-				this.WorldMartiansConquered[ curr_world_uid ] = 0;
-				this.WorldPumpkinMoonWavesConquered[ curr_world_uid ] = 0;
-				this.WorldFrostMoonWavesConquered[ curr_world_uid ] = 0;
+				this.Initialize();
 			}
 		}
 	}

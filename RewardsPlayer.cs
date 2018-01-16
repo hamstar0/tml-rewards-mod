@@ -1,11 +1,12 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.WorldHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NetProtocol;
+using System.Linq;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -30,11 +31,11 @@ namespace Rewards {
 
 
 		public override void Load( TagCompound tags ) {
-			this.Logic.Load( tags );
+			this.Logic.Load( (RewardsMod)this.mod, tags );
 		}
 
 		public override TagCompound Save() {
-			return this.Logic.Save();
+			return this.Logic.Save( (RewardsMod)this.mod );
 		}
 
 		////////////////
@@ -59,6 +60,18 @@ namespace Rewards {
 			}
 
 			this.Logic.OnEnterWorld();
+
+			if( mymod.Config.DebugModeInfo ) {
+				ErrorLogger.Log( WorldHelpers.GetUniqueId() + " => " + string.Join(
+					" | ", this.Logic.WorldKills.Select(
+						k => '\"'+k.Key+'"'+": "+string.Join(
+							", ", k.Value.Select(
+								l=>l.Key + "="+l.Value
+							).ToArray()
+						)
+					).ToArray()
+				) );
+			}
 		}
 
 

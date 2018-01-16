@@ -16,6 +16,7 @@ namespace Rewards {
 
 		public string VersionSinceUpdate = RewardsConfigData.ConfigVersion.ToString();
 
+		public bool DebugModeInfo = false;
 		public bool DebugModeEnableCheats = false;
 
 		public bool PointsDisplayWithoutInventory = true;
@@ -85,10 +86,6 @@ namespace Rewards {
 			};
 			this.NpcRewardRequiredMinimumKills = new Dictionary<string, int> {
 				{ "Eater of Worlds", 50 }
-			};
-			this.NpcRewardTogetherSets = new Dictionary<string, int> {
-				{ "Retinazer", 1 },
-				{ "Spazmatism", 1 }
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {

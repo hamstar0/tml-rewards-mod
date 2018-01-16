@@ -14,6 +14,7 @@ namespace Rewards.Logic {
 			return mymod.Config.CommunismMode;
 		}
 
+
 		public void BeginRewardForKill( RewardsMod mymod, NPC npc, Player player ) {
 			if( Main.netMode == 0 ) {
 				this.AddKillReward( mymod, npc, player );
@@ -45,10 +46,16 @@ namespace Rewards.Logic {
 			bool is_grind;
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
 			
-			string msg = "+" + Math.Round(reward, 2) + " PP";
-			Color color = !is_grind ? Color.GreenYellow : Color.LightGray;
+			if( reward > 0.01f ) {
+				string msg = "+" + Math.Round( reward, 2 ) + " PP";
+				Color color = !is_grind ? Color.GreenYellow : Color.DarkGray;
 
-			PlayerMessage.AddPlayerLabel( player, msg, color, 60 * 3, true );
+				PlayerMessage.AddPlayerLabel( player, msg, color, 60 * 3, true );
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				Main.NewText( "AddKillReward npc type: " + npc.type + ", total: " + this.KilledNpcs[npc.type] );
+			}
 
 			this.ProgressPoints += reward;
 		}
@@ -60,7 +67,7 @@ namespace Rewards.Logic {
 			string world_uid = WorldHelpers.GetUniqueId();
 			float points = 0;
 			is_grind = false;
-
+			
 			if( this.CurrentInvasion != VanillaInvasionType.None ) {
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
 					points = mymod.Config.GoblinInvasionReward / Main.invasionSizeStart;
@@ -82,19 +89,21 @@ namespace Rewards.Logic {
 					is_grind = NPC.waveNumber < this.WorldFrostMoonWavesConquered[world_uid];
 				}
 			}
-
+			
 			if( points == 0 ) {
+				IDictionary<int, int> killed_npcs = this.KilledNpcs;
+
 				if( mymod.Config.NpcRewards.ContainsKey( npc.TypeName ) ) {
 					points = mymod.Config.NpcRewards[ npc.TypeName ];
 				}
 
-				IDictionary<int, int> killed_npcs = this.KilledNpcs;
-
 				if( killed_npcs.ContainsKey( npc.type ) ) {
 					if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( npc.TypeName ) ) {
 						is_grind = killed_npcs[ npc.type ] >= mymod.Config.NpcRewardRequiredMinimumKills[ npc.TypeName ];
-					} else if( killed_npcs[ npc.type ] > 1 ) {
-						is_grind = true;
+					} else {
+						if( killed_npcs[npc.type] > 1 ) {
+							is_grind = true;
+						}
 					}
 				}
 			}
