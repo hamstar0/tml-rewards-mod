@@ -55,8 +55,21 @@ namespace Rewards.Logic {
 					this.CurrentInvasion = now_inv;
 				}
 				break;
+
 			default:
-				this.CurrentInvasion = now_inv;
+				switch( now_inv ) {
+				case VanillaInvasionType.Goblins:
+				case VanillaInvasionType.FrostLegion:
+				case VanillaInvasionType.Pirates:
+				case VanillaInvasionType.Martians:
+				case VanillaInvasionType.PumpkinMoon:
+				case VanillaInvasionType.FrostMoon:
+					this.CurrentInvasion = now_inv;
+					break;
+				default:
+					this.CurrentInvasion = VanillaInvasionType.None;
+					break;
+				}
 				break;
 			}
 		}
