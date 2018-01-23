@@ -50,7 +50,9 @@
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\RewardsLogic.cs" />
     <Compile Include="RewardsMod.cs" />
+    <Compile Include="RewardsNPC.cs" />
     <Compile Include="RewardsPlayer.cs" />
+    <Compile Include="RewardsWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="HamstarHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

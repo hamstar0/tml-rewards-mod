@@ -50,7 +50,7 @@ namespace Rewards.Logic {
 				string msg = "+" + Math.Round( reward, 2 ) + " PP";
 				Color color = !is_grind ? Color.GreenYellow : Color.DarkGray;
 
-				PlayerMessage.AddPlayerLabel( player, msg, color, 60 * 3, true );
+				PlayerMessages.AddPlayerLabel( player, msg, color, 60 * 3, true, false );
 			}
 
 			if( mymod.Config.DebugModeInfo ) {

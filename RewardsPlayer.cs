@@ -23,11 +23,6 @@ namespace Rewards {
 		public override void Initialize() {
 			this.Logic = new RewardsLogic();
 		}
-		
-		public override void clientClone( ModPlayer client_clone ) {
-			var clone = (RewardsPlayer)client_clone;
-			clone.Logic = this.Logic;
-		}
 
 
 		public override void Load( TagCompound tags ) {
@@ -40,26 +35,30 @@ namespace Rewards {
 
 		////////////////
 
-		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
-			var mymod = (RewardsMod)this.mod;
-
-			if( Main.netMode == 1 ) {
-				if( new_player ) {
-					ClientPacketHandlers.SendRequestModSettingsFromClient( mymod );
-				}
-			}
+		public override void clientClone( ModPlayer client_clone ) {
+			var clone = (RewardsPlayer)client_clone;
+			clone.Logic = this.Logic;
 		}
+
+
+		////////////////
 
 		public override void OnEnterWorld( Player player ) {
 			var mymod = (RewardsMod)this.mod;
 
-			if( Main.netMode == 0 ) {   // Single player
-				if( !mymod.JsonConfig.LoadFile() ) {
-					mymod.JsonConfig.SaveFile();
+			if( player.whoAmI == Main.myPlayer ) {
+				if( Main.netMode == 0 ) {   // Single player
+					if( !mymod.JsonConfig.LoadFile() ) {
+						mymod.JsonConfig.SaveFile();
+					}
 				}
-			}
 
-			this.Logic.OnEnterWorld();
+				if( Main.netMode == 1 ) {
+					ClientPacketHandlers.SendRequestModSettingsFromClient( mymod );
+				}
+
+				this.Logic.OnEnterWorld();
+			}
 
 			if( mymod.Config.DebugModeInfo ) {
 				ErrorLogger.Log( WorldHelpers.GetUniqueId() + " => " + string.Join(
@@ -71,25 +70,6 @@ namespace Rewards {
 						)
 					).ToArray()
 				) );
-			}
-		}
-
-
-		////////////////
-
-		public override void OnHitNPC( Item item, NPC target, int damage, float knockback, bool crit ) {
-			if( this.player.whoAmI == Main.myPlayer ) {
-				if( target.life <= 0 ) {
-					this.Logic.BeginRewardForKill( (RewardsMod)this.mod, target, this.player );
-				}
-			}
-		}
-
-		public override void OnHitNPCWithProj( Projectile proj, NPC target, int damage, float knockback, bool crit ) {
-			if( this.player.whoAmI == Main.myPlayer && proj.owner == Main.myPlayer ) {
-				if( target.life <= 0 && !proj.npcProj ) {
-					this.Logic.BeginRewardForKill( (RewardsMod)this.mod, target, this.player );
-				}
 			}
 		}
 
