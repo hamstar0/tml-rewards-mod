@@ -109,32 +109,24 @@ namespace Rewards.Logic {
 		////////////////
 
 		public void NetSend( BinaryWriter writer ) {
-			try {
-				writer.Write( (int)this.KilledNpcs.Count );
+			writer.Write( (int)this.KilledNpcs.Count );
 
-				foreach( var kv in this.KilledNpcs ) {
-					writer.Write( (int)kv.Key );
-					writer.Write( (int)kv.Value );
-				}
-			} catch( Exception e ) {
-				LogHelpers.Log( "NetSend - " + e.Message );
+			foreach( var kv in this.KilledNpcs ) {
+				writer.Write( (int)kv.Key );
+				writer.Write( (int)kv.Value );
 			}
 		}
 
 		public void NetReceive( BinaryReader reader ) {
-			try {
-				int kill_count = reader.ReadInt32();
+			int kill_count = reader.ReadInt32();
 
-				this.KilledNpcs = new Dictionary<int, int>();
+			this.KilledNpcs = new Dictionary<int, int>();
 
-				for( int i = 0; i < kill_count; i++ ) {
-					int npc_type = reader.ReadInt32();
-					int kills = reader.ReadInt32();
+			for( int i = 0; i < kill_count; i++ ) {
+				int npc_type = reader.ReadInt32();
+				int kills = reader.ReadInt32();
 
-					this.KilledNpcs[npc_type] = kills;
-				}
-			} catch( Exception e ) {
-				LogHelpers.Log( "NetReceive - " + e.Message );
+				this.KilledNpcs[npc_type] = kills;
 			}
 		}
 	}

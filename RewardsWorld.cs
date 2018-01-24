@@ -1,8 +1,6 @@
 ﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.WorldHelpers;
 using Rewards.Logic;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -32,11 +30,21 @@ namespace Rewards {
 		////////////////
 
 		public override void NetSend( BinaryWriter writer ) {
-			this.Logic.NetSend( writer );
+			try {
+				if( writer == null ) { return; }
+				this.Logic.NetSend( writer );
+			} catch( Exception e ) {
+				LogHelpers.Log( "NetSend - " + e.Message );
+			}
 		}
 
 		public override void NetReceive( BinaryReader reader ) {
-			this.Logic.NetReceive( reader );
+			try {
+				if( reader == null ) { return; }
+				this.Logic.NetReceive( reader );
+			} catch( Exception e ) {
+				LogHelpers.Log( "NetReceive - " + e.Message );
+			}
 		}
 
 
