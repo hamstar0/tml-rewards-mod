@@ -191,7 +191,7 @@ namespace Rewards.Items {
 
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			if( !myplayer.ChargePlayer( info.Price ) ) {
+			if( !myplayer.Logic.Spend( info.Price ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
 			}

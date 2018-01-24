@@ -32,7 +32,7 @@ namespace Rewards.Commands {
 			}
 
 			if( Main.netMode == 2 ) {
-				ServerPacketHandlers.SendModSettingsFromServer( mymod, -1 );
+				ServerPacketHandlers.SendModSettings( mymod, -1 );
 			}
 		}
 	}

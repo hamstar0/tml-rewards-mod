@@ -1,8 +1,5 @@
 ﻿using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.WorldHelpers;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NetProtocol;
@@ -14,23 +11,23 @@ using Terraria.ModLoader.IO;
 
 namespace Rewards {
 	class RewardsPlayer : ModPlayer {
-		public RewardsLogic Logic;
+		public PlayerLogic Logic;
 
 
 
 		////////////////
 
 		public override void Initialize() {
-			this.Logic = new RewardsLogic();
+			this.Logic = new PlayerLogic();
 		}
 
 
 		public override void Load( TagCompound tags ) {
-			this.Logic.Load( (RewardsMod)this.mod, tags );
+			this.Logic.Load( tags );
 		}
 
 		public override TagCompound Save() {
-			return this.Logic.Save( (RewardsMod)this.mod );
+			return this.Logic.Save();
 		}
 
 		////////////////
@@ -54,22 +51,15 @@ namespace Rewards {
 				}
 
 				if( Main.netMode == 1 ) {
-					ClientPacketHandlers.SendRequestModSettingsFromClient( mymod );
+					ClientPacketHandlers.SendRequestModSettings( mymod );
 				}
-
-				this.Logic.OnEnterWorld();
 			}
 
 			if( mymod.Config.DebugModeInfo ) {
-				ErrorLogger.Log( WorldHelpers.GetUniqueId() + " => " + string.Join(
-					" | ", this.Logic.WorldKills.Select(
-						k => '\"'+k.Key+'"'+": "+string.Join(
-							", ", k.Value.Select(
-								l=>l.Key + "="+l.Value
-							).ToArray()
-						)
-					).ToArray()
-				) );
+				string world_uid = WorldHelpers.GetUniqueId();
+				var myworld = mymod.GetModWorld<RewardsWorld>();
+
+				ErrorLogger.Log( world_uid + " => " + string.Join( ", ", myworld.Logic.KilledNpcs.Select(kv => kv.Key + ":" + kv.Value).ToArray()) );
 			}
 		}
 
@@ -93,7 +83,6 @@ namespace Rewards {
 					ItemHelpers.DestroyItem( Main.mouseItem );
 					Main.mouseItem = new Item();
 				}
-
 				break;
 			}
 
@@ -103,36 +92,6 @@ namespace Rewards {
 					ItemHelpers.DestroyItem( Main.mouseItem );
 				}
 			}
-
-			this.Logic.UpdateInvasions();
-		}
-
-
-		////////////////
-
-		public bool ChargePlayer( int points ) {
-			if( this.Logic.ProgressPoints < points ) {
-				return false;
-			}
-
-			this.Logic.ProgressPoints -= points;
-
-			return true;
-		}
-
-
-		////////////////
-
-		public void DrawPointScore( SpriteBatch sb ) {
-			var mymod = (RewardsMod)this.mod;
-			if( !mymod.Config.PointsDisplayWithoutInventory && Main.playerInventory ) { return; }
-
-			float pos_x = mymod.Config.PointsDisplayX;
-			float pos_y = mymod.Config.PointsDisplayY;
-			pos_x = pos_x < 0 ? Main.screenWidth + pos_x : pos_x;
-			pos_y = pos_y < 0 ? Main.screenHeight + pos_y : pos_y;
-
-			sb.DrawString( Main.fontMouseText, "PP: "+(int)this.Logic.ProgressPoints, new Vector2( pos_x, pos_y ), mymod.Config.PointsDisplayColor );
 		}
 	}
 }

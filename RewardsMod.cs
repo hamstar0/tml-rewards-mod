@@ -120,7 +120,7 @@ namespace Rewards {
 				GameInterfaceDrawMethod draw_method = delegate {
 					var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 
-					myplayer.DrawPointScore( Main.spriteBatch );
+					myplayer.Logic.DrawPointScore( this, Main.spriteBatch );
 
 					return true;
 				};

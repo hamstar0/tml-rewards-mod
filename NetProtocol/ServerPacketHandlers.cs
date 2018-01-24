@@ -12,10 +12,7 @@ namespace Rewards.NetProtocol {
 			
 			switch( protocol ) {
 			case RewardsProtocolTypes.RequestModSettings:
-				ServerPacketHandlers.ReceiveModSettingsRequestOnServer( mymod, reader, player_who );
-				break;
-			case RewardsProtocolTypes.SignalNpcKillRewardReceipt:
-				ServerPacketHandlers.ReceiveNpcKillRewardSignalOnServer( mymod, reader, player_who );
+				ServerPacketHandlers.ReceiveModSettingsRequest( mymod, reader, player_who );
 				break;
 			default:
 				LogHelpers.Log( "Invalid packet protocol: " + protocol );
@@ -29,7 +26,7 @@ namespace Rewards.NetProtocol {
 		// Server Senders
 		////////////////
 
-		public static void SendModSettingsFromServer( RewardsMod mymod, int to_who ) {
+		public static void SendModSettings( RewardsMod mymod, int to_who ) {
 			if( Main.netMode != 2 ) { throw new Exception( "Not server" ); }
 
 			ModPacket packet = mymod.GetPacket();
@@ -40,13 +37,16 @@ namespace Rewards.NetProtocol {
 			packet.Send( to_who );
 		}
 
-		public static void SendNpcKillRewardFromServer( RewardsMod mymod, int to_who, int ignore_who, int npc_type ) {
+		public static void SendNpcKillReward( RewardsMod mymod, int killer_who, int npc_type, bool is_grind, float reward, int to_who, int ignore_who ) {
 			if( Main.netMode != 2 ) { throw new Exception( "Not server" ); }
 			
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)RewardsProtocolTypes.NpcKillReward );
+			packet.Write( (int)killer_who );
 			packet.Write( (int)npc_type );
+			packet.Write( (bool)is_grind );
+			packet.Write( (float)reward );
 
 			packet.Send( to_who, ignore_who );
 		}
@@ -57,21 +57,10 @@ namespace Rewards.NetProtocol {
 		// Server Receivers
 		////////////////
 
-		private static void ReceiveModSettingsRequestOnServer( RewardsMod mymod, BinaryReader reader, int player_who ) {
+		private static void ReceiveModSettingsRequest( RewardsMod mymod, BinaryReader reader, int player_who ) {
 			if( Main.netMode != 2 ) { throw new Exception( "Not server" ); }
 
-			ServerPacketHandlers.SendModSettingsFromServer( mymod, player_who );
-		}
-		
-		private static void ReceiveNpcKillRewardSignalOnServer( RewardsMod mymod, BinaryReader reader, int player_who ) {
-			if( Main.netMode != 2 ) { throw new Exception( "Not server" ); }
-
-			int npc_type = reader.ReadInt32();
-			var modplayer = Main.player[player_who].GetModPlayer<RewardsPlayer>();
-			
-			if( modplayer.Logic.CanReceiveOtherPlayerKillRewards( mymod ) ) {
-				ServerPacketHandlers.SendNpcKillRewardFromServer( mymod, -1, player_who, npc_type );
-			}
+			ServerPacketHandlers.SendModSettings( mymod, player_who );
 		}
 	}
 }

@@ -14,16 +14,6 @@ namespace Rewards {
 			case "SaveModSettingsChanges":
 				RewardsAPI.SaveModSettingsChanges();
 				return null;
-			case "KillsOfNpcOnCurrentWorld":
-				if( args.Length < 2 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
-
-				var player1 = args[0] as Player;
-				if( player1 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
-
-				if( !(args[1] is int) ) { throw new Exception("Invalid parameter npc_type for API call "+call_type); }
-				int npc_type = (int)args[1];
-
-				return RewardsAPI.KillsOfNpcOnCurrentWorld( player1, npc_type );
 			case "GetPoints":
 				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
 
@@ -74,17 +64,7 @@ namespace Rewards {
 		}
 
 		////////////////
-
-		public static int KillsOfNpcOnCurrentWorld( Player player, int npc_type ) {
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
-			string world_uid = WorldHelpers.GetUniqueId();
-
-			if( myplayer.Logic.WorldKills[ world_uid ].ContainsKey( npc_type ) ) {
-				return myplayer.Logic.WorldKills[world_uid][npc_type];
-			}
-			return 0;
-		}
-
+		
 		public static float GetPoints( Player player ) {
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 

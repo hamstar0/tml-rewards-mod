@@ -4,7 +4,7 @@ using Terraria;
 
 
 namespace Rewards.Logic {
-	partial class RewardsLogic {
+	partial class WorldLogic {
 		public void UpdateInvasions() {
 			VanillaInvasionType now_inv = NPCInvasionHelpers.GetCurrentInvasionType();
 
@@ -12,33 +12,31 @@ namespace Rewards.Logic {
 			case VanillaInvasionType.Goblins:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldGolinsConquered[ WorldHelpers.GetUniqueId() ]++;
+					this.GoblinsConquered++;
 				}
 				break;
 			case VanillaInvasionType.FrostLegion:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldFrostLegionConquered[ WorldHelpers.GetUniqueId() ]++;
+					this.FrostLegionConquered++;
 				}
 				break;
 			case VanillaInvasionType.Pirates:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldPiratesConquered[ WorldHelpers.GetUniqueId() ]++;
+					this.PiratesConquered++;
 				}
 				break;
 			case VanillaInvasionType.Martians:
 				if( Main.invasionType != (int)this.CurrentInvasion ) {
 					this.CurrentInvasion = now_inv;
-					this.WorldMartiansConquered[ WorldHelpers.GetUniqueId() ]++;
+					this.MartiansConquered++;
 				}
 				break;
 			case VanillaInvasionType.PumpkinMoon:
 				if( Main.pumpkinMoon ) {
-					var world_uid = WorldHelpers.GetUniqueId();
-
-					if( NPC.waveNumber > this.WorldPumpkinMoonWavesConquered[world_uid] ) {
-						this.WorldPumpkinMoonWavesConquered[world_uid] = NPC.waveNumber;
+					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) {
+						this.PumpkinMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
 					this.CurrentInvasion = now_inv;
@@ -48,8 +46,8 @@ namespace Rewards.Logic {
 				if( Main.snowMoon ) {
 					var world_uid = WorldHelpers.GetUniqueId();
 
-					if( NPC.waveNumber > this.WorldFrostMoonWavesConquered[world_uid] ) {
-						this.WorldFrostMoonWavesConquered[world_uid] = NPC.waveNumber;
+					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {
+						this.FrostMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
 					this.CurrentInvasion = now_inv;

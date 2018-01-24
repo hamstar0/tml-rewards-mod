@@ -12,10 +12,10 @@ namespace Rewards.NetProtocol {
 			
 			switch( protocol ) {
 			case RewardsProtocolTypes.ModSettings:
-				ClientPacketHandlers.ReceiveModSettingsOnClient( mymod, reader );
+				ClientPacketHandlers.ReceiveModSettings( mymod, reader );
 				break;
 			case RewardsProtocolTypes.NpcKillReward:
-				ClientPacketHandlers.ReceiveNpcKillRewardOnClient( mymod, reader );
+				ClientPacketHandlers.ReceiveNpcKillReward( mymod, reader );
 				break;
 			default:
 				LogHelpers.Log( "Invalid packet protocol: " + protocol );
@@ -29,23 +29,12 @@ namespace Rewards.NetProtocol {
 		// Client Senders
 		////////////////
 
-		public static void SendRequestModSettingsFromClient( RewardsMod mymod ) {
+		public static void SendRequestModSettings( RewardsMod mymod ) {
 			if( Main.netMode != 1 ) { throw new Exception( "Not client" ); }
 
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)RewardsProtocolTypes.RequestModSettings );
-
-			packet.Send();
-		}
-
-		public static void SendSignalNpcKillRewardFromClient( RewardsMod mymod, int npc_type ) {
-			if( Main.netMode != 1 ) { throw new Exception( "Not client" ); }
-
-			ModPacket packet = mymod.GetPacket();
-
-			packet.Write( (byte)RewardsProtocolTypes.SignalNpcKillRewardReceipt );
-			packet.Write( (int)npc_type );
 
 			packet.Send();
 		}
@@ -57,19 +46,22 @@ namespace Rewards.NetProtocol {
 		// Client Receivers
 		////////////////
 
-		private static void ReceiveModSettingsOnClient( RewardsMod mymod, BinaryReader reader ) {
+		private static void ReceiveModSettings( RewardsMod mymod, BinaryReader reader ) {
 			if( Main.netMode != 1 ) { throw new Exception( "Not client" ); }
 
 			mymod.JsonConfig.DeserializeMe( reader.ReadString() );
 		}
 		
-		private static void ReceiveNpcKillRewardOnClient( RewardsMod mymod, BinaryReader reader ) {
+		private static void ReceiveNpcKillReward( RewardsMod mymod, BinaryReader reader ) {
 			if( Main.netMode != 1 ) { throw new Exception( "Not client" ); }
 
+			int killer_who = reader.ReadInt32();
 			int npc_type = reader.ReadInt32();
+			bool is_grind = reader.ReadBoolean();
+			float reward = reader.ReadSingle();
 			var modplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 
-			modplayer.Logic.AddKillReward( mymod, npc_type, Main.LocalPlayer );
+			modplayer.Logic.AddKillReward( mymod, Main.LocalPlayer, npc_type, is_grind, reward );
 		}
 	}
 }
