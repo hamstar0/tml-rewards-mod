@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	public class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 0, 0, 1); } }
+		public static Version ConfigVersion { get { return new Version(1, 2, 1); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -47,9 +47,11 @@ namespace Rewards {
 		
 		public override void OnLoad( bool success ) {
 			if( RewardsMod.Instance.IsContentSetup ) {
+				string fail;
+
 				foreach( var info in this.ShopLoadout ) {
-					if( !info.Validate() ) {
-						ErrorLogger.Log( "Could not validate shop item " + info.Name );
+					if( !info.Validate(out fail) ) {
+						ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
 					}
 				}
 			}
@@ -89,152 +91,108 @@ namespace Rewards {
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Money Purse", 5, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Money Purse", 5, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Gold Coin", 99 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Iron Age Pack", 5, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Iron Age Pack", 5, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Iron Bar", 99 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Nature Watcher's Pack", 5, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Nature Watcher's Pack", 10, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Flower Boots", 1 ),
 						new ShopPackItemDefinition( "Binoculars", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Bindings Pack", 10, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Bindings Pack", 10, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Band of Regeneration", 1 ),
 						new ShopPackItemDefinition( "Band of Starpower", 1 ),
 						new ShopPackItemDefinition( "Celestial Magnet", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Traveler's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Traveler's Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Aglet", 1 ),
 						new ShopPackItemDefinition( "Ice Skates", 1 ),
 						new ShopPackItemDefinition( "Tiger Climbing Gear", 1 ),
 						new ShopPackItemDefinition( "Water Walking Boots", 1 ),
 						new ShopPackItemDefinition( "Hand Warmer", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Rough Traveler's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Rough Traveler's Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Anklet of the Wind", 1 ),
 						new ShopPackItemDefinition( "Feral Claws", 1 ),
 						new ShopPackItemDefinition( "Jellyfish Diving Gear", 1 ),
 						new ShopPackItemDefinition( "Lava Charm", 1 ),
 						new ShopPackItemDefinition( "Magma Stone", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Ground Hater's Pack", 15, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Ground Hater's Pack", 15, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Sandstorm in a Bottle", 1 ),
 						new ShopPackItemDefinition( "Shiny Red Balloon", 1 ),
 						new ShopPackItemDefinition( "Lucky Horseshoe", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Stoicist's Pack", 15, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Stoicist's Pack", 15, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Cobalt Shield", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Alucard's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Alucard's Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Arkhalis", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Gizmo Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Gizmo Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Toolbox", 1 ),
 						new ShopPackItemDefinition( "Architect Gizmo Pack", 1 ),
 						new ShopPackItemDefinition( "Presserator", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Information Monger's Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Information Monger's Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "GPS", 1 ),
 						new ShopPackItemDefinition( "Goblin Tech", 1 ),
 						new ShopPackItemDefinition( "R.E.K. 3000", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, false,
-					"Fisherman's Pack", 50, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Fisherman's Pack", 50, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Angler Tackle Bag", 1 ),
 						new ShopPackItemDefinition( "Fish Finder", 1 )
 					} ),
 
 				// Hard mode only:
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Mimic's Lament Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Mimic's Lament Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Magic Dagger", 1 ),
 						new ShopPackItemDefinition( "Titan Glove", 1 ),
 						new ShopPackItemDefinition( "Philosopher's Stone", 1 ),
 						new ShopPackItemDefinition( "Cross Necklace", 1 ),
 						new ShopPackItemDefinition( "Star Cloak", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Gangster's Pack", 35, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Gangster's Pack", 35, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Uzi", 1 ),
 						new ShopPackItemDefinition( "Rifle Scope", 1 ),
 						new ShopPackItemDefinition( "Endless Musket Pouch", 1 ),
 						new ShopPackItemDefinition( "Gangsta Hat", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Avenger Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Avenger Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Avenger Emblem", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Life Pack", 75, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Life Pack", 75, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Ankh Charm", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Lucky Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Lucky Pack", 100, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Coin Ring", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, /**/true, false, false, false, false, false, false,
-					"Dimensionalist's Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Dimensionalist's Pack", 100, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Rod of Discord", 1 ),
 						new ShopPackItemDefinition( "Teleportation Potion", 30 )
 					} ),
 
 				// Post-plantera:
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, /**/true, false, false,
-					"Whack Pack", 45, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Plantera", "Whack Pack", 45, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "The Axe", 1 ),
 						new ShopPackItemDefinition( "Bananarang", 10 ),
 						new ShopPackItemDefinition( "Slap Hand", 1 )
 					} ),
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, /**/true, false, false,
-					"Defender's Pack", 60, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Plantera", "Defender's Pack", 60, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Celestial Shell", 1 ),
 						new ShopPackItemDefinition( "Paladin's Shield", 1 ),
 						new ShopPackItemDefinition( "Frozen Turtle Shell", 1 )
 					} ),
 
 				// Post-golem:
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, /**/true, false,
-					"Golem Eye Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Golem", "Golem Eye Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Eye of the Golem", 1 )
 					} ),
 
 				// Post-moonlord:
-				new ShopPackDefinition(
-					false, false, false, false, false, false, false, false, false, false, false, false, true,
-					"Eldritch Pack", 300, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Moon Lord", "Eldritch Pack", 300, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Meowmere", 1 ),
 						new ShopPackItemDefinition( "Terrarian", 1 ),
 						new ShopPackItemDefinition( "Star Wrath", 1 ),
@@ -325,7 +283,7 @@ namespace Rewards {
 				return false;
 			}
 
-			if( vers_since < new Version( 1, 0, 0, 1 ) ) {
+			if( vers_since < new Version(1, 2, 1) ) {		// Sorry :/
 				this.PointsDisplayWithoutInventory = new_config.PointsDisplayWithoutInventory;
 				this.PointsDisplayX = new_config.PointsDisplayX;
 				this.PointsDisplayY = new_config.PointsDisplayY;

@@ -75,9 +75,11 @@ namespace Rewards.Commands {
 				item_defs.Add( item_def );
 			}
 
-			var def = new ShopPackDefinition( pack_name, price, item_defs.ToArray() );
-			if( !def.Validate() ) {
-				throw new UsageException( "Invalid pack definition" );
+			var def = new ShopPackDefinition( "", pack_name, price, item_defs.ToArray() );
+			string fail;
+
+			if( !def.Validate(out fail) ) {
+				throw new UsageException( "Invalid pack definition (" + fail + ")" );
 			}
 
 			mymod.Config.ShopLoadout.Add( def );

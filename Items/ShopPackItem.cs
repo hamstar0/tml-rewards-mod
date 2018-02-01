@@ -159,7 +159,8 @@ namespace Rewards.Items {
 			if( this.Info == null ) { return -1; }
 
 			var info = (ShopPackDefinition)this.Info;
-			if( !info.Validate() ) { return -1; }
+			string _;
+			if( !info.Validate(out _) ) { return -1; }
 
 			for( int i = 0; i < info.Items.Length; i++ ) {
 				ShopPackItemDefinition item_info = info.Items[i];

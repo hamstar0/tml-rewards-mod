@@ -173,11 +173,13 @@ namespace Rewards.NPCs {
 				if( i >= mymod.Config.ShopLoadout.Count ) { break; }
 
 				ShopPackDefinition def = mymod.Config.ShopLoadout[i];
-				if( !def.Validate() ) {
-					Main.NewText( "Could not load shop item " + def.Name, Color.Red );
+				string fail;
+
+				if( !def.Validate(out fail) ) {
+					Main.NewText( "Could not load shop item " + def.Name + " ("+fail+")", Color.Red );
 					continue;
 				}
-				if( !def.IsValidMode() ) { continue; }
+				if( !def.RequirementsMet() ) { continue; }
 
 				shop.item[next_slot++] = ShopPackItem.CreateItem( def );
 			}

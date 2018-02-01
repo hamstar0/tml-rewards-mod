@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.WorldHelpers;
-using Rewards.Items;
+﻿using Rewards.Items;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -87,12 +86,14 @@ namespace Rewards {
 			IList<ShopPackDefinition> shop = RewardsMod.Instance.Config.ShopLoadout;
 			int last = shop.Count - 1;
 			ShopPackDefinition? def = null;
+			string _;
 
 			for( int i=last; i>=0; i-- ) {
-				if( !shop[i].Validate() || !shop[i].IsValidMode() ) { continue; }
+				if( !shop[i].Validate(out _) || !shop[i].RequirementsMet() ) { continue; }
 
 				def = shop[i];
 				shop.RemoveAt( i );
+
 				break;
 			}
 
@@ -100,8 +101,9 @@ namespace Rewards {
 		}
 
 		public static void ShopAddPack( ShopPackDefinition pack ) {
-			if( !pack.Validate() ) { throw new Exception("Invalid shop pack by name "+pack.Name); }
-
+			string fail;
+			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
+			
 			RewardsMod.Instance.Config.ShopLoadout.Add( pack );
 		}
 	}
