@@ -12,7 +12,7 @@ namespace Rewards.Commands {
 		public override string Command { get { return "rewardsshopadd"; } }
 		public override string Usage { get { return "/rewardsshopadd \"My Pack\" 35 3521:1 1324:10"; } }
 		public override string Description { get { return "Adds an item pack to the Wayfarer's shop."+
-			"\n   Parameters: <quote-wrapped pack name> <PP cost> [ <item id>:<stack quantity> ... ]"+
+			"\n   Parameters: <quote-wrapped pack name> <PP cost> <item id>:<stack quantity> ..."+
 			"\n   Tip: Use this to find out an item's id:  /hhgetitemid \"Gold Pickaxe\""; } }
 
 
@@ -82,7 +82,7 @@ namespace Rewards.Commands {
 				throw new UsageException( "Invalid pack definition (" + fail + ")" );
 			}
 
-			mymod.Config.ShopLoadout.Add( def );
+			RewardsAPI.ShopAddPack( def );
 
 			caller.Reply( "Pack "+pack_name+" added successfully." );
 		}
