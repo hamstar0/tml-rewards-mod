@@ -1,42 +1,27 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Utilities.Messages;
+﻿using HamstarHelpers.Utilities.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
 using Terraria;
-using Terraria.ModLoader.IO;
 
 
 namespace Rewards.Logic {
-	class PlayerLogic {
-		public float ProgressPoints = 0f;
-
-
-
-		////////////////
-
-		public void Load( TagCompound tags ) {
-			if( tags.ContainsKey("pp") ) {
-				this.ProgressPoints = tags.GetFloat( "pp" );
+	partial class KillData {
+		public void AddKillRewardForPlayer( RewardsMod mymod, Player player, int npc_type, bool is_grind, float reward ) {
+			if( is_grind ) {
+				reward *= mymod.Config.GrindKillMultiplier;
 			}
-		}
 
-		public TagCompound Save() {
-			return new TagCompound { { "pp", this.ProgressPoints } };
-		}
+			if( Main.netMode != 2 ) {
+				if( Math.Abs(reward) > 0.01f ) {
+					string msg = "+" + Math.Round( reward, 2 ) + " PP";
+					Color color = reward > 0 ?
+						is_grind ? Color.DarkGray : Color.GreenYellow :
+						Color.Red;
 
-
-		////////////////
-
-		public void AddKillReward( RewardsMod mymod, Player player, int npc_type, bool is_grind, float reward ) {
-			if( Math.Abs(reward) > 0.01f ) {
-				string msg = "+" + Math.Round( reward, 2 ) + " PP";
-				Color color = reward > 0 ?
-					is_grind ? Color.DarkGray : Color.GreenYellow :
-					Color.Red;
-
-				PlayerMessages.AddPlayerLabel( player, msg, color, 60 * 3, true, false );
+					PlayerMessages.AddPlayerLabel( player, msg, color, 60 * 3, true, false );
+				}
 			}
 
 			this.ProgressPoints += reward;

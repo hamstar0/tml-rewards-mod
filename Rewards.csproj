@@ -44,12 +44,11 @@
     <Compile Include="Config.cs" />
     <Compile Include="Items\ShopPackDefinition.cs" />
     <Compile Include="Items\ShopPackItem.cs" />
-    <Compile Include="Logic\PlayerLogic.cs" />
-    <Compile Include="Logic\WorldLogic_Update.cs" />
-    <Compile Include="Logic\WorldLogic_KillRewards.cs" />
-    <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
-    <Compile Include="NetProtocol\NetProtocolTypes.cs" />
-    <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
+    <Compile Include="Logic\KillData_Kills.cs" />
+    <Compile Include="Logic\KillData.cs" />
+    <Compile Include="Logic\KillData_PP.cs" />
+    <Compile Include="Logic\KillData_Update.cs" />
+    <Compile Include="NetProtocols.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />
     <Compile Include="RewardsMod.cs" />

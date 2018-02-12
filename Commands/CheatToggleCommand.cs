@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Rewards.NetProtocol;
+﻿using HamstarHelpers.Utilities.Network;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -32,7 +32,7 @@ namespace Rewards.Commands {
 			}
 
 			if( Main.netMode == 2 ) {
-				ServerPacketHandlers.SendModSettings( mymod, -1 );
+				PacketProtocol.QuickSendData<RewardsModSettingsProtocol>( -1, -1, false );
 			}
 		}
 	}

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 2, 1); } }
+		public static Version ConfigVersion { get { return new Version(1, 3, 0); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -17,13 +17,14 @@ namespace Rewards {
 
 		public bool DebugModeInfo = false;
 		public bool DebugModeEnableCheats = false;
+		public bool DebugModeSaveKillsAsText = false;
 
 		public bool PointsDisplayWithoutInventory = true;
 		public int PointsDisplayX = -92;
 		public int PointsDisplayY = -48;
 		public Color PointsDisplayColor = Color.YellowGreen;
-		
-		public bool CommunismMode = false;
+
+		public bool SharedRewards = false;
 
 		public float GrindKillMultiplier = 0.1f;
 
@@ -39,6 +40,14 @@ namespace Rewards {
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
 
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
+
+
+
+		////////////////
+
+		public bool _OLD_SETTINGS_BELOW_ = true;
+
+		public bool CommunismMode = false;
 
 
 
@@ -75,7 +84,7 @@ namespace Rewards {
 				this.ShopLoadout = new_config.ShopLoadout;
 			}
 
-			this.VersionSinceUpdate = RewardsConfigData.ConfigVersion.ToString();
+			this.VersionSinceUpdate = new_config.VersionSinceUpdate;
 
 			return true;
 		}

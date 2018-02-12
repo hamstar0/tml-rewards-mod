@@ -1,4 +1,6 @@
-﻿using Rewards.Items;
+﻿using HamstarHelpers.Utilities.Errors;
+using Rewards.Items;
+using Rewards.Logic;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -11,21 +13,25 @@ namespace Rewards {
 		}
 		
 		public static void SaveModSettingsChanges() {
-			RewardsMod.Instance.JsonConfig.SaveFile();
+			RewardsMod.Instance.ConfigJson.SaveFile();
 		}
 
 		////////////////
 		
 		public static float GetPoints( Player player ) {
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
+			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			KillData data = myworld.Logic.GetPlayerData( player );
+			if( data == null ) { throw new HamstarException( "RewardsAPI.GetPoints() - No player data for "+player.name ); }
 
-			return myplayer.Logic.ProgressPoints;
+			return data.ProgressPoints;
 		}
 
 		public static void AddPoints( Player player, float points ) {
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
+			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			KillData data = myworld.Logic.GetPlayerData( player );
+			if( data == null ) { throw new HamstarException( "RewardsAPI.AddPoints() - No player data for " + player.name ); }
 
-			myplayer.Logic.ProgressPoints += points;
+			data.ProgressPoints += points;
 		}
 
 		////////////////
@@ -33,7 +39,7 @@ namespace Rewards {
 		public static void ShopClear() {
 			var mymod = RewardsMod.Instance;
 			mymod.Config.ShopLoadout = new List<ShopPackDefinition>();
-			mymod.JsonConfig.SaveFile();
+			mymod.ConfigJson.SaveFile();
 		}
 
 		public static ShopPackDefinition? ShopRemoveLastPack() {
@@ -53,7 +59,7 @@ namespace Rewards {
 			}
 			
 			if( def != null ) {
-				mymod.JsonConfig.SaveFile();
+				mymod.ConfigJson.SaveFile();
 			}
 
 			return def;
@@ -65,7 +71,7 @@ namespace Rewards {
 			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.Config.ShopLoadout.Add( pack );
-			mymod.JsonConfig.SaveFile();
+			mymod.ConfigJson.SaveFile();
 		}
 	}
 }

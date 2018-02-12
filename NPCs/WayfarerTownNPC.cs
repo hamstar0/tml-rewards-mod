@@ -25,6 +25,9 @@ namespace Rewards.NPCs {
 
 		////////////////
 
+		private int CurrentShop = 0;
+
+
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
 
 		public override bool Autoload( ref string name ) {
@@ -146,6 +149,7 @@ namespace Rewards.NPCs {
 			return false;   // :(
 		}
 
+
 		////////////////
 
 		public override string GetChat() {
@@ -156,11 +160,32 @@ namespace Rewards.NPCs {
 		////////////////
 		
 		public override void SetChatButtons( ref string button1, ref string button2 ) {
+			var mymod = (RewardsMod)this.mod;
+			int count = mymod.Config.ShopLoadout.Count;
+			bool has_button2 = false;
+
 			button1 = "Shop";
+
+			if( mymod.Config.ShopLoadout.Count > 40 ) {
+				has_button2 = this.CountShopItems() > 40;
+			}
+
+			if( has_button2 ) {
+				button2 = "Scroll Shop";
+			}
 		}
 
 		public override void OnChatButtonClicked( bool first_button, ref bool shop ) {
-			shop = first_button;
+			if( first_button ) {
+				shop = first_button;
+			} else {
+				int count = this.CountShopItems();
+				int shops = count / 40;
+
+				if( shops >= 1 ) {
+					this.CurrentShop = this.CurrentShop >= shops ? 0 : this.CurrentShop + 1;
+				}
+			}
 		}
 
 
@@ -168,9 +193,12 @@ namespace Rewards.NPCs {
 
 		public override void SetupShop( Chest shop, ref int next_slot ) {
 			var mymod = (RewardsMod)this.mod;
+			int shop_start = this.CurrentShop * 40;
 			
-			for( int i = 0; i < shop.item.Length - 1; i++ ) {
-				if( i >= mymod.Config.ShopLoadout.Count ) { break; }
+			for( int i = shop_start; i < mymod.Config.ShopLoadout.Count; i++ ) {
+				if( next_slot >= 40 ) {
+					break;
+				}
 
 				ShopPackDefinition def = mymod.Config.ShopLoadout[i];
 				string fail;
@@ -179,10 +207,31 @@ namespace Rewards.NPCs {
 					Main.NewText( "Could not load shop item " + def.Name + " ("+fail+")", Color.Red );
 					continue;
 				}
-				if( !def.RequirementsMet() ) { continue; }
-
-				shop.item[next_slot++] = ShopPackItem.CreateItem( def );
+				if( !def.RequirementsMet() ) {
+					continue;
+				}
+				
+				if( next_slot >= shop_start ) {
+					shop.item[ next_slot++ ] = ShopPackItem.CreateItem( def );
+				}
 			}
+		}
+
+
+		////////////////
+
+		public int CountShopItems() {
+			var mymod = (RewardsMod)this.mod;
+			int count = 0;
+
+			string _;
+			foreach( ShopPackDefinition def in mymod.Config.ShopLoadout ) {
+				if( def.Validate( out _ ) && def.RequirementsMet() ) {
+					count++;
+				}
+			}
+
+			return count;
 		}
 	}
 }

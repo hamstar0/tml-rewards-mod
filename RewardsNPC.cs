@@ -6,7 +6,7 @@ namespace Rewards {
 	class RewardsNPC : GlobalNPC {
 		public override void NPCLoot( NPC npc ) {
 			if( Main.netMode == 1 ) { return; }	// Redundant?
-
+			
 			var myworld = this.mod.GetModWorld<RewardsWorld>();
 
 			myworld.Logic.AddKillReward( (RewardsMod)this.mod, npc );

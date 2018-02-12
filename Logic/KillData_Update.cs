@@ -4,9 +4,10 @@ using Terraria;
 
 
 namespace Rewards.Logic {
-	partial class WorldLogic {
-		public void UpdateInvasions() {
+	partial class KillData {
+		public void Update() {
 			VanillaInvasionType now_inv = NPCInvasionHelpers.GetCurrentInvasionType();
+			VanillaInvasionType then_inv = this.CurrentInvasion;
 
 			switch( this.CurrentInvasion ) {
 			case VanillaInvasionType.Goblins:

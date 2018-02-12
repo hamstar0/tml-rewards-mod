@@ -1,7 +1,10 @@
 ﻿using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.MiscHelpers;
+using HamstarHelpers.Utilities.Errors;
+using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Rewards.Logic;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -184,17 +187,18 @@ namespace Rewards.Items {
 			if( this.Info == null ) { return; }
 			var info = (ShopPackDefinition)this.Info;
 
-			//bool hm = (bool)this.Info.Hardmode;
-			//if( this.Info.Hardmode != null && hm != Main.hardMode ) {
-			//	Main.NewText( "Item cannot be acquired during " + (hm ? "pre-hardmode" : "hardmode"), Color.Red );
-			//	return;
-			//}
-
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
-
-			if( !myplayer.Logic.Spend( info.Price ) ) {
+			var myworld = mymod.GetModWorld<RewardsWorld>();
+			KillData data = myworld.Logic.GetPlayerData( player );
+			if( data == null ) { throw new HamstarException( "ShopPackItem.OpenPack() - No player data for " + player.name ); }
+			
+			if( !data.Spend( info.Price ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
+			}
+			
+			if( Main.netMode == 1 ) {
+				var protocol = new RewardsModSpendRewardsProtocol( info.Price );
+				protocol.SendData( -1, -1, false );
 			}
 
 			foreach( ShopPackItemDefinition item_info in info.Items ) {

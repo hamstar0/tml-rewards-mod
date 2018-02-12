@@ -1,133 +1,106 @@
 ﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.WorldHelpers;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using Terraria.ModLoader.IO;
+using Terraria;
 
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
-		internal IDictionary<int, int> KilledNpcs = new Dictionary<int, int>();
-		internal int GoblinsConquered = 0;
-		internal int FrostLegionConquered = 0;
-		internal int PiratesConquered = 0;
-		internal int MartiansConquered = 0;
-		internal int PumpkinMoonWavesConquered = 0;
-		internal int FrostMoonWavesConquered = 0;
-
-		private VanillaInvasionType CurrentInvasion = VanillaInvasionType.None;
+		internal IDictionary<string, KillData> PlayerData = new Dictionary<string, KillData>();
+		internal KillData WorldData = new KillData();
 
 
 
 		////////////////
 
-		public WorldLogic() {
-			this.CurrentInvasion = NPCInvasionHelpers.GetCurrentInvasionType();
-			this.KilledNpcs = new Dictionary<int, int>();
+		public void LoadAll( RewardsMod mymod ) {
+			bool success = this.WorldData.Load( mymod, "World_" + Main.worldName + "_" + Main.worldID );
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "WorldLogic.LoadAll - World id: " + WorldHelpers.GetUniqueId()+", success: "+success+", "+ this.WorldData.ToString() );
+			}
+		}
+
+		public void SaveAll( RewardsMod mymod ) {
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "WorldLogic.SaveAll - World id: " + WorldHelpers.GetUniqueId()+", "+ this.WorldData.ToString() );
+			}
+
+			for( int i = 0; i < Main.player.Length; i++ ) {
+				Player player = Main.player[i];
+				if( player == null || !player.active ) { continue; }
+
+				var myplayer = player.GetModPlayer<RewardsPlayer>();
+				myplayer.SaveKillData();
+			}
+
+			this.WorldData.Save( mymod, "World_"+ Main.worldName+"_"+Main.worldID );
 		}
 
 
-		public void Load( RewardsMod mymod, TagCompound tags ) {
-			string curr_world_uid = WorldHelpers.GetUniqueId();
+		////////////////
+
+		public void Update() {
+			foreach( KillData kill_data in this.PlayerData.Values ) {
+				kill_data.Update();
+			}
+		}
+
+
+		////////////////
+		
+		public KillData GetPlayerData( Player player ) {
+			bool has_uid;
+			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
+			if( !has_uid ) { return null; }
+
+			if( !this.PlayerData.ContainsKey( uid ) ) {
+				this.PlayerData[ uid ] = new KillData();
+			}
+			
+			return this.PlayerData[ uid ];
+		}
+
+
+		////////////////
+
+		public void AddKillReward( RewardsMod mymod, NPC npc ) {
+			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "World Load - current world id: " + curr_world_uid );
+				LogHelpers.Log( "AddKillReward " + npc.TypeName );
 			}
 
-			if( tags.ContainsKey( "kills_count" ) ) {
-				int killed_types = tags.GetInt( "kills_count" );
+			var myworld = mymod.GetModWorld<RewardsWorld>();
 
-				for( int i = 0; i < killed_types; i++ ) {
-					int npc_type = tags.GetInt( "kills_type_" + i );
-					int killed = tags.GetInt( "kills_type_" + i + "_killed" );
+			bool to_all = KillData.CanReceiveOtherPlayerKillRewards( mymod );
 
-					this.KilledNpcs[npc_type] = killed;
+			if( Main.netMode == 2 ) {
+				if( to_all ) {
+					for( int i = 0; i < Main.player.Length; i++ ) {
+						Player to_player = Main.player[i];
+						if( to_player == null || !to_player.active ) { continue; }
 
-					if( mymod.Config.DebugModeInfo ) {
-						LogHelpers.Log( "World Load - Npc kill of: " + npc_type + " (" + i + "), total: " + killed );
+						this.AddKillRewardFor( mymod, to_player, npc );
+					}
+				} else {
+					Player to_player = Main.player[npc.lastInteraction];
+					if( to_player != null && to_player.active ) {
+						this.AddKillRewardFor( mymod, Main.player[npc.lastInteraction], npc );
 					}
 				}
-			}
-			if( tags.ContainsKey( "goblins" ) ) {
-				this.GoblinsConquered = tags.GetInt( "goblins" );
-			}
-			if( tags.ContainsKey( "frostlegion" ) ) {
-				this.FrostLegionConquered = tags.GetInt( "frostlegion" );
-			}
-			if( tags.ContainsKey( "pirates" ) ) {
-				this.PiratesConquered = tags.GetInt( "pirates" );
-			}
-			if( tags.ContainsKey( "martians" ) ) {
-				this.MartiansConquered = tags.GetInt( "martians" );
-			}
-			if( tags.ContainsKey( "pumpkinmoon_waves" ) ) {
-				this.PumpkinMoonWavesConquered = tags.GetInt( "pumpkinmoon_waves" );
-			}
-			if( tags.ContainsKey( "frostmoon_waves" ) ) {
-				this.FrostMoonWavesConquered = tags.GetInt( "frostmoon_waves" );
+			} else if( Main.netMode == 0 ) {
+				this.AddKillRewardFor( mymod, Main.LocalPlayer, npc );
 			}
 		}
 
 
-		public TagCompound Save( RewardsMod mymod ) {
-			string curr_world_uid = WorldHelpers.GetUniqueId();
+		private void AddKillRewardFor( RewardsMod mymod, Player to_player, NPC npc ) {
+			KillData data = this.GetPlayerData( to_player );
+			if( data == null ) { return; }
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Player Save - current world id: " + curr_world_uid );
-			}
-
-			var tags = new TagCompound();
-
-			tags.Set( "goblins", this.GoblinsConquered );
-			tags.Set( "frostlegion", this.FrostLegionConquered );
-			tags.Set( "pirates", this.PiratesConquered );
-			tags.Set( "martians", this.MartiansConquered );
-			tags.Set( "pumpkinmoon_waves", this.PumpkinMoonWavesConquered );
-			tags.Set( "frostmoon_waves", this.FrostMoonWavesConquered );
-
-			tags.Set( "kills_count", this.KilledNpcs.Count );
-
-			int i = 0;
-			foreach( var kv in this.KilledNpcs ) {
-				int npc_type = kv.Key;
-				int killed = kv.Value;
-
-				tags.Set( "kills_type_" + i, npc_type );
-				tags.Set( "kills_type_" + i + "_killed", killed );
-
-				if( mymod.Config.DebugModeInfo ) {
-					LogHelpers.Log( "World Save - Npc kill of: " + npc_type + " (" + i + "), total: " + killed );
-				}
-				i++;
-			}
-
-			return tags;
-		}
-
-		////////////////
-
-		public void NetSend( BinaryWriter writer ) {
-			writer.Write( (int)this.KilledNpcs.Count );
-
-			foreach( var kv in this.KilledNpcs ) {
-				writer.Write( (int)kv.Key );
-				writer.Write( (int)kv.Value );
-			}
-		}
-
-		public void NetReceive( BinaryReader reader ) {
-			int kill_count = reader.ReadInt32();
-
-			this.KilledNpcs = new Dictionary<int, int>();
-
-			for( int i = 0; i < kill_count; i++ ) {
-				int npc_type = reader.ReadInt32();
-				int kills = reader.ReadInt32();
-
-				this.KilledNpcs[npc_type] = kills;
-			}
+			data.RecordKillAndGiveReward( mymod, to_player, npc );
 		}
 	}
 }

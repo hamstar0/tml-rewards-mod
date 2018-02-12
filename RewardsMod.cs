@@ -1,5 +1,7 @@
 using HamstarHelpers.Utilities.Config;
-using Rewards.NetProtocol;
+using HamstarHelpers.Utilities.Errors;
+using HamstarHelpers.Utilities.Network;
+using Rewards.Logic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,15 +18,15 @@ namespace Rewards {
 		public static string GithubProjectName { get { return "tml-rewards-mod"; } }
 
 		public static string ConfigFileRelativePath {
-			get { return JsonConfig<RewardsConfigData>.RelativePath + Path.DirectorySeparatorChar + RewardsConfigData.ConfigFileName; }
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + RewardsConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
 			if( RewardsMod.Instance != null ) {
-				if( !RewardsMod.Instance.JsonConfig.LoadFile() ) {
-					RewardsMod.Instance.JsonConfig.SaveFile();
+				if( !RewardsMod.Instance.ConfigJson.LoadFile() ) {
+					RewardsMod.Instance.ConfigJson.SaveFile();
 				}
 			}
 		}
@@ -34,8 +36,8 @@ namespace Rewards {
 		////////////////
 
 		public bool IsContentSetup { get; private set; }
-		internal JsonConfig<RewardsConfigData> JsonConfig;
-		public RewardsConfigData Config { get { return JsonConfig.Data; } }
+		internal JsonConfig<RewardsConfigData> ConfigJson;
+		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
 
 		////////////////
@@ -48,30 +50,23 @@ namespace Rewards {
 				AutoloadSounds = true
 			};
 			
-			this.JsonConfig = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath, new RewardsConfigData() );
+			this.ConfigJson = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
 		}
 
 		public override void Load() {
 			RewardsMod.Instance = this;
 
-			/*var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 3, 2 );
-			if( hamhelpmod.Version < min_vers ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
-			}*/
-
 			this.LoadConfigs();
 		}
 
 		private void LoadConfigs() {
-			if( !this.JsonConfig.LoadFile() ) {
-				this.JsonConfig.SaveFile();
+			if( !this.ConfigJson.LoadFile() ) {
+				this.ConfigJson.SaveFile();
 			}
 
 			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
-				this.JsonConfig.SaveFile();
+				this.ConfigJson.SaveFile();
 			}
 		}
 
@@ -83,6 +78,20 @@ namespace Rewards {
 
 		public override void Unload() {
 			RewardsMod.Instance = null;
+		}
+
+
+		////////////////
+
+		public override void PreSaveAndQuit() {
+			if( Main.netMode == 2 ) { return; }	// Redundant?
+
+			if( Main.netMode == 0 ) {
+				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+				myplayer.SaveKillData();
+			} else if( Main.netMode == 1 ) {
+				PacketProtocol.QuickSendData<RewardsModSaveProtocol>( -1, -1, false );
+			}
 		}
 
 
@@ -102,25 +111,16 @@ namespace Rewards {
 
 
 		////////////////
-
-		public override void HandlePacket( BinaryReader reader, int player_who ) {
-			if( Main.netMode == 1 ) {   // Client
-				ClientPacketHandlers.HandlePacket( this, reader );
-			} else if( Main.netMode == 2 ) {    // Server
-				ServerPacketHandlers.HandlePacket( this, reader, player_who );
-			}
-		}
-
-
-		////////////////
-
+		
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod draw_method = delegate {
-					var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+					var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+					KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+					if( data == null ) { throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name ); }
 
-					myplayer.Logic.DrawPointScore( this, Main.spriteBatch );
+					data.DrawPointScore( this, Main.spriteBatch );
 
 					return true;
 				};

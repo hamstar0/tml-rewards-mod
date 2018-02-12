@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Utilities.Errors;
+using Microsoft.Xna.Framework;
+using Rewards.Logic;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -18,9 +20,14 @@ namespace Rewards.Commands {
 			if( !mymod.Config.DebugModeEnableCheats ) {
 				throw new UsageException( "Cheat mode not enabled." );
 			}
-			
-			var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
-			myplayer.Logic.ProgressPoints += 100;
+
+			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+			if( data == null ) {
+				throw new HamstarException( "AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
+			}
+
+			data.ProgressPoints += 100;
 
 			caller.Reply( "+100 PP added. Cheater!", Color.YellowGreen );
 		}

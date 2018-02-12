@@ -1,8 +1,19 @@
-v1.2
--	Add MeritMode (points are split; requires jopo's mod)
--	Add string fields to use to check pack availability (instead of a buttload of bools)
+Future
+-	Add MeritMode (points are split; requires jopo's mod)?
 
-v1.1.3
+
+v1.3
+-	@Test single and MP
+-	@Fix HH assembly checking for PacketProtocols: foreach( var mod in ModLoader.LoadedMods )
+
+-	Add syncing of npc kills for new players
+-	Implement pagination for shop
+-	Upgrade net protocols
+-	Implement per-player rewards for kills
+	-	Implement kill sharing (if set)
+	-	Save kills per player with a server-side file
+v1.2
+-	Add string fields to use to check pack availability (instead of a buttload of bools)
 -	Add server-side kill tracking
 -	Improved alerts for PP gain
 v1.1
