@@ -30,8 +30,8 @@ namespace Rewards {
 				{ "Eater of Worlds", 25f / 50f },	// per segment
 				{ "Brain of Cthulhu", 25f },
 				{ "Queen Bee", 20f },
-				{ "Skeletron", 35f },
-				{ "Wall of Flesh", 75f },
+				{ "Skeletron", 30f },
+				{ "Wall of Flesh", 50f },
 				{ "The Destroyer", 50f },
 				{ "Retinazer", 50f / 2 },
 				{ "Spazmatism", 50f / 2 },
@@ -67,32 +67,32 @@ namespace Rewards {
 						new ShopPackItemDefinition( "Band of Starpower", 1 ),
 						new ShopPackItemDefinition( "Celestial Magnet", 1 )
 					} ),
-				new ShopPackDefinition( "", "Traveler's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Traveler's Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Aglet", 1 ),
 						new ShopPackItemDefinition( "Ice Skates", 1 ),
 						new ShopPackItemDefinition( "Tiger Climbing Gear", 1 ),
 						new ShopPackItemDefinition( "Water Walking Boots", 1 ),
 						new ShopPackItemDefinition( "Hand Warmer", 1 )
 					} ),
-				new ShopPackDefinition( "", "Rough Traveler's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Rough Traveler's Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Anklet of the Wind", 1 ),
 						new ShopPackItemDefinition( "Feral Claws", 1 ),
 						new ShopPackItemDefinition( "Jellyfish Diving Gear", 1 ),
 						new ShopPackItemDefinition( "Lava Charm", 1 ),
 						new ShopPackItemDefinition( "Magma Stone", 1 )
 					} ),
-				new ShopPackDefinition( "", "Ground Hater's Pack", 15, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Ground Hater's Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Sandstorm in a Bottle", 1 ),
 						new ShopPackItemDefinition( "Shiny Red Balloon", 1 ),
 						new ShopPackItemDefinition( "Lucky Horseshoe", 1 )
 					} ),
-				new ShopPackDefinition( "", "Stoicist's Pack", 15, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Stoicist's Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Cobalt Shield", 1 )
 					} ),
-				new ShopPackDefinition( "", "Alucard's Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Alucard's Pack", 35, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Arkhalis", 1 )
 					} ),
-				new ShopPackDefinition( "", "Gizmo Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "", "Gizmo Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Toolbox", 1 ),
 						new ShopPackItemDefinition( "Architect Gizmo Pack", 1 ),
 						new ShopPackItemDefinition( "Presserator", 1 )
@@ -108,7 +108,7 @@ namespace Rewards {
 					} ),
 
 				// Hard mode only:
-				new ShopPackDefinition( "Wall of Flesh", "Mimic's Lament Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Mimic's Lament Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Magic Dagger", 1 ),
 						new ShopPackItemDefinition( "Titan Glove", 1 ),
 						new ShopPackItemDefinition( "Philosopher's Stone", 1 ),
@@ -121,39 +121,39 @@ namespace Rewards {
 						new ShopPackItemDefinition( "Endless Musket Pouch", 1 ),
 						new ShopPackItemDefinition( "Gangsta Hat", 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Avenger Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Avenger Pack", 20, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Avenger Emblem", 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Life Pack", 75, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Life Pack", 100, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Ankh Charm", 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Lucky Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Lucky Pack", 125, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Coin Ring", 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Dimensionalist's Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Wall of Flesh", "Dimensionalist's Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Rod of Discord", 1 ),
 						new ShopPackItemDefinition( "Teleportation Potion", 30 )
 					} ),
 
 				// Post-plantera:
-				new ShopPackDefinition( "Plantera", "Whack Pack", 45, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Plantera", "Whack Pack", 50, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "The Axe", 1 ),
 						new ShopPackItemDefinition( "Bananarang", 10 ),
 						new ShopPackItemDefinition( "Slap Hand", 1 )
 					} ),
-				new ShopPackDefinition( "Plantera", "Defender's Pack", 60, new ShopPackItemDefinition[] {
+
+				// Post-golem:
+				new ShopPackDefinition( "Golem", "Golem Eye Pack", 20, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( "Eye of the Golem", 1 )
+					} ),
+				new ShopPackDefinition( "Golem", "Defender's Pack", 100, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Celestial Shell", 1 ),
 						new ShopPackItemDefinition( "Paladin's Shield", 1 ),
 						new ShopPackItemDefinition( "Frozen Turtle Shell", 1 )
 					} ),
 
-				// Post-golem:
-				new ShopPackDefinition( "Golem", "Golem Eye Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Eye of the Golem", 1 )
-					} ),
-
 				// Post-moonlord:
-				new ShopPackDefinition( "Moon Lord", "Eldritch Pack", 300, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( "Moon Lord", "Eldritch Pack", 350, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( "Meowmere", 1 ),
 						new ShopPackItemDefinition( "Terrarian", 1 ),
 						new ShopPackItemDefinition( "Star Wrath", 1 ),

@@ -1,11 +1,13 @@
 Future
 -	Add MeritMode (points are split; requires jopo's mod)?
+-	No weapon sound for hard mode Wayfarer
 
 
 v1.3
+-	F&T
+	-	Only send kill packets when reward kills occur
 -	@Test single and MP
 -	@Fix HH assembly checking for PacketProtocols: foreach( var mod in ModLoader.LoadedMods )
-
 -	Add syncing of npc kills for new players
 -	Implement pagination for shop
 -	Upgrade net protocols

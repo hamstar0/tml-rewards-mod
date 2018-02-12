@@ -2,6 +2,7 @@
 using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
 using Rewards.Logic;
+using System.IO;
 using Terraria;
 
 
@@ -83,6 +84,24 @@ namespace Rewards {
 			}
 
 			data.AddKillRewardForPlayer( RewardsMod.Instance, Main.LocalPlayer, this.NpcType, this.IsGrind, this.Reward );
+		}
+
+		////////////////
+
+		public override void WriteData( BinaryWriter writer, PacketProtocol me ) {
+			writer.Write( (int)this.KillerWho );
+			writer.Write( (int)this.NpcType );
+			writer.Write( (bool)this.IsGrind );
+			writer.Write( (float)this.Reward );
+		}
+
+		public override PacketProtocol ReadData( BinaryReader reader ) {
+			int killer_who = reader.ReadInt32();
+			int npc_type = reader.ReadInt32();
+			bool is_grind = reader.ReadBoolean();
+			float reward = reader.ReadSingle();
+
+			return new RewardsModKillRewardProtocol( killer_who, npc_type, is_grind, reward );
 		}
 	}
 

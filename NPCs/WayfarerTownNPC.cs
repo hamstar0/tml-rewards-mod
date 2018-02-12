@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Rewards.Items;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -21,12 +22,13 @@ namespace Rewards.NPCs {
 			"A famous explorer once said, that the extraordinary is in what we do, not who we are."
 		} );
 
+		////////////////
+
+		private static int CurrentShop = 0;
+
 
 
 		////////////////
-
-		private int CurrentShop = 0;
-
 
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
 
@@ -67,6 +69,8 @@ namespace Rewards.NPCs {
 			this.npc.DeathSound = SoundID.NPCDeath1;
 			this.npc.knockBackResist = 0.5f;
 			this.animationType = NPCID.TravellingMerchant;
+
+			WayfarerTownNPC.CurrentShop = 0;
 		}
 
 		////////////////
@@ -161,7 +165,7 @@ namespace Rewards.NPCs {
 		
 		public override void SetChatButtons( ref string button1, ref string button2 ) {
 			var mymod = (RewardsMod)this.mod;
-			int count = mymod.Config.ShopLoadout.Count;
+			int item_count = this.CountShopItems();
 			bool has_button2 = false;
 
 			button1 = "Shop";
@@ -171,7 +175,10 @@ namespace Rewards.NPCs {
 			}
 
 			if( has_button2 ) {
-				button2 = "Scroll Shop";
+				int shops = (int)Math.Ceiling( (float)item_count / 40f );
+				int next_shop = (WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
+
+				button2 = "Scroll to shop "+(next_shop+1)+" of "+shops;
 			}
 		}
 
@@ -179,11 +186,11 @@ namespace Rewards.NPCs {
 			if( first_button ) {
 				shop = first_button;
 			} else {
-				int count = this.CountShopItems();
-				int shops = count / 40;
+				int item_count = this.CountShopItems();
+				int shops = (int)Math.Ceiling( (float)item_count / 40f );
 
 				if( shops >= 1 ) {
-					this.CurrentShop = this.CurrentShop >= shops ? 0 : this.CurrentShop + 1;
+					WayfarerTownNPC.CurrentShop = ( WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
 				}
 			}
 		}
@@ -193,7 +200,7 @@ namespace Rewards.NPCs {
 
 		public override void SetupShop( Chest shop, ref int next_slot ) {
 			var mymod = (RewardsMod)this.mod;
-			int shop_start = this.CurrentShop * 40;
+			int shop_start = WayfarerTownNPC.CurrentShop * 40;
 			
 			for( int i = shop_start; i < mymod.Config.ShopLoadout.Count; i++ ) {
 				if( next_slot >= 40 ) {
@@ -211,9 +218,7 @@ namespace Rewards.NPCs {
 					continue;
 				}
 				
-				if( next_slot >= shop_start ) {
-					shop.item[ next_slot++ ] = ShopPackItem.CreateItem( def );
-				}
+				shop.item[ next_slot++ ] = ShopPackItem.CreateItem( def );
 			}
 		}
 

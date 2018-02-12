@@ -83,6 +83,10 @@ namespace Rewards {
 				this.NpcRewardTogetherSets = new_config.NpcRewardTogetherSets;
 				this.ShopLoadout = new_config.ShopLoadout;
 			}
+			if( vers_since < new Version( 1, 3, 0 ) ) {     // Sorry :/
+				this.NpcRewards = new_config.NpcRewards;
+				this.ShopLoadout = new_config.ShopLoadout;
+			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;
 

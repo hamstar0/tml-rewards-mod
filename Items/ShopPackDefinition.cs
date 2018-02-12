@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
+using System.Collections.Generic;
 using Terraria;
 
 
@@ -54,14 +55,27 @@ namespace Rewards.Items {
 
 		
 		public bool RequirementsMet() {
-			if( string.IsNullOrEmpty(this.NeededBossKill) ) { return true; }
+			if( string.IsNullOrEmpty(this.NeededBossKill) ) {
+				return true;
+			}
 
-			int npc_type;
-			if( !NPCIdentityHelpers.NamesToIds.TryGetValue( this.NeededBossKill, out npc_type ) ) {
+			ISet<int> npc_types;
+			if( !NPCIdentityHelpers.NamesToIds.TryGetValues( this.NeededBossKill, out npc_types ) ) {
+				Main.NewText( "Required kill npc " + this.NeededBossKill + " for "+this.Name+" not found." );
 				return false;
 			}
 
-			return NPCHelpers.CurrentPlayerKillsOfNpc( npc_type ) > 0;
+			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			int kills;
+
+			foreach( int npc_type in npc_types ) {
+				if( myworld.Logic.WorldData.KilledNpcs.TryGetValue( npc_type, out kills ) ) {
+					if( kills > 0 ) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 	}
 

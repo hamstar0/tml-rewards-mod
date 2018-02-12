@@ -43,14 +43,17 @@ namespace Rewards {
 				}
 				
 				if( Main.netMode == 0 ) {
-					this.OnClientConnect();
-					this.OnServerConnect();	// No 'netMode == 2' for this; that occurs with SyncPlayer
+					this.OnSingleConnect();
 				}
 			}
 		}
 
 
 		////////////////
+
+		private void OnSingleConnect() {
+			this.LoadKillData();
+		}
 
 		private void OnClientConnect() { }
 
@@ -79,7 +82,7 @@ namespace Rewards {
 			string player_uid = PlayerIdentityHelpers.GetUniqueId( this.player, out has_uid );
 			if( !has_uid ) { return; }
 
-			KillData plr_data = myworld.Logic.GetPlayerData( player );
+			KillData plr_data = myworld.Logic.GetPlayerData( this.player );
 			if( plr_data == null ) { return; }
 			
 			bool success = plr_data.Load( mymod, player_uid );

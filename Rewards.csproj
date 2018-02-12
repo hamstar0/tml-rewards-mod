@@ -48,6 +48,7 @@
     <Compile Include="Logic\KillData.cs" />
     <Compile Include="Logic\KillData_PP.cs" />
     <Compile Include="Logic\KillData_Update.cs" />
+    <Compile Include="Logic\WorldLogic_Kills.cs" />
     <Compile Include="NetProtocols.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />
