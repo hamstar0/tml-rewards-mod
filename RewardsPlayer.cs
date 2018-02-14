@@ -2,8 +2,10 @@
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.Utilities.Network;
+using Microsoft.Xna.Framework;
 using Rewards.Items;
 using Rewards.Logic;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -33,8 +35,12 @@ namespace Rewards {
 
 			if( player.whoAmI == Main.myPlayer ) {
 				if( Main.netMode == 0 ) {   // Single player
-					if( !mymod.ConfigJson.LoadFile() ) {
-						mymod.ConfigJson.SaveFile();
+					try {
+						if( !mymod.ConfigJson.LoadFile() ) {
+							mymod.ConfigJson.SaveFile();
+						}
+					} catch( Exception _ ) {
+						Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 					}
 				}
 

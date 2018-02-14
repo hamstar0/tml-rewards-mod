@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 3, 0); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 0); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -17,7 +17,7 @@ namespace Rewards {
 
 		public bool DebugModeInfo = false;
 		public bool DebugModeEnableCheats = false;
-		public bool DebugModeSaveKillsAsText = false;
+		public bool DebugModeSaveKillsAsJson = false;
 
 		public bool PointsDisplayWithoutInventory = true;
 		public int PointsDisplayX = -92;
@@ -35,6 +35,8 @@ namespace Rewards {
 		public float PumpkingMoonWaveReward = 10f;
 		public float FrostMoonWaveReward = 10f;
 
+		public bool InstantWayfarer = false;
+
 		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
 		public IDictionary<string, int> NpcRewardRequiredMinimumKills = new Dictionary<string, int>();
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
@@ -47,6 +49,7 @@ namespace Rewards {
 
 		public bool _OLD_SETTINGS_BELOW_ = true;
 
+		public bool DebugModeSaveKillsAsText = false;
 		public bool CommunismMode = false;
 
 

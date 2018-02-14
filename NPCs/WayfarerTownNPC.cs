@@ -33,7 +33,6 @@ namespace Rewards.NPCs {
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
 
 		public override bool Autoload( ref string name ) {
-			name = "The Wayfarer";
 			return mod.Properties.Autoload;
 		}
 
@@ -93,10 +92,14 @@ namespace Rewards.NPCs {
 					this.IsFiring = true;
 					if( !Main.hardMode ) {
 						Main.PlaySound( SoundID.Item11, this.npc.position );
+					} else {
+						Main.PlaySound( SoundID.Item12, this.npc.position );
 					}
 				}
 			} else {
-				if( this.IsFiring ) { this.IsFiring = false; }
+				if( this.IsFiring ) {
+					this.IsFiring = false;
+				}
 			}
 		}
 

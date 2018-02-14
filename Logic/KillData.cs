@@ -75,7 +75,7 @@ namespace Rewards.Logic {
 			try {
 				Directory.CreateDirectory( dir_path );
 
-				if( mymod.Config.DebugModeSaveKillsAsText ) {
+				if( mymod.Config.DebugModeSaveKillsAsJson ) {
 					var json_file = new JsonConfig<KillData>( base_file_name + ".json", KillData.DataFileFolder );
 					success = json_file.LoadFile();
 					data = json_file.Data;
@@ -108,7 +108,7 @@ namespace Rewards.Logic {
 			try {
 				Directory.CreateDirectory( dir_path );
 
-				if( mymod.Config.DebugModeSaveKillsAsText ) {
+				if( mymod.Config.DebugModeSaveKillsAsJson ) {
 					var json_file = new JsonConfig<KillData>( base_file_name + ".json", KillData.DataFileFolder, this );
 					json_file.SaveFile();
 				} else {

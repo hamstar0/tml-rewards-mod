@@ -1,6 +1,8 @@
+using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
+using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using System;
 using System.Collections.Generic;
@@ -25,8 +27,12 @@ namespace Rewards {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
 			if( RewardsMod.Instance != null ) {
-				if( !RewardsMod.Instance.ConfigJson.LoadFile() ) {
-					RewardsMod.Instance.ConfigJson.SaveFile();
+				try {
+					if( !RewardsMod.Instance.ConfigJson.LoadFile() ) {
+						RewardsMod.Instance.ConfigJson.SaveFile();
+					}
+				} catch( Exception _ ) {
+					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
 			}
 		}
@@ -36,6 +42,7 @@ namespace Rewards {
 		////////////////
 
 		public bool IsContentSetup { get; private set; }
+
 		internal JsonConfig<RewardsConfigData> ConfigJson;
 		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
@@ -116,11 +123,13 @@ namespace Rewards {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod draw_method = delegate {
-					var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
-					KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
-					if( data == null ) { throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name ); }
+					try {
+						var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+						if( data == null ) { throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name ); }
 
-					data.DrawPointScore( this, Main.spriteBatch );
+						data.DrawPointScore( this, Main.spriteBatch );
+					} catch( Exception e ) { ErrorLogger.Log( e.ToString() ); }
 
 					return true;
 				};

@@ -1,4 +1,7 @@
-﻿using Rewards.Logic;
+﻿using HamstarHelpers.TmlHelpers;
+using Rewards.Logic;
+using Rewards.NPCs;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -16,19 +19,24 @@ namespace Rewards {
 		}
 
 		public override void Load( TagCompound tags ) {
-			this.Logic.LoadAll( (RewardsMod)this.mod );
+			var mymod = (RewardsMod)this.mod;
+			this.Logic.Load( mymod, tags );
+			this.Logic.LoadKillData( mymod );
 		}
 
 		public override TagCompound Save() {
-			this.Logic.SaveAll( (RewardsMod)this.mod );
-			return new TagCompound();
+			var mymod = (RewardsMod)this.mod;
+			this.Logic.SaveKillData( mymod );
+			return this.Logic.Save( mymod );
 		}
 
 
 		////////////////
 		
 		public override void PreUpdate() {
-			this.Logic.Update();
+			if( TmlWorldHelpers.IsWorldLoaded() ) {
+				this.Logic.Update( (RewardsMod)this.mod );
+			}
 		}
 	}
 }

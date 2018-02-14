@@ -1,8 +1,12 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.WorldHelpers;
+using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 
 namespace Rewards.Logic {
@@ -10,11 +14,25 @@ namespace Rewards.Logic {
 		internal IDictionary<string, KillData> PlayerData = new Dictionary<string, KillData>();
 		internal KillData WorldData = new KillData();
 
+		private bool HasCheckedInstantWayfarer = false;
+
 
 
 		////////////////
 
-		public void LoadAll( RewardsMod mymod ) {
+		public void Load( RewardsMod mymod, TagCompound tags ) {
+			if( tags.ContainsKey("has_checked_instant_wayfarer") ) {
+				this.HasCheckedInstantWayfarer = tags.GetBool( "has_checked_instant_wayfarer" );
+			}
+		}
+
+		public TagCompound Save( RewardsMod mymod ) {
+			return new TagCompound { { "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer } };
+		}
+
+		////////////////
+
+		public void LoadKillData( RewardsMod mymod ) {
 			bool success = this.WorldData.Load( mymod, "World_" + Main.worldName + "_" + Main.worldID );
 
 			if( mymod.Config.DebugModeInfo ) {
@@ -22,7 +40,7 @@ namespace Rewards.Logic {
 			}
 		}
 
-		public void SaveAll( RewardsMod mymod ) {
+		public void SaveKillData( RewardsMod mymod ) {
 			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "WorldLogic.SaveAll - World id: " + WorldHelpers.GetUniqueId()+", "+ this.WorldData.ToString() );
 			}
@@ -41,7 +59,15 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public void Update() {
+		public void Update( RewardsMod mymod ) {
+			if( !this.HasCheckedInstantWayfarer && mymod.NPCType<WayfarerTownNPC>() != 0 ) {
+				this.HasCheckedInstantWayfarer = true;
+				
+				if( mymod.Config.InstantWayfarer ) {
+					NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+				}
+			}
+
 			foreach( KillData kill_data in this.PlayerData.Values ) {
 				kill_data.Update();
 			}

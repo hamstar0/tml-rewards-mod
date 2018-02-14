@@ -1,8 +1,12 @@
 Future
 -	Add MeritMode (points are split; requires jopo's mod)?
+
+
+v1.4
+-	Add config option to spawn Wayfarer at world start
+-	Fix modded items failing
 -	No weapon sound for hard mode Wayfarer
-
-
+-	Improve error reporting for invalid config files
 v1.3
 -	F&T
 	-	Only send kill packets when reward kills occur
