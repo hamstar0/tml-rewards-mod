@@ -5,7 +5,6 @@ using HamstarHelpers.WorldHelpers;
 using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 
@@ -60,11 +59,26 @@ namespace Rewards.Logic {
 		////////////////
 
 		public void Update( RewardsMod mymod ) {
-			if( !this.HasCheckedInstantWayfarer && mymod.NPCType<WayfarerTownNPC>() != 0 ) {
+			int wayfarer_type = mymod.NPCType<WayfarerTownNPC>();
+
+			if( !this.HasCheckedInstantWayfarer && wayfarer_type != 0 ) {
 				this.HasCheckedInstantWayfarer = true;
 				
 				if( mymod.Config.InstantWayfarer ) {
-					NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+					bool found = false;
+
+					for( int i=0; i<Main.npc.Length - 1; i++ ) {
+						NPC npc = Main.npc[i];
+						if( npc == null || !npc.active ) { continue; }
+						if( npc.type == wayfarer_type ) {
+							found = true;
+							break;
+						}
+					}
+
+					if( !found ) {
+						NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+					}
 				}
 			}
 

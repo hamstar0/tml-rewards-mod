@@ -42,7 +42,7 @@ namespace Rewards.NPCs {
 		public override void SetStaticDefaults() {
 			int npc_type = this.npc.type;
 
-			this.DisplayName.SetDefault( "The Wayfarer" );
+			this.DisplayName.SetDefault( "Wayfarer" );
 
 			Main.npcFrameCount[npc_type] = 26;
 			NPCID.Sets.AttackFrameCount[npc_type] = 5;
