@@ -31,6 +31,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
+		public override string HeadTexture { get { return "Rewards/NPCs/WayfarerTownNPC_Head"; } }
 
 		public override bool Autoload( ref string name ) {
 			return mod.Properties.Autoload;
