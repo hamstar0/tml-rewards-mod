@@ -19,6 +19,8 @@ namespace Rewards {
 		public bool DebugModeEnableCheats = false;
 		public bool DebugModeSaveKillsAsJson = false;
 
+		public bool ShowPoints = true;
+
 		public bool PointsDisplayWithoutInventory = true;
 		public int PointsDisplayX = -92;
 		public int PointsDisplayY = -48;

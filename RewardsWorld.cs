@@ -1,7 +1,5 @@
 ﻿using HamstarHelpers.TmlHelpers;
 using Rewards.Logic;
-using Rewards.NPCs;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
