@@ -27,18 +27,17 @@ namespace Rewards.NPCs {
 		private static int CurrentShop = 0;
 
 
-
 		////////////////
 
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
 		public override string HeadTexture { get { return "Rewards/NPCs/WayfarerTownNPC_Head"; } }
 
+
+		////////////////
+
 		public override bool Autoload( ref string name ) {
 			return mod.Properties.Autoload;
 		}
-
-
-		////////////////
 
 		public override void SetStaticDefaults() {
 			int npc_type = this.npc.type;
@@ -73,15 +72,50 @@ namespace Rewards.NPCs {
 			WayfarerTownNPC.CurrentShop = 0;
 		}
 
+
 		////////////////
 
-		public override bool CanTownNPCSpawn( int numTownNPCs, int money ) {
+		public override bool CanTownNPCSpawn( int num_town_npcs, int money ) {
+			if( num_town_npcs == 0 ) { return true; }
+
+			int npc_type = this.mod.NPCType<WayfarerTownNPC>();
+			int counted_town_npcs = 0;
+
+			for( int i = 0; i < Main.npc.Length; i++ ) {
+				NPC npc = Main.npc[i];
+				if( npc == null || !npc.active || !npc.townNPC ) { continue; }
+
+				if( npc.type == npc_type ) {
+					return false;
+				}
+
+				counted_town_npcs++;
+				if( counted_town_npcs >= num_town_npcs ) { break; }
+			}
 			return true;
 		}
+		
+		public static bool CanTownNPCSpawn( RewardsMod mymod ) {
+			int npc_type = mymod.NPCType<WayfarerTownNPC>();
+
+			for( int i = 0; i < Main.npc.Length; i++ ) {
+				NPC npc = Main.npc[i];
+				if( npc == null || !npc.active || !npc.townNPC ) { continue; }
+
+				if( npc.type == npc_type ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+
+		////////////////
 
 		public override void NPCLoot() {
 			Item.NewItem( npc.getRect(), ItemID.ArchaeologistsHat );
 		}
+
 
 		////////////////
 
