@@ -43,6 +43,15 @@ namespace Rewards.Logic {
 
 		////////////////
 
+		public bool CanDrawPoints( RewardsMod mymod ) {
+			if( !mymod.Config.ShowPoints ) { return false; }
+			if( mymod.Config.ShowPointsInventoryOnly ) {
+				return Main.playerInventory;
+			}
+			return true;
+		}
+
+
 		public void DrawPointScore( RewardsMod mymod, SpriteBatch sb ) {
 			if( !mymod.Config.PointsDisplayWithoutInventory && Main.playerInventory ) { return; }
 
@@ -50,8 +59,14 @@ namespace Rewards.Logic {
 			float pos_y = mymod.Config.PointsDisplayY;
 			pos_x = pos_x < 0 ? Main.screenWidth + pos_x : pos_x;
 			pos_y = pos_y < 0 ? Main.screenHeight + pos_y : pos_y;
+			Vector2 pos = new Vector2( pos_x, pos_y );
 
-			sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, new Vector2( pos_x, pos_y ), mymod.Config.PointsDisplayColor );
+			sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
+
+			if( Main.mouseX >= pos_x && Main.mouseY >= pos_y && Main.mouseX < (pos_x + 40) && Main.mouseY < (pos_y + 16) ) {
+				var mouse_pos = new Vector2( Main.mouseX - 160, Main.mouseY - 16 );
+				sb.DrawString( Main.fontMouseText, "Progress Points (see Wayfarer)", mouse_pos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
+			}
 		}
 	}
 }

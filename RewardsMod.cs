@@ -123,14 +123,17 @@ namespace Rewards {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod draw_method = delegate {
-					if( !this.Config.ShowPoints ) { return true; }
 
 					try {
 						var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
-						if( data == null ) { throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name ); }
+						if( data == null ) {
+							throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name );
+						}
 
-						data.DrawPointScore( this, Main.spriteBatch );
+						if( data.CanDrawPoints( this ) ) {
+							data.DrawPointScore( this, Main.spriteBatch );
+						}
 					} catch( Exception _ ) { }
 
 					return true;

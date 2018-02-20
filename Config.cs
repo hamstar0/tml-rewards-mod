@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 0); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 4); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -20,10 +20,11 @@ namespace Rewards {
 		public bool DebugModeSaveKillsAsJson = false;
 
 		public bool ShowPoints = true;
+		public bool ShowPointsInventoryOnly = false;
 
 		public bool PointsDisplayWithoutInventory = true;
-		public int PointsDisplayX = -92;
-		public int PointsDisplayY = -48;
+		public int PointsDisplayX = -76;
+		public int PointsDisplayY = -60;
 		public Color PointsDisplayColor = Color.YellowGreen;
 
 		public bool SharedRewards = false;
@@ -57,6 +58,15 @@ namespace Rewards {
 
 
 		////////////////
+		
+		
+		
+		public static readonly int _1_4_3_PointsDisplayX = -92;
+		public static readonly int _1_4_3_PointsDisplayY = -48;
+
+		////////////////
+
+
 
 		public bool UpdateToLatestVersion() {
 			var new_config = new RewardsConfigData();
@@ -91,6 +101,14 @@ namespace Rewards {
 			if( vers_since < new Version( 1, 3, 0 ) ) {     // Sorry :/
 				this.NpcRewards = new_config.NpcRewards;
 				this.ShopLoadout = new_config.ShopLoadout;
+			}
+			if( vers_since < new Version( 1, 4, 4 ) ) {
+				if( this.PointsDisplayX == RewardsConfigData._1_4_3_PointsDisplayX ) {
+					this.PointsDisplayX = new_config.PointsDisplayX;
+				}
+				if( this.PointsDisplayY == RewardsConfigData._1_4_3_PointsDisplayY ) {
+					this.PointsDisplayY = new_config.PointsDisplayY;
+				}
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;
