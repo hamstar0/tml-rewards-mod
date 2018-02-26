@@ -1,6 +1,8 @@
 ﻿using HamstarHelpers.Utilities.Config;
 using Rewards.Items;
 using System.Collections.Generic;
+using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -24,145 +26,151 @@ namespace Rewards {
 
 
 		public bool SetDefaults() {
+			string wof_name = Lang.GetNPCNameValue( NPCID.WallofFlesh );
+			string plantera_name = Lang.GetNPCNameValue( NPCID.Plantera );
+			string golem_name = Lang.GetNPCNameValue( NPCID.Golem );
+			string moonlord_name = Lang.GetNPCNameValue( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
+
 			this.NpcRewards = new Dictionary<string, float> {
-				{ "King Slime", 10f },
-				{ "Eye of Cthulhu", 10f },
-				{ "Eater of Worlds", 25f / 50f },	// per segment
-				{ "Brain of Cthulhu", 25f },
-				{ "Queen Bee", 20f },
-				{ "Skeletron", 30f },
-				{ "Wall of Flesh", 50f },
-				{ "The Destroyer", 50f },
-				{ "Retinazer", 50f / 2 },
-				{ "Spazmatism", 50f / 2 },
-				{ "Skeletron Prime", 50f },
-				{ "Plantera", 100f },
-				{ "Golem", 100f },
-				{ "Duke Fishron", 100f },
-				{ "Lunatic Cultist", 50f },
-				{ "Betsy", 100f },
-				{ "Solar Pillar", 50f },
-				{ "Vortex Pillar", 50f },
-				{ "Nebula Pillar", 50f },
-				{ "Stardust Pillar", 50f },
-				{ "Moon Lord", 250f }
+				{ Lang.GetNPCNameValue( NPCID.KingSlime ), 10f },
+				{ Lang.GetNPCNameValue( NPCID.EyeofCthulhu ), 10f },
+				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 25f / 50f },	// per segment
+				{ Lang.GetNPCNameValue( NPCID.BrainofCthulhu ), 25f },
+				{ Lang.GetNPCNameValue( NPCID.QueenBee ), 20f },
+				{ Lang.GetNPCNameValue( NPCID.SkeletronHead ), 30f },
+				{ Lang.GetNPCNameValue( NPCID.WallofFlesh ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.TheDestroyer ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.Retinazer ), 50f / 2 },
+				{ Lang.GetNPCNameValue( NPCID.Spazmatism ), 50f / 2 },
+				{ Lang.GetNPCNameValue( NPCID.SkeletronPrime ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.Plantera ), 100f },
+				{ Lang.GetNPCNameValue( NPCID.Golem ), 100f },
+				{ Lang.GetNPCNameValue( NPCID.DukeFishron ), 100f },
+				{ Lang.GetNPCNameValue( NPCID.CultistBoss ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.DD2Betsy ), 100f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerSolar ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerVortex ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerNebula ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerStardust ), 50f },
+				{ moonlord_name, 250f }
 			};
+
 			this.NpcRewardRequiredMinimumKills = new Dictionary<string, int> {
-				{ "Eater of Worlds", 50 }
+				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 50 }
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {
 				new ShopPackDefinition( "", "Money Purse", 5, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Gold Coin", 99 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GoldCoin), 99 )
 					} ),
 				new ShopPackDefinition( "", "Iron Age Pack", 5, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Iron Bar", 99 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.IronBar), 99 )
 					} ),
 				new ShopPackDefinition( "", "Nature Watcher's Pack", 10, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Flower Boots", 1 ),
-						new ShopPackItemDefinition( "Binoculars", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FlowerBoots), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Binoculars), 1 )
 					} ),
 				new ShopPackDefinition( "", "Bindings Pack", 10, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Band of Regeneration", 1 ),
-						new ShopPackItemDefinition( "Band of Starpower", 1 ),
-						new ShopPackItemDefinition( "Celestial Magnet", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.BandofRegeneration), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.BandofStarpower), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CelestialMagnet), 1 )
 					} ),
 				new ShopPackDefinition( "", "Traveler's Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Aglet", 1 ),
-						new ShopPackItemDefinition( "Ice Skates", 1 ),
-						new ShopPackItemDefinition( "Tiger Climbing Gear", 1 ),
-						new ShopPackItemDefinition( "Water Walking Boots", 1 ),
-						new ShopPackItemDefinition( "Hand Warmer", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Aglet), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.IceSkates), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TigerClimbingGear), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.WaterWalkingBoots), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.HandWarmer), 1 )
 					} ),
 				new ShopPackDefinition( "", "Rough Traveler's Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Anklet of the Wind", 1 ),
-						new ShopPackItemDefinition( "Feral Claws", 1 ),
-						new ShopPackItemDefinition( "Jellyfish Diving Gear", 1 ),
-						new ShopPackItemDefinition( "Lava Charm", 1 ),
-						new ShopPackItemDefinition( "Magma Stone", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AnkletoftheWind), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FeralClaws), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.JellyfishDivingGear), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.LavaCharm), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.MagmaStone), 1 )
 					} ),
 				new ShopPackDefinition( "", "Ground Hater's Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Sandstorm in a Bottle", 1 ),
-						new ShopPackItemDefinition( "Shiny Red Balloon", 1 ),
-						new ShopPackItemDefinition( "Lucky Horseshoe", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.SandstorminaBottle), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.ShinyRedBalloon), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.LuckyHorseshoe), 1 )
 					} ),
 				new ShopPackDefinition( "", "Stoicist's Pack", 20, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Cobalt Shield", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CobaltShield), 1 )
 					} ),
 				new ShopPackDefinition( "", "Alucard's Pack", 35, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Arkhalis", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Arkhalis), 1 )
 					} ),
 				new ShopPackDefinition( "", "Gizmo Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Toolbox", 1 ),
-						new ShopPackItemDefinition( "Architect Gizmo Pack", 1 ),
-						new ShopPackItemDefinition( "Presserator", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Toolbox), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.ArchitectGizmoPack), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.ActuationAccessory), 1 )
 					} ),
 				new ShopPackDefinition( "", "Information Monger's Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "GPS", 1 ),
-						new ShopPackItemDefinition( "Goblin Tech", 1 ),
-						new ShopPackItemDefinition( "R.E.K. 3000", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GPS), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GoblinTech), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.REK), 1 )
 					} ),
 				new ShopPackDefinition( "", "Fisherman's Pack", 50, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Angler Tackle Bag", 1 ),
-						new ShopPackItemDefinition( "Fish Finder", 1 )
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AnglerTackleBag), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FishFinder), 1 )
 					} ),
 
 				// Hard mode only:
-				new ShopPackDefinition( "Wall of Flesh", "Mimic's Lament Pack", 25, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Magic Dagger", 1 ),
-						new ShopPackItemDefinition( "Titan Glove", 1 ),
-						new ShopPackItemDefinition( "Philosopher's Stone", 1 ),
-						new ShopPackItemDefinition( "Cross Necklace", 1 ),
-						new ShopPackItemDefinition( "Star Cloak", 1 )
+				new ShopPackDefinition( wof_name, "Mimic's Lament Pack", 25, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.MagicDagger), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TitanGlove), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.PhilosophersStone), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CrossNecklace), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.StarCloak), 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Gangster's Pack", 35, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Uzi", 1 ),
-						new ShopPackItemDefinition( "Rifle Scope", 1 ),
-						new ShopPackItemDefinition( "Endless Musket Pouch", 1 ),
-						new ShopPackItemDefinition( "Gangsta Hat", 1 )
+				new ShopPackDefinition( wof_name, "Gangster's Pack", 35, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Uzi), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.RifleScope), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.EndlessMusketPouch), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GangstaHat), 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Avenger Pack", 20, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Avenger Emblem", 1 )
+				new ShopPackDefinition( wof_name, "Avenger Pack", 20, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AvengerEmblem), 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Life Pack", 100, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Ankh Charm", 1 )
+				new ShopPackDefinition( wof_name, "Life Pack", 100, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AnkhCharm), 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Lucky Pack", 125, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Coin Ring", 1 )
+				new ShopPackDefinition( wof_name, "Lucky Pack", 125, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CoinRing), 1 )
 					} ),
-				new ShopPackDefinition( "Wall of Flesh", "Dimensionalist's Pack", 150, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Rod of Discord", 1 ),
-						new ShopPackItemDefinition( "Teleportation Potion", 30 )
+				new ShopPackDefinition( wof_name, "Dimensionalist's Pack", 150, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.RodofDiscord), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TeleportationPotion), 30 )
 					} ),
 
 				// Post-plantera:
-				new ShopPackDefinition( "Plantera", "Whack Pack", 50, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "The Axe", 1 ),
-						new ShopPackItemDefinition( "Bananarang", 10 ),
-						new ShopPackItemDefinition( "Slap Hand", 1 )
+				new ShopPackDefinition( plantera_name, "Whack Pack", 50, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TheAxe), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Bananarang), 10 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.SlapHand), 1 )
 					} ),
 
 				// Post-golem:
-				new ShopPackDefinition( "Golem", "Golem Eye Pack", 20, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Eye of the Golem", 1 )
+				new ShopPackDefinition( golem_name, "Golem Eye Pack", 20, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.EyeoftheGolem), 1 )
 					} ),
-				new ShopPackDefinition( "Golem", "Defender's Pack", 100, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Celestial Shell", 1 ),
-						new ShopPackItemDefinition( "Paladin's Shield", 1 ),
-						new ShopPackItemDefinition( "Frozen Turtle Shell", 1 )
+				new ShopPackDefinition( golem_name, "Defender's Pack", 100, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CelestialShell), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.PaladinsShield), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FrozenTurtleShell), 1 )
 					} ),
 
 				// Post-moonlord:
-				new ShopPackDefinition( "Moon Lord", "Eldritch Pack", 350, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( "Meowmere", 1 ),
-						new ShopPackItemDefinition( "Terrarian", 1 ),
-						new ShopPackItemDefinition( "Star Wrath", 1 ),
-						new ShopPackItemDefinition( "S.D.M.G.", 1 ),
-						new ShopPackItemDefinition( "Celebration", 1 ),
-						new ShopPackItemDefinition( "Last Prism", 1 ),
-						new ShopPackItemDefinition( "Lunar Flare", 1 ),
-						new ShopPackItemDefinition( "Rainbow Crystal Staff", 1 ),
-						new ShopPackItemDefinition( "Lunar Portal Staff", 1 )
+				new ShopPackDefinition( moonlord_name, "Eldritch Pack", 350, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Meowmere), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Terrarian), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.StarWrath), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.SDMG), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FireworksLauncher), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.LastPrism), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.LunarFlareBook), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.RainbowCrystalStaff), 1 ),
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.MoonlordTurretStaff), 1 )
 					} )
 			};
 			/*this.ShopLoadout = new List<ShopPackDefinition> {

@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 4); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 5); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -108,6 +108,24 @@ namespace Rewards {
 				}
 				if( this.PointsDisplayY == RewardsConfigData._1_4_3_PointsDisplayY ) {
 					this.PointsDisplayY = new_config.PointsDisplayY;
+				}
+			}
+			if( vers_since < new Version( 1, 4, 5 ) ) {     // Sorry again
+				bool refresh = false;
+
+				try {
+					var first_npc_reward = this.NpcRewards.First();
+					var first_shop_pack = this.ShopLoadout.First();
+					string _err;
+					refresh = !first_shop_pack.Validate( out _err );
+				} catch( InvalidOperationException _ ) {
+					refresh = true;
+				}
+
+				if( refresh ) {
+					this.NpcRewards = new_config.NpcRewards;
+					this.NpcRewardRequiredMinimumKills = new_config.NpcRewardRequiredMinimumKills;
+					this.ShopLoadout = new_config.ShopLoadout;
 				}
 			}
 

@@ -23,22 +23,22 @@ namespace Rewards.Items {
 
 		////////////////
 
-		public bool Validate( out string which ) {
+		public bool Validate( out string error ) {
 			if( string.IsNullOrEmpty( this.Name ) ) {
-				which = "bad name";
+				error = "bad name";
 				return false;
 			}
 			if( this.Items.Length == 0 ) {
-				which = "no items";
+				error = "no items";
 				return false;
 			}
 			foreach( ShopPackItemDefinition item_info in this.Items ) {
 				if( !item_info.Validate() ) {
-					which = item_info.Name;
+					error = item_info.Name;
 					return false;
 				}
 			}
-			which = null;
+			error = null;
 			return true;
 		}
 

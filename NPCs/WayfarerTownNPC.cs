@@ -1,3 +1,4 @@
+using HamstarHelpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
@@ -77,15 +78,16 @@ namespace Rewards.NPCs {
 
 		public override bool CanTownNPCSpawn( int num_town_npcs, int money ) {
 			if( num_town_npcs == 0 ) { return true; }
-
+			
 			int npc_type = this.mod.NPCType<WayfarerTownNPC>();
 			int counted_town_npcs = 0;
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {
-				NPC npc = Main.npc[i];
-				if( npc == null || !npc.active || !npc.townNPC ) { continue; }
+				NPC that_npc = Main.npc[i];
+				if( that_npc == null || !that_npc.active ) { continue; }
+				if( !that_npc.townNPC ) { continue; }
 
-				if( npc.type == npc_type ) {
+				if( that_npc.type == npc_type ) {
 					return false;
 				}
 
@@ -99,10 +101,11 @@ namespace Rewards.NPCs {
 			int npc_type = mymod.NPCType<WayfarerTownNPC>();
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {
-				NPC npc = Main.npc[i];
-				if( npc == null || !npc.active || !npc.townNPC ) { continue; }
+				NPC that_npc = Main.npc[i];
+				if( that_npc == null || !that_npc.active ) { continue; }
+				if( !that_npc.townNPC ) { continue; }
 
-				if( npc.type == npc_type ) {
+				if( that_npc.type == npc_type ) {
 					return false;
 				}
 			}
