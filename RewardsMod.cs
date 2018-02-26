@@ -1,4 +1,5 @@
 using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.TmlHelpers;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
@@ -40,9 +41,7 @@ namespace Rewards {
 
 
 		////////////////
-
-		public bool IsContentSetup { get; private set; }
-
+		
 		internal JsonConfig<RewardsConfigData> ConfigJson;
 		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
@@ -50,7 +49,6 @@ namespace Rewards {
 		////////////////
 
 		public RewardsMod() {
-			this.IsContentSetup = false;
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
@@ -66,6 +64,7 @@ namespace Rewards {
 			this.LoadConfigs();
 		}
 
+
 		private void LoadConfigs() {
 			if( !this.ConfigJson.LoadFile() ) {
 				this.ConfigJson.SaveFile();
@@ -77,12 +76,7 @@ namespace Rewards {
 			}
 		}
 
-
-		public override void PostSetupContent() {
-			this.IsContentSetup = true;
-		}
-
-
+		
 		public override void Unload() {
 			RewardsMod.Instance = null;
 		}

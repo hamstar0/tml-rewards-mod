@@ -13,7 +13,7 @@ namespace Rewards.Logic {
 				reward *= mymod.Config.GrindKillMultiplier;
 			}
 
-			if( Main.netMode != 2 ) {
+			if( Main.netMode != 2 && mymod.Config.ShowPointsPopups ) {
 				if( Math.Abs(reward) > 0.01f ) {
 					string msg = "+" + Math.Round( reward, 2 ) + " PP";
 					Color color = reward > 0 ?
@@ -45,7 +45,7 @@ namespace Rewards.Logic {
 
 		public bool CanDrawPoints( RewardsMod mymod ) {
 			if( !mymod.Config.ShowPoints ) { return false; }
-			if( mymod.Config.ShowPointsInventoryOnly ) {
+			if( !mymod.Config.PointsDisplayWithoutInventory ) {
 				return Main.playerInventory;
 			}
 			return true;
@@ -53,8 +53,6 @@ namespace Rewards.Logic {
 
 
 		public void DrawPointScore( RewardsMod mymod, SpriteBatch sb ) {
-			if( !mymod.Config.PointsDisplayWithoutInventory && Main.playerInventory ) { return; }
-
 			float pos_x = mymod.Config.PointsDisplayX;
 			float pos_y = mymod.Config.PointsDisplayY;
 			pos_x = pos_x < 0 ? Main.screenWidth + pos_x : pos_x;

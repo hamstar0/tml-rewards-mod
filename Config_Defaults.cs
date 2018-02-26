@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Utilities.Config;
+﻿using HamstarHelpers.TmlHelpers;
+using HamstarHelpers.Utilities.Config;
 using Rewards.Items;
 using System.Collections.Generic;
 using Terraria;
@@ -8,22 +9,35 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public override void OnLoad( bool success ) {
-			if( RewardsMod.Instance.IsContentSetup ) {
-				string fail;
+		internal bool IsLoadSuccess = false;
 
-				foreach( var info in this.ShopLoadout ) {
-					if( !info.Validate(out fail) ) {
-						ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
-					}
+
+		////////////////
+
+		public override void OnLoad( bool success ) {
+			this.IsLoadSuccess = success;
+
+			TmlLoadHelpers.AddPostLoadPromise( delegate {
+				this.LoadPostSetupContent();
+			} );
+		}
+
+		public void LoadPostSetupContent() {
+			string fail;
+
+			foreach( var info in this.ShopLoadout ) {
+				if( !info.Validate( out fail ) ) {
+					ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
 				}
 			}
-			
-			if( !success ) {
+
+			if( !this.IsLoadSuccess ) {
 				this.SetDefaults();
 			}
 		}
 
+
+		////////////////
 
 		public bool SetDefaults() {
 			string wof_name = Lang.GetNPCNameValue( NPCID.WallofFlesh );

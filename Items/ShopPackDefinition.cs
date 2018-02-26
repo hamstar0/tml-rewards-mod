@@ -90,8 +90,9 @@ namespace Rewards.Items {
 		internal int ItemType {
 			get {
 				if( this._ItemType <= 0 ) {
-					if( ItemIdentityHelpers.NamesToIds.ContainsKey( this.Name ) ) {
-						this._ItemType = ItemIdentityHelpers.NamesToIds[this.Name];
+					string name = this.Name == null ? "" : this.Name;
+					if( ItemIdentityHelpers.NamesToIds.ContainsKey( name ) ) {
+						this._ItemType = ItemIdentityHelpers.NamesToIds[ name ];
 					}
 				}
 				return this._ItemType;

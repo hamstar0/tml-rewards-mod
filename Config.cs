@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 5); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 6); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -20,7 +21,7 @@ namespace Rewards {
 		public bool DebugModeSaveKillsAsJson = false;
 
 		public bool ShowPoints = true;
-		public bool ShowPointsInventoryOnly = false;
+		public bool ShowPointsPopups = true;
 
 		public bool PointsDisplayWithoutInventory = true;
 		public int PointsDisplayX = -76;
