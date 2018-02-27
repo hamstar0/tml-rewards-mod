@@ -1,4 +1,3 @@
-using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.TmlHelpers;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.Utilities.Errors;
@@ -70,10 +69,12 @@ namespace Rewards {
 				this.ConfigJson.SaveFile();
 			}
 
-			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
-				this.ConfigJson.SaveFile();
-			}
+			TmlLoadHelpers.AddPostLoadPromise( delegate {
+				if( this.Config.UpdateToLatestVersion() ) {
+					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
+					this.ConfigJson.SaveFile();
+				}
+			} );
 		}
 
 		
