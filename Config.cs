@@ -4,11 +4,13 @@ using Rewards.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria;
+using Terraria.ID;
 
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 6); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 7); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -65,10 +67,39 @@ namespace Rewards {
 		public static readonly int _1_4_3_PointsDisplayX = -92;
 		public static readonly int _1_4_3_PointsDisplayY = -48;
 
+		public static readonly int _1_4_6_Reward_LunarTower = 50;
+		public static readonly int _1_4_6_Pack_Mimic = 25;
+		public static readonly int _1_4_6_Pack_Avenger = 20;
+		public static readonly int _1_4_6_Pack_Life = 100;
+		public static readonly int _1_4_6_Pack_Lucky = 125;
+		public static readonly int _1_4_6_Pack_Dimensionalist = 150;
+		public static readonly int _1_4_6_Pack_Golem = 20;
+		public static readonly int _1_4_6_Pack_Defender = 100;
+		public static readonly int _1_4_6_Pack_Eldritch = 350;
+
+
 		////////////////
 
+		public static bool UpdateIfFound( string name, int old_price, IList<ShopPackDefinition> old_shop, IList<ShopPackDefinition> new_shop ) {
+			for( int i = 0; i < old_shop.Count; i++ ) {
+				if( old_shop[i].Name != name ) { continue; }
+
+				for( int j = 0; j < new_shop.Count; j++ ) {
+					if( new_shop[j].Name != name ) { continue; }
+
+					if( old_shop[i].Price == old_price ) {
+						old_shop[i] = new_shop[j];
+						return true;
+					}
+					return false;
+				}
+			}
+			return false;
+		}
 
 
+		////////////////
+		
 		public bool UpdateToLatestVersion() {
 			var new_config = new RewardsConfigData();
 			new_config.SetDefaults();
@@ -127,6 +158,34 @@ namespace Rewards {
 					this.NpcRewards = new_config.NpcRewards;
 					this.NpcRewardRequiredMinimumKills = new_config.NpcRewardRequiredMinimumKills;
 					this.ShopLoadout = new_config.ShopLoadout;
+				}
+			}
+			if( vers_since < new Version( 1, 4, 7 ) ) {
+				RewardsConfigData.UpdateIfFound( "Mimic's Lament Pack", RewardsConfigData._1_4_6_Pack_Mimic, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Avenger Pack", RewardsConfigData._1_4_6_Pack_Avenger, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Life Pack", RewardsConfigData._1_4_6_Pack_Life, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Lucky Pack", RewardsConfigData._1_4_6_Pack_Lucky, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Dimensionalist's Pack", RewardsConfigData._1_4_6_Pack_Dimensionalist, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Golem Eye Pack", RewardsConfigData._1_4_6_Pack_Golem, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Defender's Pack", RewardsConfigData._1_4_6_Pack_Defender, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdateIfFound( "Eldritch Pack", RewardsConfigData._1_4_6_Pack_Eldritch, this.ShopLoadout, new_config.ShopLoadout );
+
+				string solar_tower = Lang.GetNPCNameValue( NPCID.LunarTowerSolar );
+				string vortex_tower = Lang.GetNPCNameValue( NPCID.LunarTowerVortex );
+				string nebula_tower = Lang.GetNPCNameValue( NPCID.LunarTowerNebula );
+				string stardust_tower = Lang.GetNPCNameValue( NPCID.LunarTowerStardust );
+
+				if( this.NpcRewards.ContainsKey(solar_tower) && this.NpcRewards[solar_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
+					this.NpcRewards[ solar_tower ] = new_config.NpcRewards[ solar_tower ];
+				}
+				if( this.NpcRewards.ContainsKey( vortex_tower ) && this.NpcRewards[vortex_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
+					this.NpcRewards[ vortex_tower ] = new_config.NpcRewards[ vortex_tower ];
+				}
+				if( this.NpcRewards.ContainsKey( nebula_tower ) && this.NpcRewards[nebula_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
+					this.NpcRewards[ nebula_tower ] = new_config.NpcRewards[ nebula_tower ];
+				}
+				if( this.NpcRewards.ContainsKey( stardust_tower ) && this.NpcRewards[stardust_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
+					this.NpcRewards[stardust_tower] = new_config.NpcRewards[stardust_tower];
 				}
 			}
 

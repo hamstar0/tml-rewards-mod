@@ -17,23 +17,19 @@ namespace Rewards {
 		public override void OnLoad( bool success ) {
 			this.IsLoadSuccess = success;
 
-			TmlLoadHelpers.AddPostLoadPromise( delegate {
-				this.LoadPostSetupContent();
-			} );
-		}
+			TmlLoadHelpers.AddPostModLoadPromise( delegate {
+				string fail;
 
-		public void LoadPostSetupContent() {
-			string fail;
-
-			foreach( var info in this.ShopLoadout ) {
-				if( !info.Validate( out fail ) ) {
-					ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
+				foreach( var info in this.ShopLoadout ) {
+					if( !info.Validate( out fail ) ) {
+						ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
+					}
 				}
-			}
 
-			if( !this.IsLoadSuccess ) {
-				this.SetDefaults();
-			}
+				if( !this.IsLoadSuccess ) {
+					this.SetDefaults();
+				}
+			} );
 		}
 
 
@@ -62,10 +58,10 @@ namespace Rewards {
 				{ Lang.GetNPCNameValue( NPCID.DukeFishron ), 100f },
 				{ Lang.GetNPCNameValue( NPCID.CultistBoss ), 50f },
 				{ Lang.GetNPCNameValue( NPCID.DD2Betsy ), 100f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerSolar ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerVortex ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerNebula ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerStardust ), 50f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerSolar ), 35f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerVortex ), 35f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerNebula ), 35f },
+				{ Lang.GetNPCNameValue( NPCID.LunarTowerStardust ), 35f },
 				{ moonlord_name, 250f }
 			};
 
@@ -130,7 +126,7 @@ namespace Rewards {
 					} ),
 
 				// Hard mode only:
-				new ShopPackDefinition( wof_name, "Mimic's Lament Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wof_name, "Mimic's Lament Pack", 35, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.MagicDagger), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TitanGlove), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.PhilosophersStone), 1 ),
@@ -143,16 +139,16 @@ namespace Rewards {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.EndlessMusketPouch), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GangstaHat), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Avenger Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wof_name, "Avenger Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AvengerEmblem), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Life Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wof_name, "Life Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.AnkhCharm), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Lucky Pack", 125, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wof_name, "Lucky Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CoinRing), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Dimensionalist's Pack", 150, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wof_name, "Dimensionalist's Pack", 200, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.RodofDiscord), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.TeleportationPotion), 30 )
 					} ),
@@ -165,17 +161,17 @@ namespace Rewards {
 					} ),
 
 				// Post-golem:
-				new ShopPackDefinition( golem_name, "Golem Eye Pack", 20, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( golem_name, "Golem Eye Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.EyeoftheGolem), 1 )
 					} ),
-				new ShopPackDefinition( golem_name, "Defender's Pack", 100, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( golem_name, "Defender's Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.CelestialShell), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.PaladinsShield), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FrozenTurtleShell), 1 )
 					} ),
 
 				// Post-moonlord:
-				new ShopPackDefinition( moonlord_name, "Eldritch Pack", 350, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( moonlord_name, "Eldritch Pack", 500, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Meowmere), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.Terrarian), 1 ),
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.StarWrath), 1 ),

@@ -2,6 +2,11 @@ Future
 -	Add MeritMode (points are split; requires jopo's mod)?
 
 
+v1.4.7
+-	Test empty shop error with progression runthrough
+-	Fix moon lord kill detection
+
+-	Fix LoadKillData runtime error
 v1.4
 -	Add config option to spawn Wayfarer at world start
 -	Fix modded items failing
