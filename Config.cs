@@ -80,7 +80,7 @@ namespace Rewards {
 
 		////////////////
 
-		public static bool UpdateIfFound( string name, int old_price, IList<ShopPackDefinition> old_shop, IList<ShopPackDefinition> new_shop ) {
+		public static bool UpdatePackIfFound( string name, int old_price, IList<ShopPackDefinition> old_shop, IList<ShopPackDefinition> new_shop ) {
 			for( int i = 0; i < old_shop.Count; i++ ) {
 				if( old_shop[i].Name != name ) { continue; }
 
@@ -99,18 +99,20 @@ namespace Rewards {
 
 
 		////////////////
+
+		public bool CanUpdateVersion() {
+			if( this.VersionSinceUpdate == "" ) { return true; }
+			var vers_since = new Version( this.VersionSinceUpdate );
+			return vers_since < RewardsConfigData.ConfigVersion;
+		}
 		
-		public bool UpdateToLatestVersion() {
+		public void UpdateToLatestVersion() {
 			var new_config = new RewardsConfigData();
 			new_config.SetDefaults();
 
 			var vers_since = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
-
-			if( vers_since >= RewardsConfigData.ConfigVersion ) {
-				return false;
-			}
 
 			if( vers_since < new Version(1, 2, 1) ) {		// Sorry :/
 				this.PointsDisplayWithoutInventory = new_config.PointsDisplayWithoutInventory;
@@ -161,14 +163,14 @@ namespace Rewards {
 				}
 			}
 			if( vers_since < new Version( 1, 4, 7 ) ) {
-				RewardsConfigData.UpdateIfFound( "Mimic's Lament Pack", RewardsConfigData._1_4_6_Pack_Mimic, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Avenger Pack", RewardsConfigData._1_4_6_Pack_Avenger, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Life Pack", RewardsConfigData._1_4_6_Pack_Life, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Lucky Pack", RewardsConfigData._1_4_6_Pack_Lucky, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Dimensionalist's Pack", RewardsConfigData._1_4_6_Pack_Dimensionalist, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Golem Eye Pack", RewardsConfigData._1_4_6_Pack_Golem, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Defender's Pack", RewardsConfigData._1_4_6_Pack_Defender, this.ShopLoadout, new_config.ShopLoadout );
-				RewardsConfigData.UpdateIfFound( "Eldritch Pack", RewardsConfigData._1_4_6_Pack_Eldritch, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Mimic's Lament Pack", RewardsConfigData._1_4_6_Pack_Mimic, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Avenger Pack", RewardsConfigData._1_4_6_Pack_Avenger, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Life Pack", RewardsConfigData._1_4_6_Pack_Life, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Lucky Pack", RewardsConfigData._1_4_6_Pack_Lucky, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Dimensionalist's Pack", RewardsConfigData._1_4_6_Pack_Dimensionalist, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Golem Eye Pack", RewardsConfigData._1_4_6_Pack_Golem, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Defender's Pack", RewardsConfigData._1_4_6_Pack_Defender, this.ShopLoadout, new_config.ShopLoadout );
+				RewardsConfigData.UpdatePackIfFound( "Eldritch Pack", RewardsConfigData._1_4_6_Pack_Eldritch, this.ShopLoadout, new_config.ShopLoadout );
 
 				string solar_tower = Lang.GetNPCNameValue( NPCID.LunarTowerSolar );
 				string vortex_tower = Lang.GetNPCNameValue( NPCID.LunarTowerVortex );
@@ -190,8 +192,6 @@ namespace Rewards {
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;
-
-			return true;
 		}
 	}
 }

@@ -70,7 +70,8 @@ namespace Rewards {
 			}
 
 			TmlLoadHelpers.AddPostModLoadPromise( delegate {
-				if( this.Config.UpdateToLatestVersion() ) {
+				if( this.Config.CanUpdateVersion() ) {
+					this.Config.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
 					this.ConfigJson.SaveFile();
 				}

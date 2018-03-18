@@ -9,25 +9,18 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		internal bool IsLoadSuccess = false;
-
-
-		////////////////
-
 		public override void OnLoad( bool success ) {
-			this.IsLoadSuccess = success;
-
 			TmlLoadHelpers.AddPostModLoadPromise( delegate {
-				string fail;
-
-				foreach( var info in this.ShopLoadout ) {
-					if( !info.Validate( out fail ) ) {
-						ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
-					}
-				}
-
-				if( !this.IsLoadSuccess ) {
+				if( !success || this.ShopLoadout.Count == 0 ) {
 					this.SetDefaults();
+					//RewardsMod.Instance.ConfigJson.SaveFile();
+				} else {
+					foreach( var info in this.ShopLoadout ) {
+						string fail;
+						if( !info.Validate( out fail ) ) {
+							ErrorLogger.Log( "Could not validate shop item " + info.Name + " (" + fail + ")" );
+						}
+					}
 				}
 			} );
 		}
