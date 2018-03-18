@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
 using Rewards.Logic;
@@ -31,32 +32,62 @@ namespace Rewards {
 
 
 	class RewardsModKillDataProtocol : PacketProtocol {
-		public KillData Data;
+		public KillData WorldData;
+		public KillData PlayerData;
 
 		public RewardsModKillDataProtocol() { }
-		
+		public override void SetClientDefaults() { }
+		public override void SetServerDefaults() { }
+
 		////////////////
 
-		internal RewardsModKillDataProtocol( KillData data ) {
-			this.Data = data;
+		internal RewardsModKillDataProtocol( KillData wld_data, KillData plr_data ) {
+			this.WorldData = wld_data;
+			this.PlayerData = plr_data;
 		}
 
 		////////////////
 
+		public override bool ReceiveRequestOnServer( int from_who ) {
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
+			
+			Player player = Main.player[ from_who ];
+			if( player == null ) { return true; }
+			var plr_kill_data = myworld.Logic.GetPlayerData( player );
+			if( plr_kill_data == null ) { return true; }
+			
+			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
+			this.WorldData = myworld.Logic.WorldData;
+			this.PlayerData = plr_kill_data;
+
+			return false;
+		}
+
 		public override void ReceiveOnClient() {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
-			if( data == null ) { return; }
+			
+			KillData plr_data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+			KillData wld_data = myworld.Logic.WorldData;
+			if( plr_data == null || wld_data == null ) { return; }
 
-			data.Clear();
-			data.Add( mymod, this.Data );
+			wld_data.Clear();
+			wld_data.AddToMe( mymod, this.WorldData );
+
+			plr_data.Clear();
+			plr_data.AddToMe( mymod, this.PlayerData );
 		}
 	}
 
 
 
 	class RewardsModKillRewardProtocol : PacketProtocol {
+		public override bool IsVerbose { get { return false; } }
+
+
+		////////////////
+
 		public int KillerWho;
 		public int NpcType;
 		public bool IsGrind;

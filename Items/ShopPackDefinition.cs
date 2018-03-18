@@ -1,6 +1,8 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 
 
@@ -62,6 +64,7 @@ namespace Rewards.Items {
 			ISet<int> npc_types;
 			if( !NPCIdentityHelpers.NamesToIds.TryGetValues( this.NeededBossKill, out npc_types ) ) {
 				Main.NewText( "Required kill npc " + this.NeededBossKill + " for "+this.Name+" not found." );
+				LogHelpers.Log( "Required kill npc " + this.NeededBossKill + " for " + this.Name + " not found." );
 				return false;
 			}
 

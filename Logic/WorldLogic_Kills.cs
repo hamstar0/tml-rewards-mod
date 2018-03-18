@@ -42,7 +42,7 @@ namespace Rewards.Logic {
 		private void AddKillRewardFor( RewardsMod mymod, Player to_player, NPC npc ) {
 			KillData data = this.GetPlayerData( to_player );
 			if( data == null ) { return; }
-
+			
 			data.RecordKillAndGiveReward( mymod, to_player, npc );
 		}
 	}

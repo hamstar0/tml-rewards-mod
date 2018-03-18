@@ -46,6 +46,7 @@ namespace Rewards {
 
 				if( Main.netMode == 1 ) {
 					PacketProtocol.QuickSendRequest<RewardsModSettingsProtocol>( -1, -1 );
+					PacketProtocol.QuickSendRequest<RewardsModKillDataProtocol>( -1, -1 );
 				}
 				
 				if( Main.netMode == 0 ) {
@@ -65,16 +66,6 @@ namespace Rewards {
 
 		private void OnServerConnect() {
 			this.LoadKillData();
-
-			var mymod = (RewardsMod)this.mod;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
-			var data = myworld.Logic.GetPlayerData( this.player );
-			if( data == null ) { return; }
-
-			data.Add( mymod, myworld.Logic.WorldData );
-
-			var protocol = new RewardsModKillDataProtocol( data );
-			protocol.SendData( this.player.whoAmI, -1, false );
 		}
 
 		
@@ -94,7 +85,7 @@ namespace Rewards {
 			bool success = plr_data.Load( mymod, player_uid );
 			if( !success ) {
 				if( KillData.CanReceiveOtherPlayerKillRewards( mymod ) ) {
-					plr_data.Add( mymod, myworld.Logic.WorldData );
+					plr_data.AddToMe( mymod, myworld.Logic.WorldData );
 				}
 			}
 

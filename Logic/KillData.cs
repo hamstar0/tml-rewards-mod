@@ -45,7 +45,7 @@ namespace Rewards.Logic {
 			this.ProgressPoints = 0;
 		}
 
-		public void Add( RewardsMod mymod, KillData data ) {
+		public void AddToMe( RewardsMod mymod, KillData data ) {
 			foreach( var kv in data.KilledNpcs ) {
 				if( this.KilledNpcs.ContainsKey( kv.Key ) ) {
 					this.KilledNpcs[kv.Key] += kv.Value;
