@@ -20,13 +20,13 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public void Load( RewardsMod mymod, TagCompound tags ) {
+		public void LoadStateData( RewardsMod mymod, TagCompound tags ) {
 			if( tags.ContainsKey("has_checked_instant_wayfarer") ) {
 				this.HasCheckedInstantWayfarer = tags.GetBool( "has_checked_instant_wayfarer" );
 			}
 		}
 
-		public TagCompound Save( RewardsMod mymod ) {
+		public TagCompound SaveStateData( RewardsMod mymod ) {
 			return new TagCompound { { "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer } };
 		}
 

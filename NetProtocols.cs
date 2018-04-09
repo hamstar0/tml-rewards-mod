@@ -51,9 +51,13 @@ namespace Rewards {
 		public override bool ReceiveRequestOnServer( int from_who ) {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			
+
 			Player player = Main.player[ from_who ];
 			if( player == null ) { return true; }
+			var myplayer = player.GetModPlayer<RewardsPlayer>();
+
+			myplayer.LoadKillData();
+
 			var plr_kill_data = myworld.Logic.GetPlayerData( player );
 			if( plr_kill_data == null ) { return true; }
 			
@@ -194,6 +198,10 @@ namespace Rewards {
 		////////////////
 
 		public override void ReceiveOnServer( int from_who ) {
+			if( RewardsMod.Instance.Config.DebugModeInfo ) {
+				LogHelpers.Log( "RewardsModSaveProtocol.ReceiveOnServer - who: " + from_who+", uid: "+this.Uid );
+			}
+
 			Player player = Main.player[ from_who ];
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 

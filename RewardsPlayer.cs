@@ -26,6 +26,12 @@ namespace Rewards {
 				}
 			}
 		}
+		
+		////////////////
+
+		private void OnClientConnect() { }
+
+		private void OnServerConnect() { }
 
 
 		////////////////
@@ -45,32 +51,19 @@ namespace Rewards {
 				}
 
 				if( Main.netMode == 1 ) {
-					PacketProtocol.QuickSendRequest<RewardsModSettingsProtocol>( -1, -1 );
 					PacketProtocol.QuickSendRequest<RewardsModKillDataProtocol>( -1, -1 );
+					PacketProtocol.QuickSendRequest<RewardsModSettingsProtocol>( -1, -1 );
 				}
 				
 				if( Main.netMode == 0 ) {
-					this.OnSingleConnect();
+					this.LoadKillData();
 				}
 			}
 		}
 
 
 		////////////////
-
-		private void OnSingleConnect() {
-			this.LoadKillData();
-		}
-
-		private void OnClientConnect() { }
-
-		private void OnServerConnect() {
-			this.LoadKillData();
-		}
-
 		
-		////////////////
-
 		public void LoadKillData() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
@@ -90,7 +83,7 @@ namespace Rewards {
 			}
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "RewardsPlayer.LoadKillData - success: " + success + ", " + plr_data.ToString() );
+				LogHelpers.Log( "RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
 			}
 		}
 
@@ -107,6 +100,10 @@ namespace Rewards {
 			KillData plr_data = myworld.Logic.PlayerData[uid];
 
 			plr_data.Save( mymod, uid );
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "RewardsPlayer.SaveKillData - pid: " + has_uid + ", data: " + plr_data.ToString() );
+			}
 		}
 
 

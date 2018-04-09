@@ -24,14 +24,14 @@ namespace Rewards.Logic {
 
 		public float ProgressPoints = 0f;
 
-		internal VanillaInvasionType CurrentInvasion = VanillaInvasionType.None;
+		internal ISet<VanillaInvasionType> CurrentEvents = new HashSet<VanillaInvasionType>();
 
 
 
 		////////////////
 
 		public KillData() {
-			this.CurrentInvasion = NPCInvasionHelpers.GetCurrentInvasionType();
+			this.CurrentEvents = new HashSet<VanillaInvasionType>( NPCInvasionHelpers.GetCurrentEventTypes() );
 		}
 
 		public void Clear() {

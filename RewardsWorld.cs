@@ -18,14 +18,14 @@ namespace Rewards {
 
 		public override void Load( TagCompound tags ) {
 			var mymod = (RewardsMod)this.mod;
-			this.Logic.Load( mymod, tags );
+			this.Logic.LoadStateData( mymod, tags );
 			this.Logic.LoadKillData( mymod );
 		}
 
 		public override TagCompound Save() {
 			var mymod = (RewardsMod)this.mod;
 			this.Logic.SaveKillData( mymod );
-			return this.Logic.Save( mymod );
+			return this.Logic.SaveStateData( mymod );
 		}
 
 

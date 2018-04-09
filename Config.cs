@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 7); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 8); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -25,9 +25,9 @@ namespace Rewards {
 		public bool ShowPoints = true;
 		public bool ShowPointsPopups = true;
 
-		public bool PointsDisplayWithoutInventory = true;
-		public int PointsDisplayX = -76;
-		public int PointsDisplayY = -60;
+		public bool PointsDisplayWithoutInventory = false;
+		public int PointsDisplayX = 500;
+		public int PointsDisplayY = 26;
 		public Color PointsDisplayColor = Color.YellowGreen;
 
 		public bool SharedRewards = false;
@@ -77,6 +77,8 @@ namespace Rewards {
 		public static readonly int _1_4_6_Pack_Defender = 100;
 		public static readonly int _1_4_6_Pack_Eldritch = 350;
 
+		public static readonly int _1_4_7_PointsDisplayX = -76;
+		public static readonly int _1_4_7_PointsDisplayY = -60;
 
 		////////////////
 
@@ -189,6 +191,15 @@ namespace Rewards {
 				if( this.NpcRewards.ContainsKey( stardust_tower ) && this.NpcRewards[stardust_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
 					this.NpcRewards[stardust_tower] = new_config.NpcRewards[stardust_tower];
 				}
+			}
+			if( vers_since < new Version( 1, 4, 8 ) ) {
+				if( this.PointsDisplayX == RewardsConfigData._1_4_7_PointsDisplayX ) {
+					this.PointsDisplayX = new_config.PointsDisplayX;
+				}
+				if( this.PointsDisplayY == RewardsConfigData._1_4_7_PointsDisplayY ) {
+					this.PointsDisplayY = new_config.PointsDisplayY;
+				}
+				this.PointsDisplayWithoutInventory = new_config.PointsDisplayWithoutInventory;
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;

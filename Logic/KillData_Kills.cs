@@ -14,7 +14,7 @@ namespace Rewards.Logic {
 			float points = 0;
 			is_grind = false;
 
-			if( this.CurrentInvasion != VanillaInvasionType.None ) {
+			if( this.CurrentEvents.Count != 0 ) {
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
 					points = mymod.Config.GoblinInvasionReward / Main.invasionSizeStart;
 					is_grind = this.GoblinsConquered > 0;
