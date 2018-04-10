@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 8); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 8, 1); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -27,7 +27,7 @@ namespace Rewards {
 
 		public bool PointsDisplayWithoutInventory = false;
 		public int PointsDisplayX = 500;
-		public int PointsDisplayY = 26;
+		public int PointsDisplayY = 6;
 		public Color PointsDisplayColor = Color.YellowGreen;
 
 		public bool SharedRewards = false;
@@ -79,6 +79,8 @@ namespace Rewards {
 
 		public static readonly int _1_4_7_PointsDisplayX = -76;
 		public static readonly int _1_4_7_PointsDisplayY = -60;
+
+		public static readonly int _1_4_8_PointsDisplayY = 26;
 
 		////////////////
 
@@ -197,6 +199,12 @@ namespace Rewards {
 					this.PointsDisplayX = new_config.PointsDisplayX;
 				}
 				if( this.PointsDisplayY == RewardsConfigData._1_4_7_PointsDisplayY ) {
+					this.PointsDisplayY = new_config.PointsDisplayY;
+				}
+				this.PointsDisplayWithoutInventory = new_config.PointsDisplayWithoutInventory;
+			}
+			if( vers_since < new Version( 1, 4, 8, 1 ) ) {
+				if( this.PointsDisplayY == RewardsConfigData._1_4_8_PointsDisplayY ) {
 					this.PointsDisplayY = new_config.PointsDisplayY;
 				}
 				this.PointsDisplayWithoutInventory = new_config.PointsDisplayWithoutInventory;
