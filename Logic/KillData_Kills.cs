@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.NPCHelpers;
+using Rewards.NetProtocols;
 using Terraria;
 
 

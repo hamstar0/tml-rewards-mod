@@ -2,7 +2,6 @@
 using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 
 

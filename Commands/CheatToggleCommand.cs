@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
+using Rewards.NetProtocols;
 using Terraria;
 using Terraria.ModLoader;
 

@@ -1,10 +1,10 @@
 ﻿using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.MiscHelpers;
 using HamstarHelpers.Utilities.Errors;
-using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Rewards.Logic;
+using Rewards.NetProtocols;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
