@@ -33,7 +33,7 @@ namespace Rewards.Commands {
 			}
 
 			if( Main.netMode == 2 ) {
-				PacketProtocol.QuickSendData<RewardsModSettingsProtocol>( -1, -1, false );
+				PacketProtocol.QuickSendToClient<ModSettingsProtocol>( -1, -1 );
 			}
 		}
 	}

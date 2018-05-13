@@ -6,14 +6,12 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class RewardsModSaveProtocol : PacketProtocol {
+	class ModSaveProtocol : PacketProtocol {
 		public string Uid;	// Just in case?
 
 
 		////////////////
-
-		public RewardsModSaveProtocol() { }
-
+		
 		public override void SetClientDefaults() {
 			bool has_uid;
 			string uid = PlayerIdentityHelpers.GetUniqueId( Main.LocalPlayer, out has_uid );
@@ -27,7 +25,7 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		public override void ReceiveOnServer( int from_who ) {
+		protected override void ReceiveWithServer( int from_who ) {
 			if( RewardsMod.Instance.Config.DebugModeInfo ) {
 				LogHelpers.Log( "RewardsModSaveProtocol.ReceiveOnServer - who: " + from_who+", uid: "+this.Uid );
 			}

@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 8, 2); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 10); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -27,7 +27,7 @@ namespace Rewards {
 
 		public bool PointsDisplayWithoutInventory = false;
 		public int PointsDisplayX = 448;
-		public int PointsDisplayY = 2;
+		public int PointsDisplayY = 1;
 		public Color PointsDisplayColor = Color.YellowGreen;
 
 		public bool SharedRewards = false;
@@ -84,6 +84,8 @@ namespace Rewards {
 		
 		public static readonly int _1_4_8_1_PointsDisplayX = 500;
 		public static readonly int _1_4_8_1_PointsDisplayY = 6;
+		
+		public static readonly int _1_4_9_PointsDisplayY = 2;
 
 		////////////////
 
@@ -159,7 +161,7 @@ namespace Rewards {
 					var first_shop_pack = this.ShopLoadout.First();
 					string _err;
 					refresh = !first_shop_pack.Validate( out _err );
-				} catch( InvalidOperationException _ ) {
+				} catch( InvalidOperationException ) {
 					refresh = true;
 				}
 
@@ -217,6 +219,11 @@ namespace Rewards {
 					this.PointsDisplayX = new_config.PointsDisplayX;
 				}
 				if( this.PointsDisplayY == RewardsConfigData._1_4_8_1_PointsDisplayY ) {
+					this.PointsDisplayY = new_config.PointsDisplayY;
+				}
+			}
+			if( vers_since < new Version( 1, 4, 10 ) ) {
+				if( this.PointsDisplayY == RewardsConfigData._1_4_9_PointsDisplayY ) {
 					this.PointsDisplayY = new_config.PointsDisplayY;
 				}
 			}

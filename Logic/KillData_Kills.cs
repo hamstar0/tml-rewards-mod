@@ -81,8 +81,7 @@ namespace Rewards.Logic {
 			this.AddKillRewardForPlayer( mymod, to_player, npc.type, is_grind, reward );
 
 			if( Main.netMode == 2 ) {
-				var protocol = new RewardsModKillRewardProtocol( to_player.whoAmI, npc.type, is_grind, reward );
-				protocol.SendData( to_player.whoAmI, -1, false );
+				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type, is_grind, reward );
 			}
 		}
 	}

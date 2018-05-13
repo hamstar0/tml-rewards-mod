@@ -4,10 +4,8 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class RewardsModSettingsProtocol : PacketProtocol {
+	class ModSettingsProtocol : PacketProtocol {
 		public RewardsConfigData Data;
-
-		public RewardsModSettingsProtocol() { }
 
 		////////////////
 
@@ -15,7 +13,7 @@ namespace Rewards.NetProtocols {
 			this.Data = RewardsMod.Instance.Config;
 		}
 
-		public override void ReceiveOnClient() {
+		protected override void ReceiveWithClient() {
 			RewardsMod.Instance.ConfigJson.SetData( this.Data );
 
 			Player player = Main.LocalPlayer;

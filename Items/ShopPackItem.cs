@@ -197,8 +197,7 @@ namespace Rewards.Items {
 			}
 			
 			if( Main.netMode == 1 ) {
-				var protocol = new RewardsModSpendRewardsProtocol( info.Price );
-				protocol.SendData( -1, -1, false );
+				SpendRewardsProtocol.SendSpendToServer( info.Price );
 			}
 
 			foreach( ShopPackItemDefinition item_info in info.Items ) {

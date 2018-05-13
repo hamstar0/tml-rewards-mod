@@ -4,6 +4,7 @@ using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
+using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,7 @@ namespace Rewards {
 					if( !RewardsMod.Instance.ConfigJson.LoadFile() ) {
 						RewardsMod.Instance.ConfigJson.SaveFile();
 					}
-				} catch( Exception _ ) {
+				} catch( Exception ) {
 					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
 			}
@@ -93,7 +94,7 @@ namespace Rewards {
 				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 				myplayer.SaveKillData();
 			} else if( Main.netMode == 1 ) {
-				PacketProtocol.QuickSendData<RewardsModSaveProtocol>( -1, -1, false );
+				PacketProtocol.QuickSendToServer<ModSaveProtocol>();
 			}
 		}
 
@@ -130,7 +131,7 @@ namespace Rewards {
 						if( data.CanDrawPoints( this ) ) {
 							data.DrawPointScore( this, Main.spriteBatch );
 						}
-					} catch( Exception _ ) { }
+					} catch( Exception ) { }
 
 					return true;
 				};

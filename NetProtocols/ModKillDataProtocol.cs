@@ -5,25 +5,25 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class RewardsModKillDataProtocol : PacketProtocol {
+	class KillDataProtocol : PacketProtocol {
 		public KillData WorldData;
 		public KillData PlayerData;
 
-		public RewardsModKillDataProtocol() { }
+		public KillDataProtocol() { }
 		public override void SetClientDefaults() { }
 		public override void SetServerDefaults() { }
 
 
 		////////////////
 
-		internal RewardsModKillDataProtocol( KillData wld_data, KillData plr_data ) {
+		internal KillDataProtocol( KillData wld_data, KillData plr_data ) {
 			this.WorldData = wld_data;
 			this.PlayerData = plr_data;
 		}
 
 		////////////////
 
-		public override bool ReceiveRequestOnServer( int from_who ) {
+		protected override bool ReceiveRequestWithServer( int from_who ) {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
@@ -43,7 +43,7 @@ namespace Rewards.NetProtocols {
 			return false;
 		}
 
-		public override void ReceiveOnClient() {
+		protected override void ReceiveWithClient() {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			

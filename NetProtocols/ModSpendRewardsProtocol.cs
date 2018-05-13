@@ -6,24 +6,32 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class RewardsModSpendRewardsProtocol : PacketProtocol {
+	class SpendRewardsProtocol : PacketProtocol {
+		public static void SendSpendToServer( float price ) {
+			var protocol = new SpendRewardsProtocol( price );
+			protocol.SendToServer( false );
+		}
+		
+		////////////////
+		
+
 		public float Reward;
 
 
 		////////////////
 
-		public RewardsModSpendRewardsProtocol() { }
+		public SpendRewardsProtocol() { }
 
-		internal RewardsModSpendRewardsProtocol( float reward ) {
+		private SpendRewardsProtocol( float reward ) {
 			this.Reward = reward;
 		}
 
 		////////////////
 
-		public override void ReceiveOnServer( int from_who ) {
+		protected override void ReceiveWithServer( int from_who ) {
 			this.ReceiveMe( Main.player[from_who] );
 		}
-		public override void ReceiveOnClient() {
+		protected override void ReceiveWithClient() {
 			this.ReceiveMe( Main.player[Main.myPlayer] );
 		}
 		

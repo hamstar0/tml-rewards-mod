@@ -5,6 +5,7 @@ using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using Rewards.Logic;
+using Rewards.NetProtocols;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -45,14 +46,14 @@ namespace Rewards {
 						if( !mymod.ConfigJson.LoadFile() ) {
 							mymod.ConfigJson.SaveFile();
 						}
-					} catch( Exception _ ) {
+					} catch( Exception ) {
 						Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 					}
 				}
 
 				if( Main.netMode == 1 ) {
-					PacketProtocol.QuickSendRequest<RewardsModKillDataProtocol>( -1, -1 );
-					PacketProtocol.QuickSendRequest<RewardsModSettingsProtocol>( -1, -1 );
+					PacketProtocol.QuickRequestToServer<KillDataProtocol>();
+					PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
 				}
 				
 				if( Main.netMode == 0 ) {
