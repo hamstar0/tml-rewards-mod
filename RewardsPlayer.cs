@@ -43,8 +43,10 @@ namespace Rewards {
 			if( player.whoAmI == Main.myPlayer ) {
 				if( Main.netMode == 0 ) {   // Single player
 					try {
-						if( !mymod.ConfigJson.LoadFile() ) {
-							mymod.ConfigJson.SaveFile();
+						if( !mymod.SuppressAutoSaving ) {
+							if( !mymod.JsonConfig.LoadFile() ) {
+								mymod.JsonConfig.SaveFile();
+							}
 						}
 					} catch( Exception ) {
 						Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );

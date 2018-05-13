@@ -28,12 +28,14 @@ namespace Rewards {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
 			if( RewardsMod.Instance != null ) {
-				try {
-					if( !RewardsMod.Instance.ConfigJson.LoadFile() ) {
-						RewardsMod.Instance.ConfigJson.SaveFile();
-					}
-				} catch( Exception ) {
-					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
+				var mymod = RewardsMod.Instance;
+
+				if( mymod.SuppressAutoSaving ) {
+					Main.NewText( "Rewards config settings auto saving suppressed." );
+					return;
+				}
+				if( !mymod.JsonConfig.LoadFile() ) {
+					mymod.JsonConfig.SaveFile();
 				}
 			}
 		}
@@ -42,8 +44,10 @@ namespace Rewards {
 
 		////////////////
 		
-		internal JsonConfig<RewardsConfigData> ConfigJson;
-		public RewardsConfigData Config { get { return ConfigJson.Data; } }
+		internal JsonConfig<RewardsConfigData> JsonConfig;
+		public RewardsConfigData Config { get { return JsonConfig.Data; } }
+
+		public bool SuppressAutoSaving { get; internal set; }
 
 
 		////////////////
@@ -55,7 +59,7 @@ namespace Rewards {
 				AutoloadSounds = true
 			};
 			
-			this.ConfigJson = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
+			this.JsonConfig = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
 		}
 
 		public override void Load() {
@@ -66,15 +70,15 @@ namespace Rewards {
 
 
 		private void LoadConfigs() {
-			if( !this.ConfigJson.LoadFile() ) {
-				this.ConfigJson.SaveFile();
+			if( !this.JsonConfig.LoadFile() ) {
+				this.JsonConfig.SaveFile();
 			}
 
 			TmlLoadHelpers.AddPostModLoadPromise( delegate {
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
-					this.ConfigJson.SaveFile();
+					this.JsonConfig.SaveFile();
 				}
 			} );
 		}
@@ -94,7 +98,7 @@ namespace Rewards {
 				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 				myplayer.SaveKillData();
 			} else if( Main.netMode == 1 ) {
-				PacketProtocol.QuickSendToServer<ModSaveProtocol>();
+				PacketProtocol.QuickSendToServer<PlayerSaveProtocol>();
 			}
 		}
 

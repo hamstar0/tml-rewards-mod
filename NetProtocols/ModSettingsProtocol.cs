@@ -14,7 +14,7 @@ namespace Rewards.NetProtocols {
 		}
 
 		protected override void ReceiveWithClient() {
-			RewardsMod.Instance.ConfigJson.SetData( this.Data );
+			RewardsMod.Instance.JsonConfig.SetData( this.Data );
 
 			Player player = Main.LocalPlayer;
 			var myplayer = player.GetModPlayer<RewardsPlayer>();

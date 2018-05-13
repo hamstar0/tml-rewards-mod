@@ -39,8 +39,7 @@ namespace Rewards {
 				return null;
 
 			case "ShopRemoveLastPack":
-				RewardsAPI.ShopRemoveLastPack();
-				return null;
+				return RewardsAPI.ShopRemoveLastPack();
 
 			case "ShopAddPack":
 				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }

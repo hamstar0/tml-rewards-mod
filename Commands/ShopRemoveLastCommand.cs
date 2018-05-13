@@ -20,10 +20,11 @@ namespace Rewards.Commands {
 			}
 
 			ShopPackDefinition? def = RewardsAPI.ShopRemoveLastPack();
-
+			
 			if( def == null ) {
 				caller.Reply( "No shop packs left to remove.", Color.Yellow );
 			} else {
+				mymod.JsonConfig.SaveFile();
 				caller.Reply( "Removed shop pack "+((ShopPackDefinition)def).Name, Color.GreenYellow );
 			}
 		}

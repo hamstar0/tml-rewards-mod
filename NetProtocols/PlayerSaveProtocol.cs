@@ -6,7 +6,7 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class ModSaveProtocol : PacketProtocol {
+	class PlayerSaveProtocol : PacketProtocol {
 		public string Uid;	// Just in case?
 
 

@@ -13,11 +13,22 @@ namespace Rewards {
 		}
 		
 		public static void SaveModSettingsChanges() {
-			RewardsMod.Instance.ConfigJson.SaveFile();
+			RewardsMod.Instance.JsonConfig.SaveFile();
 		}
 
 		////////////////
-		
+
+		public static void SuppressAutoSavingOn() {
+			RewardsMod.Instance.SuppressAutoSaving = true;
+		}
+
+		public static void SuppressAutoSavingOff() {
+			RewardsMod.Instance.SuppressAutoSaving = false;
+		}
+
+
+		////////////////
+
 		public static float GetPoints( Player player ) {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
@@ -39,7 +50,6 @@ namespace Rewards {
 		public static void ShopClear() {
 			var mymod = RewardsMod.Instance;
 			mymod.Config.ShopLoadout = new List<ShopPackDefinition>();
-			mymod.ConfigJson.SaveFile();
 		}
 
 		public static ShopPackDefinition? ShopRemoveLastPack() {
@@ -54,14 +64,8 @@ namespace Rewards {
 
 				def = shop[i];
 				shop.RemoveAt( i );
-
 				break;
 			}
-			
-			if( def != null ) {
-				mymod.ConfigJson.SaveFile();
-			}
-
 			return def;
 		}
 
@@ -71,7 +75,6 @@ namespace Rewards {
 			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.Config.ShopLoadout.Add( pack );
-			mymod.ConfigJson.SaveFile();
 		}
 	}
 }

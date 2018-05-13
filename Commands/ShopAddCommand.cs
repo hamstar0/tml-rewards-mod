@@ -83,6 +83,7 @@ namespace Rewards.Commands {
 			}
 
 			RewardsAPI.ShopAddPack( def );
+			mymod.JsonConfig.SaveFile();
 
 			caller.Reply( "Pack "+pack_name+" added successfully." );
 		}

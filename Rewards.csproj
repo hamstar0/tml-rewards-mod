@@ -49,10 +49,10 @@
     <Compile Include="Logic\KillData_PP.cs" />
     <Compile Include="Logic\KillData_Update.cs" />
     <Compile Include="Logic\WorldLogic_Kills.cs" />
-    <Compile Include="NetProtocols\ModSaveProtocol.cs" />
-    <Compile Include="NetProtocols\ModSpendRewardsProtocol.cs" />
-    <Compile Include="NetProtocols\ModKillRewardProtocol.cs" />
-    <Compile Include="NetProtocols\ModKillDataProtocol.cs" />
+    <Compile Include="NetProtocols\PlayerSaveProtocol.cs" />
+    <Compile Include="NetProtocols\SpendRewardsProtocol.cs" />
+    <Compile Include="NetProtocols\KillRewardProtocol.cs" />
+    <Compile Include="NetProtocols\KillDataProtocol.cs" />
     <Compile Include="NetProtocols\ModSettingsProtocol.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />

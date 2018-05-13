@@ -18,6 +18,7 @@ namespace Rewards.Commands {
 			}
 
 			RewardsAPI.ShopClear();
+			RewardsAPI.SaveModSettingsChanges();
 		}
 	}
 }
