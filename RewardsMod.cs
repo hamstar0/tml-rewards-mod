@@ -2,7 +2,6 @@ using HamstarHelpers.TmlHelpers;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.Utilities.Errors;
 using HamstarHelpers.Utilities.Network;
-using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;
 using System;

@@ -61,7 +61,7 @@ namespace Rewards.Items {
 			this.item.width = 22;
 			this.item.height = 22;
 			this.item.value = 0;
-			this.item.rare = ItemIdentityHelpers.QuestItemRarity;
+			this.item.rare = ItemAttributeHelpers.QuestItemRarity;
 		}
 
 
@@ -79,7 +79,7 @@ namespace Rewards.Items {
 				item.SetDefaults( info.Items[i].ItemType );
 
 				var item_tip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
-				item_tip.overrideColor = MiscHelpers.GetRarityColor( item.rare );
+				item_tip.overrideColor = ItemAttributeHelpers.GetRarityColor( item.rare );
 
 				tooltips.Add( item_tip );
 			}
