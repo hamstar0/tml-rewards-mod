@@ -81,9 +81,22 @@ namespace Rewards {
 
 		////////////////
 		
-		public static void SpawnWayfarer() {
+		public static void SpawnWayfarer( bool ignore_clones ) {
 			var mymod = RewardsMod.Instance;
-			NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+			int wayfarer_type = mymod.NPCType<WayfarerTownNPC>();
+			bool is_spawned = false;
+
+			for( int i=0; i<Main.npc.Length; i++ ) {
+				NPC npc = Main.npc[i];
+				if( npc == null || !npc.active || npc.type != wayfarer_type ) { continue; }
+
+				is_spawned = true;
+				break;
+			}
+
+			if( !is_spawned || ignore_clones ) {
+				NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+			}
 		}
 	}
 }
