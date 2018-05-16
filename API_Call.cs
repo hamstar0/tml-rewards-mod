@@ -51,7 +51,12 @@ namespace Rewards {
 				return null;
 
 			case "SpawnWayfarer":
-				RewardsAPI.SpawnWayfarer();
+				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
+				if( !( args[1] is bool ) ) { throw new Exception( "Invalid parameter ignore_clones for API call " + call_type ); }
+				bool ignore_clones = (bool)args[1];
+
+				RewardsAPI.SpawnWayfarer( ignore_clones );
 				return null;
 			}
 			
