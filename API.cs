@@ -1,6 +1,8 @@
-﻿using HamstarHelpers.Utilities.Errors;
+﻿using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Utilities.Errors;
 using Rewards.Items;
 using Rewards.Logic;
+using Rewards.NPCs;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -75,6 +77,13 @@ namespace Rewards {
 			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.Config.ShopLoadout.Add( pack );
+		}
+
+		////////////////
+		
+		public static void SpawnWayfarer() {
+			var mymod = RewardsMod.Instance;
+			NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 		}
 	}
 }

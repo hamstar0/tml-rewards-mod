@@ -49,6 +49,10 @@ namespace Rewards {
 
 				RewardsAPI.ShopAddPack( pack );
 				return null;
+
+			case "SpawnWayfarer":
+				RewardsAPI.SpawnWayfarer();
+				return null;
 			}
 			
 			throw new Exception("No such api call "+call_type);
