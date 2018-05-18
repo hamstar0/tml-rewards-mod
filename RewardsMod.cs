@@ -62,6 +62,8 @@ namespace Rewards {
 		////////////////
 
 		public RewardsMod() {
+			RewardsMod.Instance = this;
+
 			this.Properties = new ModProperties() {
 				Autoload = true,
 				AutoloadGores = true,
@@ -72,8 +74,6 @@ namespace Rewards {
 		}
 
 		public override void Load() {
-			RewardsMod.Instance = this;
-
 			this.LoadConfigs();
 		}
 
