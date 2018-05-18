@@ -1,4 +1,5 @@
-﻿using Rewards.Items;
+﻿using HamstarHelpers.DebugHelpers;
+using Rewards.Items;
 using System;
 using Terraria;
 
@@ -39,7 +40,7 @@ namespace Rewards {
 
 				var hook = args[0] as Action<Player, float>;
 				if( hook == null ) { throw new Exception( "Invalid parameter hook for API call " + call_type ); }
-
+				
 				RewardsAPI.OnPointsGained( hook );
 				return null;
 

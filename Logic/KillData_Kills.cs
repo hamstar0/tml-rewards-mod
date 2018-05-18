@@ -83,10 +83,6 @@ namespace Rewards.Logic {
 			if( Main.netMode == 2 ) {
 				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type, is_grind, reward );
 			}
-
-			foreach( var hook in mymod.OnRewardHooks ) {
-				hook( to_player, reward );
-			}
 		}
 	}
 }

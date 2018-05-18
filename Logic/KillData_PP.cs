@@ -25,6 +25,10 @@ namespace Rewards.Logic {
 			}
 
 			this.ProgressPoints += reward;
+
+			foreach( var hook in mymod.OnRewardHooks ) {
+				hook( player, reward );
+			}
 		}
 
 
