@@ -48,7 +48,14 @@ namespace Rewards {
 		}
 		
 		public static void OnPointsGained( Action<Player, float> hook ) {
-			RewardsMod.Instance.OnRewardHooks.Add( hook );
+			var mymod = RewardsMod.Instance;
+			var hooks = mymod.OnRewardHooks;
+
+			if( hook == null ) {
+				throw new Exception( "Invalid hook" );
+			}
+
+			hooks.Add( hook );
 		}
 		
 
