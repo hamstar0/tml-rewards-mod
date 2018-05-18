@@ -48,8 +48,8 @@ namespace Rewards {
 		}
 		
 		public static void OnPointsGained( Action<Player, float> hook ) {
-			var mymod = RewardsMod.Instance;
-			var hooks = mymod.OnRewardHooks;
+			RewardsMod mymod = RewardsMod.Instance;
+			IList<Action<Player, float>> hooks = mymod.OnRewardHooks;
 
 			if( hook == null ) {
 				throw new Exception( "Invalid hook" );

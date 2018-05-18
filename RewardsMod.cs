@@ -48,7 +48,15 @@ namespace Rewards {
 
 		public bool SuppressAutoSaving { get; internal set; }
 
-		internal IList<Action<Player, float>> OnRewardHooks = new List<Action<Player, float>>();
+		private IList<Action<Player, float>> _OnRewardHooks = new List<Action<Player, float>>();	// Is this needed...?!
+		internal IList<Action<Player, float>> OnRewardHooks {
+			get {
+				if( this._OnRewardHooks == null ) {
+					this._OnRewardHooks = new List<Action<Player, float>>();
+				}
+				return this._OnRewardHooks;
+			}
+		}
 
 
 		////////////////
@@ -75,7 +83,7 @@ namespace Rewards {
 				this.JsonConfig.SaveFile();
 			}
 
-			TmlLoadHelpers.AddPostModLoadPromise( delegate {
+			TmlLoadHelpers.AddPostModLoadPromise( () => {
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );

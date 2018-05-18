@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.4.12.1
+version = 1.4.12.2
 displayName = Rewards
 modReferences = HamstarHelpers@1.4.8
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
