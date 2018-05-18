@@ -48,6 +48,8 @@ namespace Rewards {
 
 		public bool SuppressAutoSaving { get; internal set; }
 
+		internal IList<Action<Player, float>> OnRewardHooks = new List<Action<Player, float>>();
+
 
 		////////////////
 

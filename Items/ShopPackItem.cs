@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.MiscHelpers;
 using HamstarHelpers.Utilities.Errors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

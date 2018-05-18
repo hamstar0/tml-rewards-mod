@@ -46,6 +46,11 @@ namespace Rewards {
 
 			data.ProgressPoints += points;
 		}
+		
+		public static void OnPointsGained( Action<Player, float> hook ) {
+			RewardsMod.Instance.OnRewardHooks.Add( hook );
+		}
+		
 
 		////////////////
 

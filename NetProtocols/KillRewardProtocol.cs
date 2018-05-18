@@ -46,7 +46,7 @@ namespace Rewards.NetProtocols {
 				throw new HamstarException( "RewardsModNpcKillRewardProtocol.ReceiveOnClient() - No player data for " + Main.LocalPlayer.name );
 			}
 
-			data.AddKillRewardForPlayer( RewardsMod.Instance, Main.LocalPlayer, this.NpcType, this.IsGrind, this.Reward );
+			data.AddRewardForPlayer( RewardsMod.Instance, Main.LocalPlayer, this.IsGrind, this.Reward );
 		}
 	}
 }

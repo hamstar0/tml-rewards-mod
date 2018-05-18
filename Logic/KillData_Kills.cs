@@ -78,10 +78,14 @@ namespace Rewards.Logic {
 				LogHelpers.Log( "GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + this.KilledNpcs[npc.type] + ", is_grind: " + is_grind + ", reward: " + reward );
 			}
 
-			this.AddKillRewardForPlayer( mymod, to_player, npc.type, is_grind, reward );
+			this.AddRewardForPlayer( mymod, to_player, is_grind, reward );
 
 			if( Main.netMode == 2 ) {
 				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type, is_grind, reward );
+			}
+
+			foreach( var hook in mymod.OnRewardHooks ) {
+				hook( to_player, reward );
 			}
 		}
 	}

@@ -8,7 +8,7 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddKillRewardForPlayer( RewardsMod mymod, Player player, int npc_type, bool is_grind, float reward ) {
+		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, float reward ) {
 			if( is_grind ) {
 				reward *= mymod.Config.GrindKillMultiplier;
 			}

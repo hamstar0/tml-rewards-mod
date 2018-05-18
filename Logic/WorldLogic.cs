@@ -24,10 +24,17 @@ namespace Rewards.Logic {
 			if( tags.ContainsKey("has_checked_instant_wayfarer") ) {
 				this.HasCheckedInstantWayfarer = tags.GetBool( "has_checked_instant_wayfarer" );
 			}
+			if( tags.ContainsKey("town_npcs_arrived_count") ) {
+				int count = tags.GetInt( "town_npcs_arrived_count" );
+			}
 		}
 
 		public TagCompound SaveStateData( RewardsMod mymod ) {
-			return new TagCompound { { "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer } };
+			var tags = new TagCompound {
+				{ "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer }
+			};
+
+			return tags;
 		}
 
 		////////////////

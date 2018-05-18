@@ -34,6 +34,15 @@ namespace Rewards {
 				RewardsAPI.AddPoints( player3, points );
 				return null;
 
+			case "OnPointsGained":
+				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
+				var hook = args[0] as Action<Player, float>;
+				if( hook == null ) { throw new Exception( "Invalid parameter hook for API call " + call_type ); }
+
+				RewardsAPI.OnPointsGained( hook );
+				return null;
+
 			case "ShopClear":
 				RewardsAPI.ShopClear();
 				return null;
