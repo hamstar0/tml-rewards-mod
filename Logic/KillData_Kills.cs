@@ -1,8 +1,9 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.NPCHelpers;
 using Rewards.NetProtocols;
+using System;
 using Terraria;
-
+using Terraria.ModLoader;
 
 namespace Rewards.Logic {
 	partial class KillData {
@@ -38,16 +39,29 @@ namespace Rewards.Logic {
 			}
 
 			if( points == 0 ) {
-				if( mymod.Config.NpcRewards.ContainsKey( npc.TypeName ) ) {
-					points = mymod.Config.NpcRewards[npc.TypeName];
+				string name = NPCIdentityHelpers.GetQualifiedName( npc );
+
+				if( mymod.Config.NpcRewards.ContainsKey( name ) ) {
+					points = mymod.Config.NpcRewards[ name ];
 				}
 				
 				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
-					if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( npc.TypeName ) ) {
-						is_grind = this.KilledNpcs[npc.type] >= mymod.Config.NpcRewardRequiredMinimumKills[npc.TypeName];
+					if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( name ) ) {
+						is_grind = this.KilledNpcs[npc.type] >= mymod.Config.NpcRewardRequiredMinimumKills[ name ];
 					} else {
 						is_grind = true;
 					}
+				} else {
+					/*if( mymod.Config.NpcRewardPrediction ) {
+						Mod boss_list_mod = ModLoader.GetMod( "BossChecklist" );
+						if( boss_list_mod != null && boss_list_mod.Version >= new Version(0, 1, 5, 3) ) {
+							var boss_info = (Tuple<float, int, bool>)boss_list_mod.Call( "GetBossState", name );
+
+							if( boss_info != null && boss_info.Item2 == 0 ) {
+								points = this.EstimateKillReward( mymod, npc, boss_info.Item1 );
+							}
+						}
+					}*/
 				}
 			}
 
@@ -69,9 +83,9 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RecordKillAndGiveReward( RewardsMod mymod, Player to_player, NPC npc ) {
+		public void RewardKill( RewardsMod mymod, Player to_player, NPC npc ) {
 			bool is_grind;
-			float reward = this.RecordKill( mymod, npc, out is_grind );
+			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
 
 			if( mymod.Config.DebugModeInfo ) {
 				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + this.KilledNpcs[npc.type] + ", is_grind: " + is_grind + ", reward: " + reward );

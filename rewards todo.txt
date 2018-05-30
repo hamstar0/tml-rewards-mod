@@ -4,6 +4,7 @@ Future
 
 v1.5.0
 -	Set DD2 invasion to give PP
+-	Fix invasion repeat PP not scaling
 
 v1.4.7.1
 -	Reset config if shop loadout is empty

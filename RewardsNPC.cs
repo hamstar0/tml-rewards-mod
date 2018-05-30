@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using HamstarHelpers.DebugHelpers;
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
 
@@ -10,7 +12,11 @@ namespace Rewards {
 			var myworld = this.mod.GetModWorld<RewardsWorld>();
 
 			if( myworld.Logic != null ) {
-				myworld.Logic.AddKillReward( (RewardsMod)this.mod, npc );
+				try {
+					myworld.Logic.AddKillReward( (RewardsMod)this.mod, npc );
+				} catch( Exception e ) {
+					LogHelpers.Log( "NPCLoot - " + e.ToString() );
+				}
 			}
 		}
 	}

@@ -46,6 +46,7 @@ namespace Rewards {
 		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
 		public IDictionary<string, int> NpcRewardRequiredMinimumKills = new Dictionary<string, int>();
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
+		//public bool NpcRewardPrediction = true;
 
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
 

@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.NPCHelpers;
 using Terraria;
 
 
@@ -8,7 +9,7 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "AddKillReward " + npc.TypeName );
+				LogHelpers.Log( "AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();
@@ -21,16 +22,16 @@ namespace Rewards.Logic {
 						Player to_player = Main.player[i];
 						if( to_player == null || !to_player.active ) { continue; }
 
-						this.AddKillRewardFor( mymod, to_player, npc );
+						this.AddKillRewardForPlayer( mymod, to_player, npc );
 					}
 				} else {
 					Player to_player = Main.player[npc.lastInteraction];
 					if( to_player != null && to_player.active ) {
-						this.AddKillRewardFor( mymod, Main.player[npc.lastInteraction], npc );
+						this.AddKillRewardForPlayer( mymod, Main.player[npc.lastInteraction], npc );
 					}
 				}
 			} else if( Main.netMode == 0 ) {
-				this.AddKillRewardFor( mymod, Main.LocalPlayer, npc );
+				this.AddKillRewardForPlayer( mymod, Main.LocalPlayer, npc );
 			}
 
 			// Also for the world
@@ -39,11 +40,13 @@ namespace Rewards.Logic {
 		}
 
 
-		private void AddKillRewardFor( RewardsMod mymod, Player to_player, NPC npc ) {
+		private void AddKillRewardForPlayer( RewardsMod mymod, Player to_player, NPC npc ) {
+			bool _;
 			KillData data = this.GetPlayerData( to_player );
 			if( data == null ) { return; }
 			
-			data.RecordKillAndGiveReward( mymod, to_player, npc );
+			data.RewardKill( mymod, to_player, npc );
+			data.RecordKill( mymod, npc, out _ );
 		}
 	}
 }
