@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Microsoft.Xna.Framework;
+using Terraria.ModLoader;
 
 
 namespace Rewards.Commands {
@@ -19,6 +20,8 @@ namespace Rewards.Commands {
 
 			RewardsAPI.ShopClear();
 			RewardsAPI.SaveModSettingsChanges();
+
+			caller.Reply( "Wayfarer shop reset.", Color.LimeGreen );
 		}
 	}
 }

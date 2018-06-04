@@ -25,7 +25,7 @@ namespace Rewards.Commands {
 				caller.Reply( "No shop packs left to remove.", Color.Yellow );
 			} else {
 				mymod.JsonConfig.SaveFile();
-				caller.Reply( "Removed shop pack "+((ShopPackDefinition)def).Name, Color.GreenYellow );
+				caller.Reply( "Removed shop pack "+((ShopPackDefinition)def).Name, Color.LimeGreen );
 			}
 		}
 	}

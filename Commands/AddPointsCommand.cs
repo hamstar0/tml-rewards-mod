@@ -29,7 +29,7 @@ namespace Rewards.Commands {
 
 			data.ProgressPoints += 100;
 
-			caller.Reply( "+100 PP added. Cheater!", Color.YellowGreen );
+			caller.Reply( "+100 PP added. Cheater!", Color.LimeGreen );
 		}
 	}
 }

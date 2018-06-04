@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.TmlHelpers.CommandsHelpers;
+using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,7 +86,7 @@ namespace Rewards.Commands {
 			RewardsAPI.ShopAddPack( def );
 			mymod.JsonConfig.SaveFile();
 
-			caller.Reply( "Pack "+pack_name+" added successfully." );
+			caller.Reply( "Pack "+pack_name+" added successfully.", Color.LimeGreen );
 		}
 	}
 }

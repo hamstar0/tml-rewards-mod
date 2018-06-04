@@ -7,9 +7,10 @@ using Terraria.ModLoader;
 
 namespace Rewards.Commands {
 	class CheatToggleCommand : ModCommand {
-		public override CommandType Type { get {
+		public override CommandType Type {
+			get {
 				if( Main.netMode == 0 ) {
-					return CommandType.Chat;
+					return CommandType.World;
 				}
 				return CommandType.Console;
 			}
@@ -26,10 +27,10 @@ namespace Rewards.Commands {
 
 			if( mymod.Config.DebugModeEnableCheats ) {
 				mymod.Config.DebugModeEnableCheats = false;
-				caller.Reply( "Cheat mode off.", Color.YellowGreen );
+				caller.Reply( "Cheat mode off.", Color.LimeGreen );
 			} else {
 				mymod.Config.DebugModeEnableCheats = true;
-				caller.Reply( "Cheat mode on.", Color.YellowGreen );
+				caller.Reply( "Cheat mode on.", Color.LimeGreen );
 			}
 
 			if( Main.netMode == 2 ) {
