@@ -1,9 +1,8 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.NPCHelpers;
 using Rewards.NetProtocols;
-using System;
 using Terraria;
-using Terraria.ModLoader;
+
 
 namespace Rewards.Logic {
 	partial class KillData {
@@ -88,8 +87,9 @@ namespace Rewards.Logic {
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
 
 			if( mymod.Config.DebugModeInfo ) {
-				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + this.KilledNpcs[npc.type] + ", is_grind: " + is_grind + ", reward: " + reward );
-				LogHelpers.Log( "GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + this.KilledNpcs[npc.type] + ", is_grind: " + is_grind + ", reward: " + reward );
+				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
+				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
+				LogHelpers.Log( "GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
 			}
 
 			this.AddRewardForPlayer( mymod, to_player, is_grind, reward );
