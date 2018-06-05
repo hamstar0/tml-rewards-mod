@@ -86,7 +86,8 @@ namespace Rewards.Logic {
 
 				if( success ) {
 					this.KilledNpcs = data.KilledNpcs;
-					this.GoblinsConquered = data.FrostLegionConquered;
+					this.GoblinsConquered = data.GoblinsConquered;
+					this.FrostLegionConquered = data.FrostLegionConquered;
 					this.PiratesConquered = data.PiratesConquered;
 					this.MartiansConquered = data.MartiansConquered;
 					this.PumpkinMoonWavesConquered = data.PumpkinMoonWavesConquered;
