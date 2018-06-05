@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.TmlHelpers;
 using HamstarHelpers.Utilities.Network;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
@@ -59,7 +60,7 @@ namespace Rewards {
 				}
 				
 				if( Main.netMode == 0 ) {
-					this.LoadKillData();
+					this.OnFinishEnterWorld();
 				}
 			}
 		}
@@ -67,7 +68,7 @@ namespace Rewards {
 
 		////////////////
 		
-		public void LoadKillData() {
+		public void OnFinishEnterWorld() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
@@ -84,6 +85,11 @@ namespace Rewards {
 					plr_data.AddToMe( mymod, myworld.Logic.WorldData );
 				}
 			}
+
+			TmlLoadHelpers.TriggerCustomPromise( "RewardsOnEnterWorld" );
+			TmlLoadHelpers.AddWorldUnloadOncePromise( () => {
+				TmlLoadHelpers.ClearCustomPromise( "RewardsOnEnterWorld" );
+			} );
 
 			if( mymod.Config.DebugModeInfo ) {
 				LogHelpers.Log( "RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );

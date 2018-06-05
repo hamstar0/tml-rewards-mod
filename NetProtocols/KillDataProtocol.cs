@@ -31,7 +31,7 @@ namespace Rewards.NetProtocols {
 			if( player == null ) { return true; }
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			myplayer.LoadKillData();
+			myplayer.OnFinishEnterWorld();
 
 			var plr_kill_data = myworld.Logic.GetPlayerData( player );
 			if( plr_kill_data == null ) { return true; }
