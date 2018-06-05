@@ -58,8 +58,8 @@ namespace Rewards {
 				{ moonlord_name, 250f }
 			};
 
-			this.NpcRewardRequiredMinimumKills = new Dictionary<string, int> {
-				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 50 }
+			this.NpcRewardRequiredAsBoss = new HashSet<string> {
+				Lang.GetNPCNameValue( NPCID.EaterofWorldsHead )
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {

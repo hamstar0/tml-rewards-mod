@@ -43,13 +43,15 @@ namespace Rewards.Logic {
 				if( mymod.Config.NpcRewards.ContainsKey( name ) ) {
 					points = mymod.Config.NpcRewards[ name ];
 				}
-				
-				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
-					if( mymod.Config.NpcRewardRequiredMinimumKills.ContainsKey( name ) ) {
-						is_grind = this.KilledNpcs[npc.type] >= mymod.Config.NpcRewardRequiredMinimumKills[ name ];
-					} else {
-						is_grind = true;
+
+				if( mymod.Config.NpcRewardRequiredAsBoss.Contains( name ) ) {
+					if( !npc.boss ) {
+						points = 0;
 					}
+				}
+
+				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
+					is_grind = true;
 				} else {
 					/*if( mymod.Config.NpcRewardPrediction ) {
 						Mod boss_list_mod = ModLoader.GetMod( "BossChecklist" );

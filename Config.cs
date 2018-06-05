@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 10); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 14); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -44,8 +44,8 @@ namespace Rewards {
 		public bool InstantWayfarer = false;
 
 		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
-		public IDictionary<string, int> NpcRewardRequiredMinimumKills = new Dictionary<string, int>();
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
+		public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
 		//public bool NpcRewardPrediction = true;
 
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
@@ -138,7 +138,6 @@ namespace Rewards {
 				this.PumpkingMoonWaveReward = new_config.PumpkingMoonWaveReward;
 				this.FrostMoonWaveReward = new_config.FrostMoonWaveReward;
 				this.NpcRewards = new_config.NpcRewards;
-				this.NpcRewardRequiredMinimumKills = new_config.NpcRewardRequiredMinimumKills;
 				this.NpcRewardTogetherSets = new_config.NpcRewardTogetherSets;
 				this.ShopLoadout = new_config.ShopLoadout;
 			}
@@ -168,7 +167,6 @@ namespace Rewards {
 
 				if( refresh ) {
 					this.NpcRewards = new_config.NpcRewards;
-					this.NpcRewardRequiredMinimumKills = new_config.NpcRewardRequiredMinimumKills;
 					this.ShopLoadout = new_config.ShopLoadout;
 				}
 			}
