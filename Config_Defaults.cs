@@ -37,7 +37,7 @@ namespace Rewards {
 			this.NpcRewards = new Dictionary<string, float> {
 				{ Lang.GetNPCNameValue( NPCID.KingSlime ), 10f },
 				{ Lang.GetNPCNameValue( NPCID.EyeofCthulhu ), 10f },
-				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 25f / 50f },	// per segment
+				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 25f },
 				{ Lang.GetNPCNameValue( NPCID.BrainofCthulhu ), 25f },
 				{ Lang.GetNPCNameValue( NPCID.QueenBee ), 20f },
 				{ Lang.GetNPCNameValue( NPCID.SkeletronHead ), 30f },
