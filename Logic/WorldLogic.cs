@@ -11,6 +11,9 @@ using Terraria.ModLoader.IO;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
+		internal static object MyLock = new object();
+
+
 		internal IDictionary<string, KillData> PlayerData = new Dictionary<string, KillData>();
 		internal KillData WorldData = new KillData();
 
@@ -40,7 +43,11 @@ namespace Rewards.Logic {
 		////////////////
 
 		public string GetDataFileBaseName() {
-			return "World_" + FileHelpers.SanitizePath( Main.worldName ) + "_" + Main.worldID;
+			if( RewardsMod.Instance.Config.UseUpdatedWorldFileNameConvention ) {
+				return WorldHelpers.GetUniqueIdWithSeed();
+			} else {
+				return "World_" + FileHelpers.SanitizePath( Main.worldName ) + "_" + Main.worldID;
+			}
 		}
 
 		
@@ -48,13 +55,13 @@ namespace Rewards.Logic {
 			bool success = this.WorldData.Load( mymod, this.GetDataFileBaseName() );
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "WorldLogic.LoadAll - World id: " + WorldHelpers.GetUniqueId()+", success: "+success+", "+ this.WorldData.ToString() );
+				LogHelpers.Log( "Rewards - LoadKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
 		public void SaveKillData( RewardsMod mymod ) {
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "WorldLogic.SaveAll - World id: " + WorldHelpers.GetUniqueId()+", "+ this.WorldData.ToString() );
+				LogHelpers.Log( "Rewards - SaveKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}
 			
 			for( int i = 0; i < Main.player.Length; i++ ) {
@@ -82,8 +89,10 @@ namespace Rewards.Logic {
 				}
 			}
 
-			foreach( KillData kill_data in this.PlayerData.Values ) {
-				kill_data.Update();
+			lock( WorldLogic.MyLock ) {
+				foreach( KillData kill_data in this.PlayerData.Values ) {
+					kill_data.Update();
+				}
 			}
 		}
 
@@ -95,11 +104,13 @@ namespace Rewards.Logic {
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
 			if( !has_uid || string.IsNullOrEmpty(uid) ) { return null; }
 
-			if( !this.PlayerData.ContainsKey( uid ) ) {
-				this.PlayerData[ uid ] = new KillData();
+			lock( WorldLogic.MyLock ) {
+				if( !this.PlayerData.ContainsKey( uid ) ) {
+					this.PlayerData[uid] = new KillData();
+				}
+
+				return this.PlayerData[uid];
 			}
-			
-			return this.PlayerData[ uid ];
 		}
 	}
 }

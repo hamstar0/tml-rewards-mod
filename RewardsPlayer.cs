@@ -74,7 +74,10 @@ namespace Rewards {
 
 			bool has_uid;
 			string player_uid = PlayerIdentityHelpers.GetUniqueId( this.player, out has_uid );
-			if( !has_uid ) { return; }
+			if( !has_uid ) {
+				LogHelpers.Log( "Rewards - RewardsPlayer.OnFinishEnterWorld - Could not enter world for player; no player id." );
+				return;
+			}
 
 			KillData plr_data = myworld.Logic.GetPlayerData( this.player );
 			if( plr_data == null ) { return; }
@@ -92,7 +95,7 @@ namespace Rewards {
 			} );
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
+				LogHelpers.Log( "Rewards - RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
 			}
 		}
 
@@ -100,18 +103,27 @@ namespace Rewards {
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
+			KillData plr_data;
 
 			bool has_uid;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
-			if( !has_uid ) { return; }
+			if( !has_uid ) {
+				LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
+				return;
+			}
 
-			if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) { return; }
-			KillData plr_data = myworld.Logic.PlayerData[uid];
+			lock( WorldLogic.MyLock ) {
+				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {
+					LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
+					return;
+				}
+				plr_data = myworld.Logic.PlayerData[uid];
+			}
 
 			plr_data.Save( mymod, uid );
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "RewardsPlayer.SaveKillData - pid: " + has_uid + ", data: " + plr_data.ToString() );
+				LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - pid: " + has_uid + ", data: " + plr_data.ToString() );
 			}
 		}
 

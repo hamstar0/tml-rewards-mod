@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 14); } }
+		public static Version ConfigVersion { get { return new Version(1, 4, 15); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -49,6 +49,8 @@ namespace Rewards {
 		//public bool NpcRewardPrediction = true;
 
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
+
+		public bool UseUpdatedWorldFileNameConvention = true;
 
 
 
@@ -225,6 +227,9 @@ namespace Rewards {
 				if( this.PointsDisplayY == RewardsConfigData._1_4_9_PointsDisplayY ) {
 					this.PointsDisplayY = new_config.PointsDisplayY;
 				}
+			}
+			if( vers_since < new Version( 1, 4, 15 ) ) {
+				this.UseUpdatedWorldFileNameConvention = false;
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;

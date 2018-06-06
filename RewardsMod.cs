@@ -82,10 +82,11 @@ namespace Rewards {
 			if( !this.JsonConfig.LoadFile() ) {
 				this.JsonConfig.SaveFile();
 			}
-
+			
 			TmlLoadHelpers.AddPostModLoadPromise( () => {
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
+
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
 					this.JsonConfig.SaveFile();
 				}

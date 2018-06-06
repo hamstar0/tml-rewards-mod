@@ -9,7 +9,7 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
+				LogHelpers.Log( "Rewards - WorldLogic.AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();
