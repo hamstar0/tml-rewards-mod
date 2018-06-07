@@ -45,8 +45,8 @@ namespace Rewards {
 				if( Main.netMode == 0 ) {   // Single player
 					try {
 						if( !mymod.SuppressAutoSaving ) {
-							if( !mymod.JsonConfig.LoadFile() ) {
-								mymod.JsonConfig.SaveFile();
+							if( !mymod.ConfigJson.LoadFile() ) {
+								mymod.ConfigJson.SaveFile();
 							}
 						}
 					} catch( Exception ) {

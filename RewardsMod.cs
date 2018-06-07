@@ -33,8 +33,8 @@ namespace Rewards {
 					Main.NewText( "Rewards config settings auto saving suppressed." );
 					return;
 				}
-				if( !mymod.JsonConfig.LoadFile() ) {
-					mymod.JsonConfig.SaveFile();
+				if( !mymod.ConfigJson.LoadFile() ) {
+					mymod.ConfigJson.SaveFile();
 				}
 			}
 		}
@@ -43,8 +43,8 @@ namespace Rewards {
 
 		////////////////
 		
-		internal JsonConfig<RewardsConfigData> JsonConfig;
-		public RewardsConfigData Config { get { return JsonConfig.Data; } }
+		internal JsonConfig<RewardsConfigData> ConfigJson;
+		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
 		public bool SuppressAutoSaving { get; internal set; }
 
@@ -70,7 +70,7 @@ namespace Rewards {
 				AutoloadSounds = true
 			};
 			
-			this.JsonConfig = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
+			this.ConfigJson = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
 		}
 
 		public override void Load() {
@@ -79,8 +79,8 @@ namespace Rewards {
 
 
 		private void LoadConfigs() {
-			if( !this.JsonConfig.LoadFile() ) {
-				this.JsonConfig.SaveFile();
+			if( !this.ConfigJson.LoadFile() ) {
+				this.ConfigJson.SaveFile();
 			}
 			
 			TmlLoadHelpers.AddPostModLoadPromise( () => {
@@ -88,7 +88,7 @@ namespace Rewards {
 					this.Config.UpdateToLatestVersion();
 
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
-					this.JsonConfig.SaveFile();
+					this.ConfigJson.SaveFile();
 				}
 			} );
 		}

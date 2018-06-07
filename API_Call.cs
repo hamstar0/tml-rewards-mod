@@ -7,6 +7,8 @@ using Terraria;
 namespace Rewards {
 	public static partial class RewardsAPI {
 		internal static object Call( string call_type, params object[] args ) {
+			Player player;
+
 			switch( call_type ) {
 			case "GetModSettings":
 				return RewardsAPI.GetModSettings();
@@ -18,21 +20,21 @@ namespace Rewards {
 			case "GetPoints":
 				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
 
-				var player2 = args[0] as Player;
-				if( player2 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
+				player = args[0] as Player;
+				if( player == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
 
-				return RewardsAPI.GetPoints( player2 );
+				return RewardsAPI.GetPoints( player );
 
 			case "AddPoints":
 				if( args.Length < 2 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
 
-				var player3 = args[0] as Player;
-				if( player3 == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
+				player = args[0] as Player;
+				if( player == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
 
 				if( !( args[1] is float ) ) { throw new Exception( "Invalid parameter points for API call " + call_type ); }
-				float points = (int)args[1];
+				float points = (float)args[1];
 
-				RewardsAPI.AddPoints( player3, points );
+				RewardsAPI.AddPoints( player, points );
 				return null;
 
 			case "OnPointsGained":

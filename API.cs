@@ -15,7 +15,7 @@ namespace Rewards {
 		}
 		
 		public static void SaveModSettingsChanges() {
-			RewardsMod.Instance.JsonConfig.SaveFile();
+			RewardsMod.Instance.ConfigJson.SaveFile();
 		}
 
 		////////////////
