@@ -66,9 +66,8 @@ namespace Rewards.Logic {
 		////////////////
 
 		public bool Load( RewardsMod mymod, string base_file_name ) {
-			string file_name = base_file_name + ".dat";
 			string dir_path = Main.SavePath + Path.DirectorySeparatorChar + KillData.DataFileFolder;
-			string file_path = dir_path + Path.DirectorySeparatorChar + file_name;
+			string file_path = dir_path + Path.DirectorySeparatorChar + base_file_name + ".dat";
 			KillData data;
 			bool success = false;
 
