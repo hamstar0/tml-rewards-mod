@@ -46,7 +46,8 @@ namespace Rewards.NetProtocols {
 		protected override void ReceiveWithClient() {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			
+			var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+
 			KillData plr_data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			KillData wld_data = myworld.Logic.WorldData;
 			if( plr_data == null || wld_data == null ) { return; }
@@ -56,6 +57,8 @@ namespace Rewards.NetProtocols {
 
 			plr_data.Clear();
 			plr_data.AddToMe( mymod, this.PlayerData );
+
+			myplayer.FinishKillDataSync();
 		}
 	}
 }

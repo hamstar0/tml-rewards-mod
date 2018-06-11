@@ -39,7 +39,7 @@ namespace Rewards.NetProtocols {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
-				throw new HamstarException( "RewardsModNpcKillRewardProtocol.ReceiveOnClient() - No player data for " + player.name );
+				throw new HamstarException( "SpendRewardsProtocol.ReceiveMe() - No player data for " + player.name );
 			}
 
 			data.Spend( (int)this.Reward );
