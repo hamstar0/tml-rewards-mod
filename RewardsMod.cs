@@ -48,15 +48,25 @@ namespace Rewards {
 
 		public bool SuppressConfigAutoSaving { get; internal set; }
 
-		private IList<Action<Player, float>> _OnRewardHooks = new List<Action<Player, float>>();	// Is this needed...?!
-		internal IList<Action<Player, float>> OnRewardHooks {
+		private IList<Action<Player, float>> _OnPointsGainedHooks = new List<Action<Player, float>>();	// Is this needed...?!
+		internal IList<Action<Player, float>> OnPointsGainedHooks {
 			get {
-				if( this._OnRewardHooks == null ) {
-					this._OnRewardHooks = new List<Action<Player, float>>();
+				if( this._OnPointsGainedHooks == null ) {
+					this._OnPointsGainedHooks = new List<Action<Player, float>>();
 				}
-				return this._OnRewardHooks;
+				return this._OnPointsGainedHooks;
 			}
 		}
+		private IList<Action<Player, string, float, Item[]>> _OnPointsSpentHooks = new List<Action<Player, string, float, Item[]>>();
+		internal IList<Action<Player, string, float, Item[]>> OnPointsSpentHooks {
+			get {
+				if( this._OnPointsSpentHooks == null ) {
+					this._OnPointsSpentHooks = new List<Action<Player, string, float, Item[]>>();
+				}
+				return this._OnPointsSpentHooks;
+			}
+		}
+		
 
 
 		////////////////

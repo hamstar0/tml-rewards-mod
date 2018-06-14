@@ -48,17 +48,20 @@ namespace Rewards {
 			return data.ProgressPoints;
 		}
 
+		////////////////
+
 		public static void AddPoints( Player player, float points ) {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new HamstarException( "RewardsAPI.AddPoints() - No player data for " + player.name ); }
 
-			data.ProgressPoints += points;
+			data.AddRewardForPlayer( mymod, player, false, points );
 		}
 		
 		public static void OnPointsGained( Action<Player, float> hook ) {
-			RewardsMod mymod = RewardsMod.Instance;
-			IList<Action<Player, float>> hooks = mymod.OnRewardHooks;
+			var mymod = RewardsMod.Instance;
+			IList<Action<Player, float>> hooks = mymod.OnPointsGainedHooks;
 
 			if( hook == null ) {
 				throw new Exception( "Invalid hook" );
@@ -66,7 +69,18 @@ namespace Rewards {
 
 			hooks.Add( hook );
 		}
-		
+
+		public static void OnPointsSpent( Action<Player, string, float, Item[]> hook ) {
+			RewardsMod mymod = RewardsMod.Instance;
+			IList<Action<Player, string, float, Item[]>> hooks = mymod.OnPointsSpentHooks;
+
+			if( hook == null ) {
+				throw new Exception( "Invalid hook" );
+			}
+
+			hooks.Add( hook );
+		}
+
 
 		////////////////
 

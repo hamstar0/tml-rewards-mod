@@ -186,19 +186,23 @@ namespace Rewards.Items {
 
 			if( this.Info == null ) { return; }
 			var info = (ShopPackDefinition)this.Info;
+			int price = info.Price;
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new HamstarException( "ShopPackItem.OpenPack() - No player data for " + player.name ); }
 			
-			if( !data.Spend( info.Price ) ) {
+			if( !data.Spend( price ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
 			}
 			
 			if( Main.netMode == 1 ) {
-				SpendRewardsProtocol.SendSpendToServer( info.Price );
+				SpendRewardsProtocol.SendSpendToServer( price );
 			}
+
+			Item[] pack_items = new Item[ info.Items.Length ];
+			int i = 0;
 
 			foreach( ShopPackItemDefinition item_info in info.Items ) {
 				if( !item_info.Validate() || !item_info.IsAvailable() ) { continue; }
@@ -207,6 +211,12 @@ namespace Rewards.Items {
 				new_item.SetDefaults( item_info.ItemType );
 
 				ItemHelpers.CreateItem( player.position, item_info.ItemType, item_info.Stack, new_item.width, new_item.height );
+
+				pack_items[i++] = new_item;
+			}
+
+			foreach( var hook in mymod.OnPointsSpentHooks ) {
+				hook( player, info.Name, info.Price, pack_items );
 			}
 
 			Main.PlaySound( SoundID.Coins );
