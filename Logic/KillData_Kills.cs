@@ -50,6 +50,14 @@ namespace Rewards.Logic {
 					}
 				}
 
+				if( mymod.Config.NpcRewardNotGivenAfterNpcKilled.ContainsKey(name) ) {
+					string old_npc_name = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
+
+					if( mymod.Config.NpcRewards.ContainsKey( old_npc_name ) ) {
+						points = 0;
+					}
+				}
+
 				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 					is_grind = true;
 				} else {

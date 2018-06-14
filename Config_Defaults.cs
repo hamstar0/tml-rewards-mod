@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.TmlHelpers;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.TmlHelpers;
 using HamstarHelpers.Utilities.Config;
 using Rewards.Items;
 using System.Collections.Generic;
@@ -29,45 +30,61 @@ namespace Rewards {
 		////////////////
 
 		public bool SetDefaults() {
-			string wof_name = Lang.GetNPCNameValue( NPCID.WallofFlesh );
-			string plantera_name = Lang.GetNPCNameValue( NPCID.Plantera );
-			string golem_name = Lang.GetNPCNameValue( NPCID.Golem );
-			string moonlord_name = Lang.GetNPCNameValue( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
+			string wof_name = ItemIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh );
+			string plantera_name = ItemIdentityHelpers.GetQualifiedName( NPCID.Plantera );
+			string golem_name = ItemIdentityHelpers.GetQualifiedName( NPCID.Golem );
+			string moonlord_name = ItemIdentityHelpers.GetQualifiedName( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
 
 			this.NpcRewards = new Dictionary<string, float> {
-				{ Lang.GetNPCNameValue( NPCID.KingSlime ), 10f },
-				{ Lang.GetNPCNameValue( NPCID.EyeofCthulhu ), 10f },
-				{ Lang.GetNPCNameValue( NPCID.EaterofWorldsHead ), 25f },
-				{ Lang.GetNPCNameValue( NPCID.BrainofCthulhu ), 25f },
-				{ Lang.GetNPCNameValue( NPCID.QueenBee ), 20f },
-				{ Lang.GetNPCNameValue( NPCID.SkeletronHead ), 30f },
-				{ Lang.GetNPCNameValue( NPCID.WallofFlesh ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.TheDestroyer ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.Retinazer ), 50f / 2 },
-				{ Lang.GetNPCNameValue( NPCID.Spazmatism ), 50f / 2 },
-				{ Lang.GetNPCNameValue( NPCID.SkeletronPrime ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.Plantera ), 100f },
-				{ Lang.GetNPCNameValue( NPCID.Golem ), 100f },
-				{ Lang.GetNPCNameValue( NPCID.DukeFishron ), 100f },
-				{ Lang.GetNPCNameValue( NPCID.CultistBoss ), 50f },
-				{ Lang.GetNPCNameValue( NPCID.DD2Betsy ), 100f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerSolar ), 35f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerVortex ), 35f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerNebula ), 35f },
-				{ Lang.GetNPCNameValue( NPCID.LunarTowerStardust ), 35f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.KingSlime ), 10f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.EyeofCthulhu ), 10f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.EaterofWorldsHead ), 25f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.BrainofCthulhu ), 25f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.QueenBee ), 20f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.SkeletronHead ), 30f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh ), 50f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.TheDestroyer ), 50f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Retinazer ), 50f / 2 },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Spazmatism ), 50f / 2 },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.SkeletronPrime ), 50f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Plantera ), 100f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Golem ), 100f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.DukeFishron ), 100f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.CultistBoss ), 50f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.DD2Betsy ), 100f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerSolar ), 35f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerVortex ), 35f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerNebula ), 35f },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerStardust ), 35f },
 				{ moonlord_name, 250f }
 			};
 
 			this.NpcRewardRequiredAsBoss = new HashSet<string> {
-				Lang.GetNPCNameValue( NPCID.EaterofWorldsHead )
+				ItemIdentityHelpers.GetQualifiedName( NPCID.EaterofWorldsHead )
+			};
+
+			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string> {
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.KingSlime ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.EyeofCthulhu ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.EaterofWorldsHead ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.BrainofCthulhu ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.QueenBee ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.SkeletronHead ), wof_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh ), plantera_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.TheDestroyer ), golem_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Retinazer ), golem_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Spazmatism ), golem_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.SkeletronPrime ), golem_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Plantera ), moonlord_name },
+				{ ItemIdentityHelpers.GetQualifiedName( NPCID.Golem ), moonlord_name }
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {
-				new ShopPackDefinition( "", "Money Purse", 5, new ShopPackItemDefinition[] {
-						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GoldCoin), 99 )
-					} ),
 				new ShopPackDefinition( "", "Iron Age Pack", 5, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.IronBar), 99 )
+					} ),
+				new ShopPackDefinition( "", "Money Purse", 10, new ShopPackItemDefinition[] {
+						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.GoldCoin), 99 )
 					} ),
 				new ShopPackDefinition( "", "Nature Watcher's Pack", 10, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( Lang.GetItemNameValue(ItemID.FlowerBoots), 1 ),

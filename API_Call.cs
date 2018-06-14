@@ -87,6 +87,15 @@ namespace Rewards {
 
 				RewardsAPI.SpawnWayfarer( ignore_clones );
 				return null;
+
+			case "ResetKills":
+				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
+
+				player = args[0] as Player;
+				if( player == null ) { throw new Exception( "Invalid parameter player for API call " + call_type ); }
+
+				RewardsAPI.ResetKills( player );
+				return null;
 			}
 			
 			throw new Exception("No such api call "+call_type);

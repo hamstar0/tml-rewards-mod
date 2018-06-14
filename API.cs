@@ -48,8 +48,6 @@ namespace Rewards {
 			return data.ProgressPoints;
 		}
 
-		////////////////
-
 		public static void AddPoints( Player player, float points ) {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
@@ -58,7 +56,21 @@ namespace Rewards {
 
 			data.AddRewardForPlayer( mymod, player, false, points );
 		}
-		
+
+
+		////////////////
+
+		public static void ResetKills( Player player ) {
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
+			KillData data = myworld.Logic.GetPlayerData( player );
+
+			data.Clear();
+		}
+
+
+		////////////////
+
 		public static void OnPointsGained( Action<Player, float> hook ) {
 			var mymod = RewardsMod.Instance;
 			IList<Action<Player, float>> hooks = mymod.OnPointsGainedHooks;

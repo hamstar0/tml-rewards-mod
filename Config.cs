@@ -1,16 +1,16 @@
-﻿using HamstarHelpers.Utilities.Config;
+﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.Utilities.Config;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria;
 using Terraria.ID;
 
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 4, 15); } }
+		public static Version ConfigVersion { get { return new Version(1, 5, 0); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -46,6 +46,7 @@ namespace Rewards {
 		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
 		public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
+		public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
 		//public bool NpcRewardPrediction = true;
 
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
@@ -182,10 +183,10 @@ namespace Rewards {
 				RewardsConfigData.UpdatePackIfFound( "Defender's Pack", RewardsConfigData._1_4_6_Pack_Defender, this.ShopLoadout, new_config.ShopLoadout );
 				RewardsConfigData.UpdatePackIfFound( "Eldritch Pack", RewardsConfigData._1_4_6_Pack_Eldritch, this.ShopLoadout, new_config.ShopLoadout );
 
-				string solar_tower = Lang.GetNPCNameValue( NPCID.LunarTowerSolar );
-				string vortex_tower = Lang.GetNPCNameValue( NPCID.LunarTowerVortex );
-				string nebula_tower = Lang.GetNPCNameValue( NPCID.LunarTowerNebula );
-				string stardust_tower = Lang.GetNPCNameValue( NPCID.LunarTowerStardust );
+				string solar_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerSolar );
+				string vortex_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerVortex );
+				string nebula_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerNebula );
+				string stardust_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerStardust );
 
 				if( this.NpcRewards.ContainsKey(solar_tower) && this.NpcRewards[solar_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
 					this.NpcRewards[ solar_tower ] = new_config.NpcRewards[ solar_tower ];
@@ -230,6 +231,19 @@ namespace Rewards {
 			}
 			if( vers_since < new Version( 1, 4, 15 ) ) {
 				this.UseUpdatedWorldFileNameConvention = false;
+			}
+			if( vers_since < new Version( 1, 5, 0 ) ) {
+				for( int i=0; i<this.ShopLoadout.Count; i++ ) {
+					ShopPackDefinition def = this.ShopLoadout[i];
+
+					if( def.Name == "Money Purse" ) {
+						def.Price = 10;
+						this.ShopLoadout[i] = def;
+						break;
+					}
+				}
+
+				this.NpcRewardNotGivenAfterNpcKilled = new_config.NpcRewardNotGivenAfterNpcKilled;
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;

@@ -75,11 +75,15 @@ namespace Rewards.Items {
 			tooltips.Add( item_set_tip );
 
 			for( int i=0; i< info.Items.Length; i++ ) {
+				Color rare_color = Color.Gray;
 				Item item = new Item();
 				item.SetDefaults( info.Items[i].ItemType );
 
 				var item_tip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
-				item_tip.overrideColor = ItemAttributeHelpers.GetRarityColor( item.rare );
+
+				if( ItemAttributeHelpers.RarityColor.TryGetValue( item.rare, out rare_color ) ) {
+					item_tip.overrideColor = rare_color;
+				}
 
 				tooltips.Add( item_tip );
 			}
