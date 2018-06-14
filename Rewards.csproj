@@ -58,6 +58,7 @@
     <Compile Include="Logic\WorldLogic.cs" />
     <Compile Include="RewardsMod.cs" />
     <Compile Include="RewardsNPC.cs" />
+    <Compile Include="RewardsPlayer_Load.cs" />
     <Compile Include="RewardsPlayer.cs" />
     <Compile Include="RewardsWorld.cs" />
   </ItemGroup>
