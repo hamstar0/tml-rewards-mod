@@ -20,12 +20,21 @@ namespace Rewards {
 
 		////////////////
 
+		[Obsolete( "use SuppressConfigAutoSavingOn", true)]
 		public static void SuppressAutoSavingOn() {
-			RewardsMod.Instance.SuppressAutoSaving = true;
+			RewardsAPI.SuppressConfigAutoSavingOn();
+		}
+		[Obsolete( "use SuppressConfigAutoSavingOff", true )]
+		public static void SuppressAutoSavingOff() {
+			RewardsAPI.SuppressConfigAutoSavingOff();
 		}
 
-		public static void SuppressAutoSavingOff() {
-			RewardsMod.Instance.SuppressAutoSaving = false;
+		public static void SuppressConfigAutoSavingOn() {
+			RewardsMod.Instance.SuppressConfigAutoSaving = true;
+		}
+
+		public static void SuppressConfigAutoSavingOff() {
+			RewardsMod.Instance.SuppressConfigAutoSaving = false;
 		}
 
 
@@ -65,7 +74,7 @@ namespace Rewards {
 			var mymod = RewardsMod.Instance;
 			mymod.Config.ShopLoadout = new List<ShopPackDefinition>();
 		}
-
+		
 		public static ShopPackDefinition? ShopRemoveLastPack() {
 			var mymod = RewardsMod.Instance;
 			IList<ShopPackDefinition> shop = mymod.Config.ShopLoadout;
@@ -82,7 +91,7 @@ namespace Rewards {
 			}
 			return def;
 		}
-
+		
 		public static void ShopAddPack( ShopPackDefinition pack ) {
 			var mymod = RewardsMod.Instance;
 			string fail;

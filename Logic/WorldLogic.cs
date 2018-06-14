@@ -83,7 +83,7 @@ namespace Rewards.Logic {
 				this.HasCheckedInstantWayfarer = true;
 				
 				if( mymod.Config.InstantWayfarer ) {
-					if( WayfarerTownNPC.CanTownNPCSpawn(mymod) ) {
+					if( WayfarerTownNPC.CanWayfarerSpawn(mymod) ) {
 						NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 					}
 				}

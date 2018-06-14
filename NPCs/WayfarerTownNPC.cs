@@ -30,6 +30,24 @@ namespace Rewards.NPCs {
 
 		////////////////
 
+		public static bool CanWayfarerSpawn( RewardsMod mymod ) {
+			int npc_type = mymod.NPCType<WayfarerTownNPC>();
+
+			for( int i = 0; i < Main.npc.Length; i++ ) {
+				NPC that_npc = Main.npc[i];
+				if( that_npc == null || !that_npc.active ) { continue; }
+
+				if( that_npc.type == npc_type ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+
+
+		////////////////
+
 		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
 		public override string HeadTexture { get { return "Rewards/NPCs/WayfarerTownNPC_Head"; } }
 
@@ -96,21 +114,12 @@ namespace Rewards.NPCs {
 			}
 			return true;
 		}
-		
-		public static bool CanTownNPCSpawn( RewardsMod mymod ) {
-			int npc_type = mymod.NPCType<WayfarerTownNPC>();
 
-			for( int i = 0; i < Main.npc.Length; i++ ) {
-				NPC that_npc = Main.npc[i];
-				if( that_npc == null || !that_npc.active ) { continue; }
-				if( !that_npc.townNPC ) { continue; }
 
-				if( that_npc.type == npc_type ) {
-					return false;
-				}
-			}
-			return true;
-		}
+
+		////////////////
+
+		private bool IsFiring = false;
 
 
 		////////////////
@@ -121,8 +130,6 @@ namespace Rewards.NPCs {
 
 
 		////////////////
-
-		private bool IsFiring = false;
 		
 		public override void AI() {
 			if( this.npc.ai[0] == 12 ) {

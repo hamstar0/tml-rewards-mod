@@ -49,7 +49,7 @@ namespace Rewards {
 			
 			if( Main.netMode == 0 ) {   // Single player
 				try {
-					if( !mymod.SuppressAutoSaving ) {
+					if( !mymod.SuppressConfigAutoSaving ) {
 						if( !mymod.ConfigJson.LoadFile() ) {
 							mymod.ConfigJson.SaveFile();
 						}

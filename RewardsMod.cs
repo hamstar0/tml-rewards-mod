@@ -29,7 +29,7 @@ namespace Rewards {
 			if( RewardsMod.Instance != null ) {
 				var mymod = RewardsMod.Instance;
 
-				if( mymod.SuppressAutoSaving ) {
+				if( mymod.SuppressConfigAutoSaving ) {
 					Main.NewText( "Rewards config settings auto saving suppressed." );
 					return;
 				}
@@ -46,7 +46,7 @@ namespace Rewards {
 		internal JsonConfig<RewardsConfigData> ConfigJson;
 		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
-		public bool SuppressAutoSaving { get; internal set; }
+		public bool SuppressConfigAutoSaving { get; internal set; }
 
 		private IList<Action<Player, float>> _OnRewardHooks = new List<Action<Player, float>>();	// Is this needed...?!
 		internal IList<Action<Player, float>> OnRewardHooks {

@@ -17,6 +17,14 @@ namespace Rewards {
 				RewardsAPI.SaveModSettingsChanges();
 				return null;
 
+			case "SuppressConfigAutoSavingOn":
+				RewardsAPI.SuppressConfigAutoSavingOn();
+				return null;
+
+			case "SuppressConfigAutoSavingOff":
+				RewardsAPI.SuppressConfigAutoSavingOff();
+				return null;
+
 			case "GetPoints":
 				if( args.Length < 1 ) { throw new Exception( "Insufficient parameters for API call " + call_type ); }
 
