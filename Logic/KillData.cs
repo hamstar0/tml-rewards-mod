@@ -34,7 +34,7 @@ namespace Rewards.Logic {
 			this.CurrentEvents = new HashSet<VanillaInvasionType>( NPCInvasionHelpers.GetCurrentEventTypes() );
 		}
 
-		public void Clear() {
+		public void ClearKills() {
 			this.KilledNpcs = new Dictionary<int, int>();
 			this.GoblinsConquered = 0;
 			this.FrostLegionConquered = 0;
@@ -42,6 +42,10 @@ namespace Rewards.Logic {
 			this.MartiansConquered = 0;
 			this.PumpkinMoonWavesConquered = 0;
 			this.FrostMoonWavesConquered = 0;
+		}
+
+		public void ResetAll() {
+			this.ClearKills();
 			this.ProgressPoints = 0;
 		}
 

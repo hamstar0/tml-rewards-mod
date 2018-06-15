@@ -65,7 +65,7 @@ namespace Rewards {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 
-			data.Clear();
+			data.ClearKills();
 		}
 
 

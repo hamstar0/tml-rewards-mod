@@ -52,10 +52,10 @@ namespace Rewards.NetProtocols {
 			KillData wld_data = myworld.Logic.WorldData;
 			if( plr_data == null || wld_data == null ) { return; }
 
-			wld_data.Clear();
+			wld_data.ResetAll();
 			wld_data.AddToMe( mymod, this.WorldData );
 
-			plr_data.Clear();
+			plr_data.ResetAll();
 			plr_data.AddToMe( mymod, this.PlayerData );
 
 			myplayer.FinishKillDataSync();
