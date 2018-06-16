@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.ItemHelpers;
+using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.Utilities.Config;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
@@ -183,10 +184,10 @@ namespace Rewards {
 				RewardsConfigData.UpdatePackIfFound( "Defender's Pack", RewardsConfigData._1_4_6_Pack_Defender, this.ShopLoadout, new_config.ShopLoadout );
 				RewardsConfigData.UpdatePackIfFound( "Eldritch Pack", RewardsConfigData._1_4_6_Pack_Eldritch, this.ShopLoadout, new_config.ShopLoadout );
 
-				string solar_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerSolar );
-				string vortex_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerVortex );
-				string nebula_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerNebula );
-				string stardust_tower = ItemIdentityHelpers.GetQualifiedName( NPCID.LunarTowerStardust );
+				string solar_tower = NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerSolar );
+				string vortex_tower = NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerVortex );
+				string nebula_tower = NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerNebula );
+				string stardust_tower = NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerStardust );
 
 				if( this.NpcRewards.ContainsKey(solar_tower) && this.NpcRewards[solar_tower] == RewardsConfigData._1_4_6_Reward_LunarTower ) {
 					this.NpcRewards[ solar_tower ] = new_config.NpcRewards[ solar_tower ];
@@ -242,8 +243,26 @@ namespace Rewards {
 						break;
 					}
 				}
-
+			}
+			if( vers_since < new Version( 1, 5, 0, 1 ) ) {
 				this.NpcRewardNotGivenAfterNpcKilled = new_config.NpcRewardNotGivenAfterNpcKilled;
+				if( vers_since < new Version( 1, 5, 0 ) ) {
+					this.NpcRewardRequiredAsBoss = new_config.NpcRewardRequiredAsBoss;
+				}
+
+				for( int i = 0; i < this.ShopLoadout.Count; i++ ) {
+					ShopPackDefinition def = this.ShopLoadout[i];
+
+					for( int j = 0; j < new_config.ShopLoadout.Count; j++ ) {
+						ShopPackDefinition def2 = new_config.ShopLoadout[j];
+
+						if( def.Name == def2.Name ) {
+							def.NeededBossKill = def2.NeededBossKill;
+							this.ShopLoadout[i] = def;
+							break;
+						}
+					}
+				}
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;
