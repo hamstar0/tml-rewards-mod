@@ -1,7 +1,7 @@
+using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.TmlHelpers;
-using HamstarHelpers.Utilities.Config;
-using HamstarHelpers.Utilities.Errors;
-using HamstarHelpers.Utilities.Network;
 using Rewards.Logic;
 using Rewards.NetProtocols;
 using System;

@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.NPCHelpers;
-using HamstarHelpers.Utilities.Errors;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.NPCHelpers;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NPCs;
@@ -54,7 +54,7 @@ namespace Rewards {
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new HamstarException( "RewardsAPI.AddPoints() - No player data for " + player.name ); }
 
-			data.AddRewardForPlayer( mymod, player, false, points );
+			data.AddRewardForPlayer( mymod, player, false, false, points );
 		}
 
 

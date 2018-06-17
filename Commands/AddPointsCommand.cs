@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Utilities.Errors;
+﻿using HamstarHelpers.Components.Errors;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Terraria;
@@ -37,7 +37,7 @@ namespace Rewards.Commands {
 				throw new HamstarException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
 			}
 
-			data.AddRewardForPlayer( mymod, Main.LocalPlayer, false, reward );
+			data.AddRewardForPlayer( mymod, Main.LocalPlayer, false, false, reward );
 
 			caller.Reply( "+"+reward+" PP added. Cheater!", Color.LimeGreen );
 		}

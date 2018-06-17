@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.DebugHelpers;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.Utilities.Errors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Rewards.Logic;

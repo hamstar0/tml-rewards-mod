@@ -1,7 +1,7 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.TmlHelpers;
-using HamstarHelpers.Utilities.Config;
 using Rewards.Items;
 using System.Collections.Generic;
 using Terraria;

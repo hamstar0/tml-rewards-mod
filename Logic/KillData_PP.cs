@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Utilities.Messages;
+﻿using HamstarHelpers.Services.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -8,7 +8,11 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, float reward ) {
+		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
+			if( is_expired ) {
+				return;
+			}
+
 			if( is_grind ) {
 				reward *= mymod.Config.GrindKillMultiplier;
 			}

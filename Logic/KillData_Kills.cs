@@ -11,9 +11,11 @@ namespace Rewards.Logic {
 		}
 		
 
-		public float CalculateKillReward( RewardsMod mymod, NPC npc, out bool is_grind ) {
-			float points = 0;
+		public float CalculateKillReward( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
 			is_grind = false;
+			is_expired = false;
+
+			float points = 0;
 
 			if( this.CurrentEvents.Count != 0 ) {
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
@@ -51,14 +53,18 @@ namespace Rewards.Logic {
 				}
 
 				if( mymod.Config.NpcRewardNotGivenAfterNpcKilled.ContainsKey(name) ) {
-					string old_npc_name = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
+					string blocking_npc_name = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
 
-					if( mymod.Config.NpcRewards.ContainsKey( old_npc_name ) ) {
-						points = 0;
+					if( NPCIdentityHelpers.NamesToIds.ContainsKey( blocking_npc_name ) ) {
+						int blocking_npc_type = NPCIdentityHelpers.NamesToIds[blocking_npc_name];
+
+						if( this.KilledNpcs.ContainsKey( blocking_npc_type ) && this.KilledNpcs[blocking_npc_type] > 0 ) {
+							is_expired = true;
+						}
 					}
 				}
 
-				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
+				if( this.KilledNpcs.ContainsKey( npc.type ) && this.KilledNpcs[npc.type] > 0 ) {
 					is_grind = true;
 				} else {
 					/*if( mymod.Config.NpcRewardPrediction ) {
@@ -80,8 +86,8 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public float RecordKill( RewardsMod mymod, NPC npc, out bool is_grind ) {
-			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
+		public float RecordKill( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
+			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
 
 			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 				this.KilledNpcs[npc.type]++;
@@ -93,8 +99,8 @@ namespace Rewards.Logic {
 		}
 
 		public void RewardKill( RewardsMod mymod, Player to_player, NPC npc ) {
-			bool is_grind;
-			float reward = this.CalculateKillReward( mymod, npc, out is_grind );
+			bool is_grind, is_expired;
+			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
 
 			if( mymod.Config.DebugModeInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
@@ -102,10 +108,10 @@ namespace Rewards.Logic {
 				LogHelpers.Log( " GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
 			}
 
-			this.AddRewardForPlayer( mymod, to_player, is_grind, reward );
+			this.AddRewardForPlayer( mymod, to_player, is_grind, is_expired, reward );
 
 			if( Main.netMode == 2 ) {
-				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type, is_grind, reward );
+				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type, is_grind, is_expired, reward );
 			}
 		}
 	}

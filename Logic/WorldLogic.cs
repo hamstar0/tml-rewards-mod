@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Helpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.DotNetHelpers;
+using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.WorldHelpers;
 using Rewards.NPCs;

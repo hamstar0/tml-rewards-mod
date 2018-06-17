@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Helpers;
+﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.DotNetHelpers;
 using HamstarHelpers.NPCHelpers;
-using HamstarHelpers.Utilities.Config;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;

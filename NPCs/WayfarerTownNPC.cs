@@ -1,4 +1,3 @@
-using HamstarHelpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;

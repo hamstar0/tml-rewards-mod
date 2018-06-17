@@ -1,7 +1,7 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Utilities.Errors;
-using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
+using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.PlayerHelpers;
 using Terraria;
 
 

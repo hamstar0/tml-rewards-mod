@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Utilities.Network;
+﻿using HamstarHelpers.Components.Network;
 using Microsoft.Xna.Framework;
 using Rewards.NetProtocols;
 using Terraria;

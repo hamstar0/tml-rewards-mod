@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.DebugHelpers;
-using Rewards.Items;
+﻿using Rewards.Items;
 using System;
 using Terraria;
 

@@ -36,7 +36,7 @@ namespace Rewards.Logic {
 
 			// Also for the world
 			bool _;
-			this.WorldData.RecordKill( mymod, npc, out _ );
+			this.WorldData.RecordKill( mymod, npc, out _, out _ );
 		}
 
 
@@ -44,9 +44,9 @@ namespace Rewards.Logic {
 			bool _;
 			KillData data = this.GetPlayerData( to_player );
 			if( data == null ) { return; }
-			
+
 			data.RewardKill( mymod, to_player, npc );
-			data.RecordKill( mymod, npc, out _ );
+			data.RecordKill( mymod, npc, out _, out _ );
 		}
 	}
 }

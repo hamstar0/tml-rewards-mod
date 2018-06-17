@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
-using HamstarHelpers.Utilities.Config;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
@@ -11,7 +11,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 5, 0); } }
+		public static Version ConfigVersion { get { return new Version(1, 5, 0, 2); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
