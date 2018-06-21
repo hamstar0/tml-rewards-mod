@@ -246,9 +246,7 @@ namespace Rewards {
 			}
 			if( vers_since < new Version( 1, 5, 0, 1 ) ) {
 				this.NpcRewardNotGivenAfterNpcKilled = new_config.NpcRewardNotGivenAfterNpcKilled;
-				if( vers_since < new Version( 1, 5, 0 ) ) {
-					this.NpcRewardRequiredAsBoss = new_config.NpcRewardRequiredAsBoss;
-				}
+				this.NpcRewardRequiredAsBoss = new_config.NpcRewardRequiredAsBoss;
 
 				for( int i = 0; i < this.ShopLoadout.Count; i++ ) {
 					ShopPackDefinition def = this.ShopLoadout[i];
@@ -262,6 +260,11 @@ namespace Rewards {
 							break;
 						}
 					}
+				}
+			}
+			if( vers_since < new Version( 1, 5, 0, 2 ) ) {
+				if( this.NpcRewards.Count == 21 ) {
+					this.NpcRewards = new_config.NpcRewards;	// Missed a spot?
 				}
 			}
 
