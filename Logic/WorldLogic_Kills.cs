@@ -5,7 +5,7 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
-		public void AddKillReward( RewardsMod mymod, NPC npc ) {
+		public void AddKillRewardSynced( RewardsMod mymod, NPC npc ) {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			if( mymod.Config.DebugModeInfo ) {
@@ -36,7 +36,7 @@ namespace Rewards.Logic {
 
 			// Also for the world
 			bool _;
-			this.WorldData.RecordKill( mymod, npc, out _, out _ );
+			this.WorldData.RecordKillLocal( mymod, npc, out _, out _ );
 		}
 
 
@@ -45,8 +45,8 @@ namespace Rewards.Logic {
 			KillData data = this.GetPlayerData( to_player );
 			if( data == null ) { return; }
 
-			data.RewardKill( mymod, to_player, npc );
-			data.RecordKill( mymod, npc, out _, out _ );
+			data.RewardKillSynced( mymod, to_player, npc );
+			data.RecordKillLocal( mymod, npc, out _, out _ );
 		}
 	}
 }

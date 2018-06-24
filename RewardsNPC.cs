@@ -10,7 +10,7 @@ namespace Rewards {
 			var myworld = this.mod.GetModWorld<RewardsWorld>();
 			
 			if( myworld.Logic != null ) {
-				myworld.Logic.AddKillReward( (RewardsMod)this.mod, npc );
+				myworld.Logic.AddKillRewardSynced( (RewardsMod)this.mod, npc );
 			}
 		}
 	}

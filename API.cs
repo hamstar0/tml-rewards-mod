@@ -54,7 +54,7 @@ namespace Rewards {
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new HamstarException( "RewardsAPI.AddPoints() - No player data for " + player.name ); }
 
-			data.AddRewardForPlayer( mymod, player, false, false, points );
+			data.AddRewardForPlayerNoSync( mymod, player, false, false, points );
 		}
 
 

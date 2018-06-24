@@ -11,7 +11,7 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 5, 0, 2); } }
+		public static Version ConfigVersion { get { return new Version(1, 5, 1, 3); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
@@ -31,7 +31,7 @@ namespace Rewards {
 		public int PointsDisplayY = 1;
 		public Color PointsDisplayColor = Color.YellowGreen;
 
-		public bool SharedRewards = false;
+		public bool SharedRewards = true;
 
 		public float GrindKillMultiplier = 0.1f;
 
@@ -266,6 +266,9 @@ namespace Rewards {
 				if( this.NpcRewards.Count == 21 ) {
 					this.NpcRewards = new_config.NpcRewards;	// Missed a spot?
 				}
+			}
+			if( vers_since < new Version( 1, 5, 1, 3 ) ) {
+				this.SharedRewards = new_config.SharedRewards;	// Just better this way it seems
 			}
 
 			this.VersionSinceUpdate = new_config.VersionSinceUpdate;

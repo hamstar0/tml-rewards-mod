@@ -8,7 +8,7 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
+		public void AddRewardForPlayerNoSync( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
 			if( is_expired ) {
 				return;
 			}
