@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.Network;
 using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.PlayerHelpers;
+using HamstarHelpers.Services.Promises;
 using HamstarHelpers.TmlHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
@@ -94,9 +95,9 @@ namespace Rewards {
 				}
 			}
 
-			TmlLoadHelpers.TriggerCustomPromise( "RewardsOnEnterWorld" );
-			TmlLoadHelpers.AddWorldUnloadOncePromise( () => {
-				TmlLoadHelpers.ClearCustomPromise( "RewardsOnEnterWorld" );
+			Promises.TriggerCustomPromise( "RewardsOnEnterWorld" );
+			Promises.AddWorldUnloadOncePromise( () => {
+				Promises.ClearCustomPromise( "RewardsOnEnterWorld" );
 			} );
 
 			if( mymod.Config.DebugModeInfo ) {

@@ -1,6 +1,7 @@
 using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
+using HamstarHelpers.Services.Promises;
 using HamstarHelpers.TmlHelpers;
 using Rewards.Logic;
 using Rewards.NetProtocols;
@@ -93,7 +94,7 @@ namespace Rewards {
 				this.ConfigJson.SaveFile();
 			}
 			
-			TmlLoadHelpers.AddPostModLoadPromise( () => {
+			Promises.AddPostModLoadPromise( () => {
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
 
@@ -144,6 +145,8 @@ namespace Rewards {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod draw_method = delegate {
+					if( !LoadHelpers.IsWorldSafelyBeingPlayed() ) { return true; }
+
 					try {
 						var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );

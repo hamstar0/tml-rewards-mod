@@ -32,7 +32,7 @@ namespace Rewards {
 		////////////////
 		
 		public override void PreUpdate() {
-			if( TmlLoadHelpers.IsWorldLoaded() ) {
+			if( LoadHelpers.IsWorldLoaded() ) {
 				this.Logic.Update( (RewardsMod)this.mod );
 			}
 		}

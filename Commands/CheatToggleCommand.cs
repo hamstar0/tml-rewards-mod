@@ -9,7 +9,7 @@ namespace Rewards.Commands {
 	class CheatToggleCommand : ModCommand {
 		public override CommandType Type {
 			get {
-				if( Main.netMode == 0 ) {
+				if( Main.netMode == 0 && !Main.dedServ ) {
 					return CommandType.World;
 				}
 				return CommandType.Console;

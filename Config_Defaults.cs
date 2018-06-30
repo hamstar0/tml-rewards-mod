@@ -1,7 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
-using HamstarHelpers.TmlHelpers;
+using HamstarHelpers.Services.Promises;
 using Rewards.Items;
 using System.Collections.Generic;
 using Terraria;
@@ -12,7 +11,7 @@ using Terraria.ModLoader;
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
 		public override void OnLoad( bool success ) {
-			TmlLoadHelpers.AddPostModLoadPromise( delegate {
+			Promises.AddPostModLoadPromise( delegate {
 				if( !success || this.ShopLoadout.Count == 0 ) {
 					this.SetDefaults();
 					//RewardsMod.Instance.ConfigJson.SaveFile();
