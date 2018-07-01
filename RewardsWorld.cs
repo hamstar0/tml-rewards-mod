@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.TmlHelpers;
+﻿using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.TmlHelpers;
 using Rewards.Logic;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -14,6 +15,7 @@ namespace Rewards {
 
 		public override void Initialize() {
 			this.Logic = new WorldLogic();
+			LogHelpers.Log( "RewardsWorld.Initialize" );
 		}
 
 		public override void Load( TagCompound tags ) {

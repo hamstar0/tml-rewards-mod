@@ -2,7 +2,6 @@
 using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
-using HamstarHelpers.TmlHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;

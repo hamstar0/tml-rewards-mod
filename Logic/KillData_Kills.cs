@@ -18,24 +18,34 @@ namespace Rewards.Logic {
 			float points = 0;
 
 			if( this.CurrentEvents.Count != 0 ) {
+				float pp_amt = -1;
+
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
-					points = mymod.Config.GoblinInvasionReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.GoblinInvasionReward;
 					is_grind = this.GoblinsConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
-					points = mymod.Config.FrostLegionInvasionReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.FrostLegionInvasionReward;
 					is_grind = this.FrostLegionConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
-					points = mymod.Config.PirateInvasionReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.PirateInvasionReward;
 					is_grind = this.PiratesConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
-					points = mymod.Config.MartianInvasionReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.MartianInvasionReward;
 					is_grind = this.MartiansConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
-					points = mymod.Config.PumpkingMoonWaveReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.PumpkingMoonWaveReward;
 					is_grind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
 				} else if( NPCIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
-					points = mymod.Config.FrostMoonWaveReward / Main.invasionSizeStart;
+					pp_amt = mymod.Config.FrostMoonWaveReward;
 					is_grind = NPC.waveNumber < this.FrostMoonWavesConquered;
+				}
+
+				if( pp_amt != -1 ) {
+					points = pp_amt / Main.invasionSizeStart;
+					if( points < 0 || points > pp_amt ) {
+						points = 0;
+						LogHelpers.Log( "Could not compute invasion kill reward (invasion total default reward: "+pp_amt+", invasion size: "+Main.invasionSizeStart+")" );
+					}
 				}
 			}
 
