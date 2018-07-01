@@ -39,11 +39,22 @@ namespace Rewards {
 				}
 			}
 		}
+		public static void ResetConfigFromDefaults() {
+			if( Main.netMode != 0 ) {
+				throw new Exception( "Cannot reset to default configs outside of single player." );
+			}
+
+			var config_data = new RewardsConfigData();
+			config_data.SetDefaults();
+
+			RewardsMod.Instance.ConfigJson.SetData( config_data );
+			RewardsMod.Instance.ConfigJson.SaveFile();
+		}
 
 
 
 		////////////////
-		
+
 		internal JsonConfig<RewardsConfigData> ConfigJson;
 		public RewardsConfigData Config { get { return ConfigJson.Data; } }
 
