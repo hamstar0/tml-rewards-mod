@@ -68,13 +68,10 @@ namespace Rewards.Items {
 			}
 
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
-			int kills;
 
 			foreach( int npc_type in npc_types ) {
-				if( myworld.Logic.WorldData.KilledNpcs.TryGetValue( npc_type, out kills ) ) {
-					if( kills > 0 ) {
-						return true;
-					}
+				if( myworld.Logic.WorldData.GetKillsOfNpc(npc_type) > 0 ) {
+					return true;
 				}
 			}
 			return false;

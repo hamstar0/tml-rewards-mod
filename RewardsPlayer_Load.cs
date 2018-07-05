@@ -5,7 +5,6 @@ using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;
-using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 

@@ -67,13 +67,13 @@ namespace Rewards.Logic {
 
 					if( NPCIdentityHelpers.NamesToIds.ContainsKey( blocking_npc_name ) ) {
 						int blocking_npc_type = NPCIdentityHelpers.NamesToIds[blocking_npc_name];
-
+						
 						if( this.KilledNpcs.ContainsKey( blocking_npc_type ) && this.KilledNpcs[blocking_npc_type] > 0 ) {
 							is_expired = true;
 						}
 					}
 				}
-
+				
 				if( this.KilledNpcs.ContainsKey( npc.type ) && this.KilledNpcs[npc.type] > 0 ) {
 					is_grind = true;
 				} else {
@@ -98,7 +98,7 @@ namespace Rewards.Logic {
 
 		public float RecordKillLocal( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
-
+			
 			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 				this.KilledNpcs[npc.type]++;
 			} else {
@@ -123,6 +123,16 @@ namespace Rewards.Logic {
 			if( Main.netMode == 2 ) {
 				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type );
 			}
+		}
+
+
+		////////////////
+
+		public int GetKillsOfNpc( int npc_type ) {
+			if( this.KilledNpcs.ContainsKey(npc_type) ) {
+				return this.KilledNpcs[ npc_type ];
+			}
+			return 0;
 		}
 	}
 }

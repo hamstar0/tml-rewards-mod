@@ -1,8 +1,10 @@
 ﻿using HamstarHelpers.Components.Config;
 using HamstarHelpers.DotNetHelpers;
 using HamstarHelpers.NPCHelpers;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 
 
@@ -13,10 +15,8 @@ namespace Rewards.Logic {
 
 
 		////////////////
-
-		private object MyLock = new object();
-
-		public IDictionary<int, int> KilledNpcs = new Dictionary<int, int>();
+		
+		public IDictionary<int, int> KilledNpcs = new ConcurrentDictionary<int, int>();
 		public int GoblinsConquered = 0;
 		public int FrostLegionConquered = 0;
 		public int PiratesConquered = 0;
@@ -26,14 +26,16 @@ namespace Rewards.Logic {
 
 		public float ProgressPoints = 0f;
 
-		internal ISet<VanillaInvasionType> CurrentEvents = new HashSet<VanillaInvasionType>();
+		internal IDictionary<VanillaInvasionType, byte> CurrentEvents = new ConcurrentDictionary<VanillaInvasionType, byte>();
 
 
 
 		////////////////
 
 		public KillData() {
-			this.CurrentEvents = new HashSet<VanillaInvasionType>( NPCInvasionHelpers.GetCurrentEventTypes() );
+			this.CurrentEvents = new ConcurrentDictionary<VanillaInvasionType, byte>(
+				NPCInvasionHelpers.GetCurrentEventTypes().Select( t => new KeyValuePair<VanillaInvasionType, byte>(t, 0) )
+			);
 		}
 
 		public void ClearKills() {
