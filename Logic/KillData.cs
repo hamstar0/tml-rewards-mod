@@ -14,6 +14,8 @@ namespace Rewards.Logic {
 
 		////////////////
 
+		private object MyLock = new object();
+
 		public IDictionary<int, int> KilledNpcs = new Dictionary<int, int>();
 		public int GoblinsConquered = 0;
 		public int FrostLegionConquered = 0;

@@ -84,6 +84,7 @@ namespace Rewards.Commands {
 			}
 
 			RewardsAPI.ShopAddPack( def );
+			
 			mymod.ConfigJson.SaveFile();
 
 			caller.Reply( "Pack "+pack_name+" added successfully.", Color.LimeGreen );

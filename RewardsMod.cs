@@ -46,7 +46,7 @@ namespace Rewards {
 
 			var config_data = new RewardsConfigData();
 			config_data.SetDefaults();
-
+			
 			RewardsMod.Instance.ConfigJson.SetData( config_data );
 			RewardsMod.Instance.ConfigJson.SaveFile();
 		}
@@ -110,6 +110,7 @@ namespace Rewards {
 					this.Config.UpdateToLatestVersion();
 
 					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
+					
 					this.ConfigJson.SaveFile();
 				}
 			} );

@@ -5,7 +5,7 @@ using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;
-using System;
+using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,18 +16,16 @@ namespace Rewards {
 			var mymod = (RewardsMod)this.mod;
 
 			if( !mymod.SuppressConfigAutoSaving ) {
-				try {
-					if( !mymod.ConfigJson.LoadFile() ) {
-						mymod.ConfigJson.SaveFile();
-						LogHelpers.Log( "Rewards config " + RewardsConfigData.ConfigVersion.ToString() + " created (ModPlayer.OnEnterWorld())." );
-					}
-				} catch( Exception ) {
+				if( !mymod.ConfigJson.LoadFile() ) {
+					//mymod.ConfigJson.SaveFile();
+					//LogHelpers.Log( "ModPlayer.OnEnterWorldForSingle - Rewards config " + RewardsConfigData.ConfigVersion.ToString() + " could not be loaded. Creating new config." );
+					LogHelpers.Log( "ModPlayer.OnEnterWorldForSingle - Rewards config could not be loaded." );
 					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
-			}
 
-			this.FinishKillDataSync();
-			this.FinishModSettingsSync();
+				this.FinishKillDataSync();
+				this.FinishModSettingsSync();
+			}
 		}
 
 		private void OnEnterWorldForClient() {
