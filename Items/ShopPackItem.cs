@@ -185,7 +185,8 @@ namespace Rewards.Items {
 		////////////////
 
 
-		public void OpenPack( RewardsMod mymod, Player player ) {
+		public void BuyAndOpenPack_Sync( Player player ) {
+			var mymod = RewardsMod.Instance;
 			ItemHelpers.DestroyItem( this.item );
 
 			if( this.Info == null ) { return; }
@@ -194,36 +195,20 @@ namespace Rewards.Items {
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new HamstarException( "ShopPackItem.OpenPack() - No player data for " + player.name ); }
+			if( data == null ) {
+				throw new HamstarException( "Rewards.ShopPackItem.OpenPack - No player data for " + player.name );
+			}
 			
 			if( !data.Spend( price ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
 			}
-			
+
+			ShopPackDefinition.OpenPack( player, info );
+
 			if( Main.netMode == 1 ) {
-				SpendRewardsProtocol.SendSpendToServer( price );
+				PackPurchaseProtocol.SendSpendToServer( info );
 			}
-
-			Item[] pack_items = new Item[ info.Items.Length ];
-			int i = 0;
-
-			foreach( ShopPackItemDefinition item_info in info.Items ) {
-				if( !item_info.Validate() || !item_info.IsAvailable() ) { continue; }
-
-				Item new_item = new Item();
-				new_item.SetDefaults( item_info.ItemType );
-
-				ItemHelpers.CreateItem( player.position, item_info.ItemType, item_info.Stack, new_item.width, new_item.height );
-
-				pack_items[i++] = new_item;
-			}
-
-			foreach( var hook in mymod.OnPointsSpentHooks ) {
-				hook( player, info.Name, info.Price, pack_items );
-			}
-
-			Main.PlaySound( SoundID.Coins );
 		}
 	}
 }

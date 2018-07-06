@@ -14,6 +14,8 @@ namespace Rewards.Logic {
 		internal static object MyLock = new object();
 
 
+		////////////////
+
 		internal IDictionary<string, KillData> PlayerData = new Dictionary<string, KillData>();
 		internal KillData WorldData = new KillData();
 

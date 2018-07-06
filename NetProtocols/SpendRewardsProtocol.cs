@@ -1,29 +1,28 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.DebugHelpers;
+using Rewards.Items;
 using Rewards.Logic;
 using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class SpendRewardsProtocol : PacketProtocol {
-		public static void SendSpendToServer( float price ) {
-			var protocol = new SpendRewardsProtocol( price );
+	class PackPurchaseProtocol : PacketProtocol {
+		public static void SendSpendToServer( ShopPackDefinition pack ) {
+			var protocol = new PackPurchaseProtocol( pack );
 			protocol.SendToServer( false );
 		}
 		
 		////////////////
 		
 
-		public float Reward;
+		public ShopPackDefinition Pack;
 
 
 		////////////////
-
-		public SpendRewardsProtocol() { }
-
-		private SpendRewardsProtocol( float reward ) {
-			this.Reward = reward;
+		
+		private PackPurchaseProtocol( ShopPackDefinition pack ) {
+			this.Pack = pack;
 		}
 
 		////////////////
@@ -31,18 +30,24 @@ namespace Rewards.NetProtocols {
 		protected override void ReceiveWithServer( int from_who ) {
 			this.ReceiveMe( Main.player[from_who] );
 		}
+
 		protected override void ReceiveWithClient() {
 			this.ReceiveMe( Main.player[Main.myPlayer] );
 		}
 		
+
 		private void ReceiveMe( Player player ) {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
+
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
-				throw new HamstarException( "SpendRewardsProtocol.ReceiveMe() - No player data for " + player.name );
+				throw new HamstarException( "Rewards.SpendRewardsProtocol.ReceiveMe - No player data for " + player.name );
 			}
 
-			data.Spend( (int)this.Reward );
+			data.Spend( (int)this.Pack.Price );
+
+			ShopPackDefinition.OpenPack( player, this.Pack );
 		}
 	}
 }

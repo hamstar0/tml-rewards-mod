@@ -3,14 +3,42 @@ using HamstarHelpers.ItemHelpers;
 using HamstarHelpers.NPCHelpers;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 
 
 namespace Rewards.Items {
 	public struct ShopPackDefinition {
+		public static void OpenPack( Player player, ShopPackDefinition pack_def ) {
+			Item[] pack_items = new Item[ pack_def.Items.Length ];
+			int i = 0;
+
+			foreach( ShopPackItemDefinition item_info in pack_def.Items ) {
+				if( !item_info.Validate() || !item_info.IsAvailable() ) { continue; }
+
+				Item new_item = new Item();
+				new_item.SetDefaults( item_info.ItemType );
+
+				ItemHelpers.CreateItem( player.position, item_info.ItemType, item_info.Stack, new_item.width, new_item.height );
+
+				pack_items[i++] = new_item;
+			}
+
+			foreach( var hook in RewardsMod.Instance.OnPointsSpentHooks ) {
+				hook( player, pack_def.Name, pack_def.Price, pack_items );
+			}
+
+			Main.PlaySound( SoundID.Coins );
+		}
+
+
+
+		////////////////
+
 		public string NeededBossKill;
 		public string Name;
 		public int Price;
 		public ShopPackItemDefinition[] Items;
+
 
 
 		////////////////
@@ -90,10 +118,12 @@ namespace Rewards.Items {
 			get {
 				if( this._ItemType <= 0 ) {
 					string name = this.Name == null ? "" : this.Name;
+
 					if( ItemIdentityHelpers.NamesToIds.ContainsKey( name ) ) {
 						this._ItemType = ItemIdentityHelpers.NamesToIds[ name ];
 					}
 				}
+
 				return this._ItemType;
 			}
 		}
