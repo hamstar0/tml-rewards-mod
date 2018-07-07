@@ -5,11 +5,11 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
-		public void AddKillRewardSynced( RewardsMod mymod, NPC npc ) {
+		public void AddKillReward_Synced( RewardsMod mymod, NPC npc ) {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards - WorldLogic.AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
+			if( mymod.Config.DebugModeKillInfo ) {
+				LogHelpers.Log( "Rewards.WorldLogic.AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();

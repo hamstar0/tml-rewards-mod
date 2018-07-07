@@ -77,7 +77,7 @@ namespace Rewards {
 			bool has_uid;
 			string player_uid = PlayerIdentityHelpers.GetUniqueId( this.player, out has_uid );
 			if( !has_uid ) {
-				LogHelpers.Log( "Rewards - RewardsPlayer.OnFinishEnterWorld - Could not enter world for player; no player id." );
+				LogHelpers.Log( "Rewards.RewardsPlayer.OnFinishEnterWorld - Could not enter world for player; no player id." );
 				return;
 			}
 
@@ -96,8 +96,8 @@ namespace Rewards {
 				Promises.ClearCustomPromise( "RewardsOnEnterWorld" );
 			} );
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards - RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
+			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+				LogHelpers.Log( "Rewards.RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
 			}
 		}
 
@@ -110,13 +110,13 @@ namespace Rewards {
 			bool has_uid;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
 			if( !has_uid ) {
-				LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
+				LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
 				return;
 			}
 
 			lock( WorldLogic.MyLock ) {
 				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {
-					LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
+					LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
 					return;
 				}
 				plr_data = myworld.Logic.PlayerData[uid];
@@ -124,8 +124,8 @@ namespace Rewards {
 
 			plr_data.Save( mymod, uid );
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards - RewardsPlayer.SaveKillData - uid: " + uid + ", data: " + plr_data.ToString() );
+			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+				LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - uid: " + uid + ", data: " + plr_data.ToString() );
 			}
 		}
 	}

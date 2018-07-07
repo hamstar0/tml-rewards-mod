@@ -112,7 +112,7 @@ namespace Rewards.Logic {
 			bool is_grind, is_expired;
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
 
-			if( mymod.Config.DebugModeInfo ) {
+			if( mymod.Config.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
 				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
 				LogHelpers.Log( " GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );

@@ -19,6 +19,7 @@ namespace Rewards {
 		public string VersionSinceUpdate = RewardsConfigData.ConfigVersion.ToString();
 
 		public bool DebugModeInfo = false;
+		public bool DebugModeKillInfo = false;
 		public bool DebugModeEnableCheats = false;
 		public bool DebugModeSaveKillsAsJson = false;
 

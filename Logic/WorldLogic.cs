@@ -56,14 +56,14 @@ namespace Rewards.Logic {
 		public void LoadKillData( RewardsMod mymod ) {
 			bool success = this.WorldData.Load( mymod, this.GetDataFileBaseName() );
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards - LoadKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
+			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+				LogHelpers.Log( "Rewards.WorldLogic.LoadKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
 		public void SaveKillData( RewardsMod mymod ) {
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards - SaveKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
+			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+				LogHelpers.Log( "Rewards.WorldLogicSaveKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}
 			
 			for( int i = 0; i < Main.player.Length; i++ ) {

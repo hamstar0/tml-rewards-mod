@@ -76,7 +76,7 @@ namespace Rewards {
 
 
 		public void CheckPack( ShopPackItem myitem ) {
-			myitem.BuyAndOpenPack_Sync( this.player );
+			myitem.BuyAndOpenPack_Synced( this.player );
 
 			if( myitem.IsClone( Main.mouseItem ) ) {
 				ItemHelpers.DestroyItem( Main.mouseItem );

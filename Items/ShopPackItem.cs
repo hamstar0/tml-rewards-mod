@@ -185,7 +185,7 @@ namespace Rewards.Items {
 		////////////////
 
 
-		public void BuyAndOpenPack_Sync( Player player ) {
+		public void BuyAndOpenPack_Synced( Player player ) {
 			var mymod = RewardsMod.Instance;
 			ItemHelpers.DestroyItem( this.item );
 
@@ -208,6 +208,10 @@ namespace Rewards.Items {
 
 			if( Main.netMode == 1 ) {
 				PackPurchaseProtocol.SendSpendToServer( info );
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Rewards.ShopPackItem.BuyAndOpenPack_Synced - Bought " + info.Name + " (" + info.Price + ")" );
 			}
 		}
 	}
