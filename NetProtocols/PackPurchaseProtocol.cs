@@ -21,7 +21,7 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected PackPurchaseProtocol() : base() { }
+		public PackPurchaseProtocol() : base() { }
 
 		private PackPurchaseProtocol( ShopPackDefinition pack ) {
 			this.Pack = pack;

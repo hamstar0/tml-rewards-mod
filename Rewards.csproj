@@ -51,7 +51,7 @@
     <Compile Include="Logic\KillData_Update.cs" />
     <Compile Include="Logic\WorldLogic_Kills.cs" />
     <Compile Include="NetProtocols\PlayerSaveProtocol.cs" />
-    <Compile Include="NetProtocols\SpendRewardsProtocol.cs" />
+    <Compile Include="NetProtocols\PackPurchaseProtocol.cs" />
     <Compile Include="NetProtocols\KillRewardProtocol.cs" />
     <Compile Include="NetProtocols\KillDataProtocol.cs" />
     <Compile Include="NetProtocols\ModSettingsProtocol.cs" />
