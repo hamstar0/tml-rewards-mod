@@ -4,7 +4,6 @@ using HamstarHelpers.NPCHelpers;
 using HamstarHelpers.Services.Promises;
 using Rewards.Items;
 using System.Collections.Generic;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 

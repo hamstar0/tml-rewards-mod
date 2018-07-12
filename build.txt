@@ -1,7 +1,7 @@
 author = hamstar
-version = 1.5.1.8
+version = 1.5.1.9
 displayName = Rewards
-modReferences = HamstarHelpers@1.6.5.3
+modReferences = HamstarHelpers@1.6.6
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 includePDB = true
 languageVersion = 6
