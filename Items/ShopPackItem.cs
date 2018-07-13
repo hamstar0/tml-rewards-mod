@@ -203,10 +203,10 @@ namespace Rewards.Items {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				return;
 			}
-
-			ShopPackDefinition.OpenPack( player, info );
-
-			if( Main.netMode == 1 ) {
+			
+			if( Main.netMode == 0 ) {
+				ShopPackDefinition.OpenPack( player, info );
+			} else if( Main.netMode == 1 ) {
 				PackPurchaseProtocol.SendSpendToServer( info );
 			}
 
