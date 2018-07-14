@@ -30,11 +30,11 @@ namespace Rewards.NetProtocols {
 		////////////////
 
 		protected override void ReceiveWithServer( int from_who ) {
-			this.ReceiveMe( Main.player[from_who] );
+			this.ReceiveMe( Main.player[ from_who ] );
 		}
 
 		protected override void ReceiveWithClient() {
-			this.ReceiveMe( Main.player[Main.myPlayer] );
+			this.ReceiveMe( Main.LocalPlayer );
 		}
 		
 
@@ -49,7 +49,15 @@ namespace Rewards.NetProtocols {
 
 			data.Spend( (int)this.Pack.Price );
 
-			ShopPackDefinition.OpenPack( player, this.Pack );
+			Item[] items = ShopPackDefinition.OpenPack( player, this.Pack );
+
+			foreach( var hook in RewardsMod.Instance.OnPointsSpentHooks ) {
+				hook( player, this.Pack.Name, this.Pack.Price, items );
+			}
+
+			if( mymod.Config.DebugModeInfo ) {
+				LogHelpers.Log( "Rewards.SpendRewardsProtocol.ReceiveMe - Purchase made for "+player.name+" of "+this.Pack.Name+" ("+this.Pack.Price+")" );
+			}
 		}
 	}
 }

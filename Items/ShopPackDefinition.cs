@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace Rewards.Items {
 	public struct ShopPackDefinition {
-		public static void OpenPack( Player player, ShopPackDefinition pack_def ) {
+		public static Item[] OpenPack( Player player, ShopPackDefinition pack_def ) {
 			Item[] pack_items = new Item[ pack_def.Items.Length ];
 			int i = 0;
 
@@ -23,11 +23,9 @@ namespace Rewards.Items {
 				pack_items[i++] = new_item;
 			}
 
-			foreach( var hook in RewardsMod.Instance.OnPointsSpentHooks ) {
-				hook( player, pack_def.Name, pack_def.Price, pack_items );
-			}
-
 			Main.PlaySound( SoundID.Coins );
+
+			return pack_items;
 		}
 
 

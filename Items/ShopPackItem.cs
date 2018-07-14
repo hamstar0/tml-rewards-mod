@@ -205,13 +205,17 @@ namespace Rewards.Items {
 			}
 			
 			if( Main.netMode == 0 ) {
-				ShopPackDefinition.OpenPack( player, info );
+				Item[] items = ShopPackDefinition.OpenPack( player, info );
+				
+				foreach( var hook in RewardsMod.Instance.OnPointsSpentHooks ) {
+					hook( player, info.Name, info.Price, items );
+				}
 			} else if( Main.netMode == 1 ) {
 				PackPurchaseProtocol.SendSpendToServer( info );
 			}
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards.ShopPackItem.BuyAndOpenPack_Synced - Bought " + info.Name + " (" + info.Price + ")" );
+				LogHelpers.Log( "Rewards.ShopPackItem.BuyAndOpenPack_Synced - "+player.name+" bought " + info.Name + " (" + info.Price + ")" );
 			}
 		}
 	}
