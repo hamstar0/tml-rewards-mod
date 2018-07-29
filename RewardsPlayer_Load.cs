@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.DebugHelpers;
 using HamstarHelpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
@@ -11,14 +12,13 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
-		private void OnEnterWorldForSingle() {
+		private void OnPlayerEnterWorldForSingle() {
 			var mymod = (RewardsMod)this.mod;
 
 			if( !mymod.SuppressConfigAutoSaving ) {
 				if( !mymod.ConfigJson.LoadFile() ) {
 					//mymod.ConfigJson.SaveFile();
-					//LogHelpers.Log( "ModPlayer.OnEnterWorldForSingle - Rewards config " + RewardsConfigData.ConfigVersion.ToString() + " could not be loaded. Creating new config." );
-					LogHelpers.Log( "ModPlayer.OnEnterWorldForSingle - Rewards config could not be loaded." );
+					LogHelpers.Log( "RewardsPlayer.OnPlayerEnterWorldForSingle - Rewards config could not be loaded." );
 					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
 
@@ -27,13 +27,13 @@ namespace Rewards {
 			}
 		}
 
-		private void OnEnterWorldForClient() {
+		private void OnPlayerEnterWorldForClient() {
 			PacketProtocol.QuickRequestToServer<KillDataProtocol>();
 			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
 		}
 
-		private void OnEnterWorldForServer() {
-			this.HasEnteredWorld = true;
+		private void OnPlayerEnterWorldForServer() {
+			this.IsFullySynced = true;
 			this.HasKillData = true;
 			this.HasModSettings = true;
 		}
@@ -55,52 +55,82 @@ namespace Rewards {
 
 		////////////////
 
-		public bool IsSynced() {
+		public bool HasEachSyncingOccurred() {
 			return this.HasModSettings && this.HasKillData;
 		}
 
 		private void CheckSync() {
-			if( !this.HasEnteredWorld && this.IsSynced() ) {
-				this.HasEnteredWorld = true;
+			if( !this.IsFullySynced && this.HasEachSyncingOccurred() ) {
+				this.IsFullySynced = true;
 
-				this.OnFinishEnterWorld();
+				if( Main.netMode == 0 ) {
+					this.OnFinishPlayerEnterWorldForSingle();
+				} else if( Main.netMode == 1 ) {
+					this.OnFinishPlayerEnterWorldForClient();
+				} else {
+					throw new HamstarException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
+				}
 			}
 		}
 
 
 		////////////////
 
-		public void OnFinishEnterWorld() {
+		public void OnFinishPlayerEnterWorldForSingle() {
+			this.OnFinishPlayerEnterWorldForHost();
+			this.OnFinishPlayerEnterWorldForAny();
+		}
+
+		public void OnFinishPlayerEnterWorldForClient() {
+			this.OnFinishPlayerEnterWorldForAny();
+		}
+
+		public void OnFinishPlayerEnterWorldForServer() {
+			this.OnFinishPlayerEnterWorldForHost();
+			this.OnFinishPlayerEnterWorldForAny();
+		}
+
+
+		private void OnFinishPlayerEnterWorldForHost() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
+			bool success = false;
 
 			bool has_uid;
 			string player_uid = PlayerIdentityHelpers.GetUniqueId( this.player, out has_uid );
 			if( !has_uid ) {
-				LogHelpers.Log( "Rewards.RewardsPlayer.OnFinishEnterWorld - Could not enter world for player; no player id." );
+				LogHelpers.Log( "!Rewards.RewardsPlayer.OnFinishEnterWorldForHost - Could not enter world for player; no player id." );
 				return;
 			}
 
 			KillData plr_data = myworld.Logic.GetPlayerData( this.player );
-			if( plr_data == null ) { return; }
+			if( plr_data == null ) {
+				LogHelpers.Log( "!Rewards.RewardsPlayer.OnFinishEnterWorldForHost - Could not get player " + this.player.name + "'s (" + this.player.whoAmI + ") kill data." );
+				return;
+			}
 			
-			bool success = plr_data.Load( mymod, player_uid );
+			success = plr_data.Load( mymod, player_uid );
 			if( !success ) {
 				if( KillData.CanReceiveOtherPlayerKillRewards( mymod ) ) {
 					plr_data.AddToMe( mymod, myworld.Logic.WorldData );
 				}
 			}
 
-			Promises.TriggerCustomPromise( "RewardsOnEnterWorld" );
-			Promises.AddWorldUnloadOncePromise( () => {
-				Promises.ClearCustomPromise( "RewardsOnEnterWorld" );
-			} );
-
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.RewardsPlayer.LoadKillData - who: "+this.player.whoAmI+" success: " + success + ", " + plr_data.ToString() );
+				LogHelpers.Log( "Rewards.RewardsPlayer.OnFinishEnterWorldForHost - who: " + this.player.whoAmI + " success: " + success + ", " + plr_data.ToString() );
 			}
 		}
 
+		private void OnFinishPlayerEnterWorldForAny() {
+			Promises.TriggerCustomPromise( "RewardsOnEnterWorld" );
+
+			Promises.AddWorldUnloadOncePromise( () => {
+				Promises.ClearCustomPromise( "RewardsOnEnterWorld" );
+			} );
+		}
+
+
+		////////////////
 
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
@@ -110,13 +140,13 @@ namespace Rewards {
 			bool has_uid;
 			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
 			if( !has_uid ) {
-				LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
+				LogHelpers.Log( "!Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
 				return;
 			}
 
 			lock( WorldLogic.MyLock ) {
 				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {
-					LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
+					LogHelpers.Log( "!Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
 					return;
 				}
 				plr_data = myworld.Logic.PlayerData[uid];

@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
-		public bool HasEnteredWorld { get; private set; }
+		public bool IsFullySynced { get; private set; }
 		public bool HasKillData { get; private set; }
 		public bool HasModSettings { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Rewards {
 		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
-			this.HasEnteredWorld = false;
+			this.IsFullySynced = false;
 			this.HasKillData = false;
 			this.HasModSettings = false;
 		}
@@ -30,7 +30,7 @@ namespace Rewards {
 
 			if( Main.netMode == 2 ) {
 				if( to_who == -1 && from_who == this.player.whoAmI ) {
-					this.OnEnterWorldForServer();
+					this.OnPlayerEnterWorldForServer();
 				}
 			}
 		}
@@ -41,10 +41,10 @@ namespace Rewards {
 			var mymod = (RewardsMod)this.mod;
 			
 			if( Main.netMode == 0 ) {
-				this.OnEnterWorldForSingle();
+				this.OnPlayerEnterWorldForSingle();
 			}
 			if( Main.netMode == 1 ) {
-				this.OnEnterWorldForClient();
+				this.OnPlayerEnterWorldForClient();
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Rewards {
 
 		public override void PreUpdate() {
 			if( Main.myPlayer != this.player.whoAmI ) { return; }
-			if( !this.IsSynced() ) { return; }
+			if( !this.HasEachSyncingOccurred() ) { return; }
 
 			int pack_type = this.mod.ItemType<ShopPackItem>();
 

@@ -9,6 +9,9 @@ namespace Rewards.NetProtocols {
 		public KillData WorldData;
 		public KillData PlayerData;
 
+
+		////////////////
+
 		public KillDataProtocol() { }
 		public override void SetClientDefaults() { }
 		public override void SetServerDefaults() { }
@@ -28,13 +31,19 @@ namespace Rewards.NetProtocols {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
 			Player player = Main.player[ from_who ];
-			if( player == null ) { return true; }
+			if( player == null || !player.active ) {
+				LogHelpers.Log( "!Rewards.KillDataProtocol.ReceiveRequestWithServer - Invalid player by whoAmI " + from_who );
+				return true;
+			}
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			myplayer.OnFinishEnterWorld();
+			myplayer.OnFinishPlayerEnterWorldForServer();
 
 			var plr_kill_data = myworld.Logic.GetPlayerData( player );
-			if( plr_kill_data == null ) { return true; }
+			if( plr_kill_data == null ) {
+				LogHelpers.Log( "!Rewards.KillDataProtocol.ReceiveRequestWithServer - Could not get player "+player.name+"'s ("+from_who+") kill data." );
+				return true;
+			}
 			
 			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
 			this.WorldData = myworld.Logic.WorldData;
