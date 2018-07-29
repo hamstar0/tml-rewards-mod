@@ -1,56 +1,17 @@
 using HamstarHelpers.Components.Config;
-using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Services.Promises;
-using HamstarHelpers.TmlHelpers;
-using Rewards.Logic;
 using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 
 namespace Rewards {
-	class RewardsMod : Mod {
+	partial class RewardsMod : Mod {
 		public static RewardsMod Instance { get; private set; }
-
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-rewards-mod"; } }
-
-		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + RewardsConfigData.ConfigFileName; }
-		}
-		public static void ReloadConfigFromFile() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reload configs outside of single player." );
-			}
-			if( RewardsMod.Instance != null ) {
-				var mymod = RewardsMod.Instance;
-
-				if( mymod.SuppressConfigAutoSaving ) {
-					Main.NewText( "Rewards config settings auto saving suppressed." );
-					return;
-				}
-				if( !mymod.ConfigJson.LoadFile() ) {
-					mymod.ConfigJson.SaveFile();
-				}
-			}
-		}
-		public static void ResetConfigFromDefaults() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reset to default configs outside of single player." );
-			}
-
-			var config_data = new RewardsConfigData();
-			config_data.SetDefaults();
-			
-			RewardsMod.Instance.ConfigJson.SetData( config_data );
-			RewardsMod.Instance.ConfigJson.SaveFile();
-		}
-
+		
 
 
 		////////////////
@@ -148,38 +109,6 @@ namespace Rewards {
 			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
 
 			return RewardsAPI.Call( call_type, new_args );
-		}
-
-
-		////////////////
-		
-		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
-			if( idx != -1 ) {
-				GameInterfaceDrawMethod draw_method = delegate {
-					if( !LoadHelpers.IsWorldSafelyBeingPlayed() ) { return true; }
-
-					try {
-						var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
-						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
-
-						if( data == null ) {
-							throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name );
-						}
-
-						if( data.CanDrawPoints( RewardsMod.Instance ) ) {
-							data.DrawPointScore( RewardsMod.Instance, Main.spriteBatch );
-						}
-					} catch( Exception ) { }
-
-					return true;
-				};
-
-				var interface_layer = new LegacyGameInterfaceLayer( "Rewards: Points", draw_method,
-					InterfaceScaleType.UI );
-
-				layers.Insert( idx, interface_layer );
-			}
 		}
 	}
 }

@@ -57,6 +57,8 @@
     <Compile Include="NetProtocols\ModSettingsProtocol.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />
+    <Compile Include="RewardsMod_Draw.cs" />
+    <Compile Include="RewardsMod_Meta.cs" />
     <Compile Include="RewardsMod.cs" />
     <Compile Include="RewardsNPC.cs" />
     <Compile Include="RewardsPlayer_Load.cs" />
@@ -107,6 +109,6 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\Terraria.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

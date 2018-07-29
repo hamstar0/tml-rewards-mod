@@ -47,9 +47,9 @@ namespace Rewards.NetProtocols {
 			npc.SetDefaults( this.NpcType );
 
 			bool is_grind, is_expired;
-			float reward = data.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
+			float reward = data.RecordKill_NoSync( mymod, npc, out is_grind, out is_expired );
 
-			data.AddRewardForPlayerNoSync( RewardsMod.Instance, Main.LocalPlayer, is_grind, is_expired, reward );
+			data.AddRewardForPlayer( mymod, Main.LocalPlayer, is_grind, is_expired, reward );
 		}
 	}
 }

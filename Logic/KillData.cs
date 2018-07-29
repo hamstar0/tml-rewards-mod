@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.DotNetHelpers;
+using HamstarHelpers.MiscHelpers;
 using HamstarHelpers.NPCHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -74,20 +74,14 @@ namespace Rewards.Logic {
 		////////////////
 
 		public bool Load( RewardsMod mymod, string base_file_name ) {
-			string dir_path = Main.SavePath + Path.DirectorySeparatorChar + KillData.DataFileFolder;
-			string file_path = dir_path + Path.DirectorySeparatorChar + base_file_name + ".dat";
 			KillData data;
 			bool success = false;
 
 			try {
-				Directory.CreateDirectory( dir_path );
-
 				if( mymod.Config.DebugModeSaveKillsAsJson ) {
-					var json_file = new JsonConfig<KillData>( base_file_name + ".json", KillData.DataFileFolder );
-					success = json_file.LoadFile();
-					data = json_file.Data;
+					data = DataFileHelpers.LoadJson<KillData>( mymod, base_file_name, out success );
 				} else {
-					data = FileHelpers.LoadBinaryFile<KillData>( file_path, false );
+					data = DataFileHelpers.LoadBinary<KillData>( mymod, base_file_name, false );
 					success = data != null;
 				}
 
@@ -102,28 +96,21 @@ namespace Rewards.Logic {
 					this.ProgressPoints = data.ProgressPoints;
 				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to load file: "+file_path, e );
+				throw new IOException( "Failed to load file: "+ base_file_name, e );
 			}
 
 			return success;
 		}
 
 		public void Save( RewardsMod mymod, string base_file_name ) {
-			string file_name = base_file_name + ".dat";
-			string dir_path = Main.SavePath + Path.DirectorySeparatorChar + KillData.DataFileFolder;
-			string file_path = dir_path + Path.DirectorySeparatorChar + file_name;
-
 			try {
-				Directory.CreateDirectory( dir_path );
-
 				if( mymod.Config.DebugModeSaveKillsAsJson ) {
-					var json_file = new JsonConfig<KillData>( base_file_name + ".json", KillData.DataFileFolder, this );
-					json_file.SaveFile();
+					DataFileHelpers.SaveAsJson<KillData>( mymod, base_file_name, this );
 				} else {
-					FileHelpers.SaveBinaryFile<KillData>( this, file_path, false, false );
+					DataFileHelpers.SaveAsBinary<KillData>( mymod, base_file_name, false, this );
 				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to save file: "+file_path, e );
+				throw new IOException( "Failed to save file: "+ base_file_name, e );
 			}
 		}
 

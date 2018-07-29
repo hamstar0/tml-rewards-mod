@@ -96,7 +96,7 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public float RecordKillLocal( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
+		public float RecordKill_NoSync( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
 			
 			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
@@ -108,7 +108,7 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKillSynced( RewardsMod mymod, Player to_player, NPC npc ) {
+		public void RewardKill_Synced( RewardsMod mymod, Player to_player, NPC npc ) {
 			bool is_grind, is_expired;
 			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
 
@@ -117,8 +117,8 @@ namespace Rewards.Logic {
 				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
 				LogHelpers.Log( " GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
 			}
-
-			this.AddRewardForPlayerNoSync( mymod, to_player, is_grind, is_expired, reward );
+			
+			this.AddRewardForPlayer( mymod, to_player, is_grind, is_expired, reward );
 
 			if( Main.netMode == 2 ) {
 				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type );

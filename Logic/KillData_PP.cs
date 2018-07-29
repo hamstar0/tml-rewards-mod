@@ -8,7 +8,7 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayerNoSync( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
+		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
 			if( is_expired ) {
 				return;
 			}
@@ -18,7 +18,7 @@ namespace Rewards.Logic {
 			}
 
 			if( Main.netMode != 2 && mymod.Config.ShowPointsPopups ) {
-				if( Math.Abs(reward) > 0.01f ) {
+				if( Math.Abs(reward) >= 0.01f ) {
 					string msg = "+" + Math.Round( reward, 2 ) + " PP";
 					Color color = reward > 0 ?
 						is_grind ? Color.DarkGray : Color.GreenYellow :

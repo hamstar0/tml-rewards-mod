@@ -22,31 +22,31 @@ namespace Rewards.Logic {
 						Player to_player = Main.player[i];
 						if( to_player == null || !to_player.active ) { continue; }
 
-						this.AddKillRewardForPlayer( mymod, to_player, npc );
+						this.AddKillRewardForPlayer_Synced( mymod, to_player, npc );
 					}
 				} else {
 					Player to_player = Main.player[npc.lastInteraction];
 					if( to_player != null && to_player.active ) {
-						this.AddKillRewardForPlayer( mymod, Main.player[npc.lastInteraction], npc );
+						this.AddKillRewardForPlayer_Synced( mymod, Main.player[npc.lastInteraction], npc );
 					}
 				}
 			} else if( Main.netMode == 0 ) {
-				this.AddKillRewardForPlayer( mymod, Main.LocalPlayer, npc );
+				this.AddKillRewardForPlayer_Synced( mymod, Main.LocalPlayer, npc );
 			}
 
 			// Also for the world
 			bool _;
-			this.WorldData.RecordKillLocal( mymod, npc, out _, out _ );
+			this.WorldData.RecordKill_NoSync( mymod, npc, out _, out _ );
 		}
 
 
-		private void AddKillRewardForPlayer( RewardsMod mymod, Player to_player, NPC npc ) {
+		private void AddKillRewardForPlayer_Synced( RewardsMod mymod, Player to_player, NPC npc ) {
 			bool _;
 			KillData data = this.GetPlayerData( to_player );
 			if( data == null ) { return; }
 
-			data.RewardKillSynced( mymod, to_player, npc );
-			data.RecordKillLocal( mymod, npc, out _, out _ );
+			data.RewardKill_Synced( mymod, to_player, npc );
+			data.RecordKill_NoSync( mymod, npc, out _, out _ );
 		}
 	}
 }
