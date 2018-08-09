@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.TmlHelpers.CommandsHelpers;
+﻿using HamstarHelpers.Helpers.TmlHelpers.CommandsHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System.Collections.Generic;

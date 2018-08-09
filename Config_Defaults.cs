@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.ItemHelpers;
-using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Helpers.ItemHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using HamstarHelpers.Services.Promises;
 using Rewards.Items;
 using System.Collections.Generic;

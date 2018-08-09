@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;

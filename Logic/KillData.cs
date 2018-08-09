@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.MiscHelpers;
-using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Helpers.MiscHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;

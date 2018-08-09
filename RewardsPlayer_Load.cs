@@ -1,7 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.PlayerHelpers;
+using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.Promises;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
@@ -12,6 +12,21 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
+		internal readonly static object MyValidatorKey;
+		public readonly static PromiseValidator EnterWorldValidator;
+
+
+		////////////////
+
+		static RewardsPlayer() {
+			RewardsPlayer.MyValidatorKey = new object();
+			RewardsPlayer.EnterWorldValidator = new PromiseValidator( RewardsPlayer.MyValidatorKey );
+		}
+
+
+
+		////////////////
+
 		private void OnPlayerEnterWorldForSingle() {
 			var mymod = (RewardsMod)this.mod;
 
@@ -122,10 +137,10 @@ namespace Rewards {
 		}
 
 		private void OnFinishPlayerEnterWorldForAny() {
-			Promises.TriggerCustomPromise( "RewardsOnEnterWorld" );
+			Promises.TriggerValidatedPromise( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 
 			Promises.AddWorldUnloadOncePromise( () => {
-				Promises.ClearCustomPromise( "RewardsOnEnterWorld" );
+				Promises.ClearValidatedPromise( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 			} );
 		}
 

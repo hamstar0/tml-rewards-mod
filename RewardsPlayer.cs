@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.ItemHelpers;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -36,8 +36,9 @@ namespace Rewards {
 		}
 
 		public override void OnEnterWorld( Player player ) {
-			if( player.whoAmI != Main.myPlayer ) { return; }
-			
+			if( player.whoAmI == Main.myPlayer ) { return; }
+			if( this.player.whoAmI == Main.myPlayer ) { return; }
+
 			var mymod = (RewardsMod)this.mod;
 			
 			if( Main.netMode == 0 ) {

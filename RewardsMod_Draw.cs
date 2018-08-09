@@ -1,5 +1,5 @@
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.TmlHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Rewards.Logic;
 using System;
 using System.Collections.Generic;

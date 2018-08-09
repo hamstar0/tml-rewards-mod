@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Items;
 using Rewards.Logic;
 using Terraria;
@@ -18,10 +19,10 @@ namespace Rewards.NetProtocols {
 
 		public ShopPackDefinition Pack;
 
-
 		////////////////
 
-		public PackPurchaseProtocol() : base() { }
+
+		private PackPurchaseProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
 
 		private PackPurchaseProtocol( ShopPackDefinition pack ) {
 			this.Pack = pack;

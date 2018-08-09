@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.NPCHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NPCs;

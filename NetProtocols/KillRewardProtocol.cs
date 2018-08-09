@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Logic;
 using Terraria;
 
@@ -25,6 +26,8 @@ namespace Rewards.NetProtocols {
 
 
 		////////////////
+
+		private KillRewardProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
 
 		public KillRewardProtocol() { }
 

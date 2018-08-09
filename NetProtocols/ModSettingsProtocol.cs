@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Terraria;
 
 
@@ -7,11 +8,16 @@ namespace Rewards.NetProtocols {
 	class ModSettingsProtocol : PacketProtocol {
 		public RewardsConfigData Data;
 
+
 		////////////////
 
-		public override void SetServerDefaults() {
+		private ModSettingsProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+
+		protected override void SetServerDefaults() {
 			this.Data = RewardsMod.Instance.Config;
 		}
+
+		////////////////
 
 		protected override void ReceiveWithClient() {
 			RewardsMod.Instance.ConfigJson.SetData( this.Data );

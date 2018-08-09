@@ -1,8 +1,8 @@
-﻿using HamstarHelpers.DebugHelpers;
-using HamstarHelpers.DotNetHelpers;
-using HamstarHelpers.PlayerHelpers;
-using HamstarHelpers.NPCHelpers;
-using HamstarHelpers.WorldHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.DotNetHelpers;
+using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
+using HamstarHelpers.Helpers.WorldHelpers;
 using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;

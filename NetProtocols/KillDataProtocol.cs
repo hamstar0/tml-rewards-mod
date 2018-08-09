@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.DebugHelpers;
+using HamstarHelpers.Components.Network.Data;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Logic;
 using Terraria;
 
@@ -12,9 +13,12 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
+		private KillDataProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+		
 		public KillDataProtocol() { }
-		public override void SetClientDefaults() { }
-		public override void SetServerDefaults() { }
+
+		protected override void SetClientDefaults() { }
+		protected override void SetServerDefaults() { }
 
 
 		////////////////
