@@ -15,8 +15,8 @@ namespace Rewards.Commands {
 				return CommandType.Console;
 			}
 		}
-		public override string Command { get { return "rewardscheatstoggle"; } }
-		public override string Usage { get { return "/rewardscheatstoggle"; } }
+		public override string Command { get { return "rewards-cheats-toggle"; } }
+		public override string Usage { get { return "/"+this.Command; } }
 		public override string Description { get { return "Toggles cheat mode on or off. Applies for all players."; } }
 
 

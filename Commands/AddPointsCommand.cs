@@ -8,8 +8,8 @@ using Terraria.ModLoader;
 namespace Rewards.Commands {
 	class AddPointsCommand : ModCommand {
 		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rewardsaddpoints"; } }
-		public override string Usage { get { return "/rewardsaddpoints 100"; } }
+		public override string Command { get { return "rewards-add-points"; } }
+		public override string Usage { get { return "/"+this.Command+" 100"; } }
 		public override string Description { get { return "Adds the specified amount of progress points."; } }
 
 
