@@ -11,7 +11,7 @@ namespace Rewards.Logic {
 			if( mymod.Config.DebugModeKillInfo ) {
 				LogHelpers.Log( "Rewards.WorldLogic.AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
-
+			
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
 			bool to_all = KillData.CanReceiveOtherPlayerKillRewards( mymod );

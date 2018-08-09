@@ -8,7 +8,7 @@ namespace Rewards {
 			if( Main.netMode == 1 ) { return; }	// Redundant?
 			
 			var myworld = this.mod.GetModWorld<RewardsWorld>();
-			if( myworld.Logic != null ) { return; }
+			if( myworld.Logic == null ) { return; }
 
 			myworld.Logic.AddKillReward_Synced( (RewardsMod)this.mod, npc );
 		}
