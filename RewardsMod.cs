@@ -1,5 +1,6 @@
 using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Network;
+using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
 using Rewards.NetProtocols;
 using System;
@@ -58,6 +59,18 @@ namespace Rewards {
 
 		public override void Load() {
 			this.LoadConfigs();
+
+			DataDumper.SetDumpSource( "Rewards", () => {
+				if( Main.netMode == 2 || Main.myPlayer <= 0 || Main.myPlayer >= Main.player.Length || Main.LocalPlayer == null || !Main.LocalPlayer.active ) {
+					return "Invalid player data";
+				}
+
+				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+
+				return "IsFullySynced: " + myplayer.IsFullySynced
+					+ ", HasKillData: " + myplayer.HasKillData
+					+ ", HasModSettings: " + myplayer.HasModSettings;
+			} );
 		}
 
 
