@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace Rewards.Commands {
 	class ShopRemoveLastCommand : ModCommand {
 		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rewards-shop-remove-last"; } }
+		public override string Command { get { return "rew-shop-remove-last"; } }
 		public override string Usage { get { return "/" + this.Command; } }
 		public override string Description { get { return "Removes the last listed item in the Wayfarer's shop."; } }
 
