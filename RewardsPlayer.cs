@@ -31,7 +31,9 @@ namespace Rewards {
 
 			if( Main.netMode == 2 ) {
 				if( to_who == -1 && from_who == this.player.whoAmI ) {
-					this.OnPlayerEnterWorldForServer();
+					Promises.AddSafeWorldLoadOncePromise( () => {
+						this.OnServerConnect( Main.player[from_who] );
+					} );
 				}
 			}
 		}
@@ -43,11 +45,11 @@ namespace Rewards {
 			var mymod = (RewardsMod)this.mod;
 			
 			if( Main.netMode == 0 ) {
-				this.OnPlayerEnterWorldForSingle();
+				this.OnSingleConnect();
 			}
 			if( Main.netMode == 1 ) {
 				Promises.AddSafeWorldLoadOncePromise( () => {
-					this.OnPlayerEnterWorldForClient();
+					this.OnCurrentClientConnect();
 				} );
 			}
 		}
