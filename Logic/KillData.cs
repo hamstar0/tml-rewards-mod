@@ -5,17 +5,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Terraria;
 
 
 namespace Rewards.Logic {
 	partial class KillData {
-		private static string DataFileFolder = "Rewards";
-
-
-
-		////////////////
-		
 		public IDictionary<int, int> KilledNpcs = new ConcurrentDictionary<int, int>();
 		public int GoblinsConquered = 0;
 		public int FrostLegionConquered = 0;

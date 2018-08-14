@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.ItemHelpers;
+using HamstarHelpers.Services.Promises;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -45,7 +46,9 @@ namespace Rewards {
 				this.OnPlayerEnterWorldForSingle();
 			}
 			if( Main.netMode == 1 ) {
-				this.OnPlayerEnterWorldForClient();
+				Promises.AddSafeWorldLoadEachPromise( () => {
+					this.OnPlayerEnterWorldForClient();
+				} );
 			}
 		}
 
