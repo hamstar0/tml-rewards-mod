@@ -46,7 +46,7 @@ namespace Rewards {
 				this.OnPlayerEnterWorldForSingle();
 			}
 			if( Main.netMode == 1 ) {
-				Promises.AddSafeWorldLoadEachPromise( () => {
+				Promises.AddSafeWorldLoadOncePromise( () => {
 					this.OnPlayerEnterWorldForClient();
 				} );
 			}
