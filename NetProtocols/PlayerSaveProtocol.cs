@@ -20,7 +20,7 @@ namespace Rewards.NetProtocols {
 			string uid = PlayerIdentityHelpers.GetUniqueId( Main.LocalPlayer, out has_uid );
 
 			if( !has_uid ) {
-				throw new HamstarException( "No uid for local player " + Main.LocalPlayer.name );
+				throw new HamstarException( "!Rewards.NetProtocols.PlayerSaveProtocol - No uid for local player " + Main.LocalPlayer.name );
 			}
 
 			this.Uid = uid;

@@ -32,7 +32,7 @@ namespace Rewards {
 			if( Main.netMode == 2 ) {
 				if( to_who == -1 && from_who == this.player.whoAmI ) {
 					Promises.AddSafeWorldLoadOncePromise( () => {
-						this.OnServerConnect( Main.player[from_who] );
+						this.OnConnectServer( Main.player[from_who] );
 					} );
 				}
 			}
@@ -43,17 +43,15 @@ namespace Rewards {
 			if( this.player.whoAmI != Main.myPlayer ) { return; }
 
 			var mymod = (RewardsMod)this.mod;
-			
-			if( Main.netMode == 0 ) {
-				Promises.AddCurrentPlayerLoadOncePromise( () => {
-					this.OnSingleConnect();
-				} );
-			}
-			if( Main.netMode == 1 ) {
-				Promises.AddCurrentPlayerLoadOncePromise( () => {
-					this.OnCurrentClientConnect();
-				} );
-			}
+
+			Promises.AddWorldInPlayOncePromise( () => {
+				if( Main.netMode == 0 ) {
+					this.OnConnectSingle();
+				}
+				if( Main.netMode == 1 ) {
+					this.OnConnectCurrentClient();
+				}
+			} );
 		}
 
 

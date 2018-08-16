@@ -7,8 +7,9 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillDataProtocol : PacketProtocol {
-		public KillData WorldData;
-		public KillData PlayerData;
+		public KillData WorldData = null;
+		public KillData PlayerData = null;
+
 
 
 		////////////////
@@ -18,9 +19,32 @@ namespace Rewards.NetProtocols {
 		public KillDataProtocol() { }
 
 		protected override void SetClientDefaults() { }
-		protected override void SetServerDefaults() { }
 
+		protected override void SetServerDefaults( int to_who ) {
+			Player player = Main.player[to_who];
+			if( player == null || !player.active ) {
+				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Invalid player by whoAmI " + to_who );
+				return;
+			}
 
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myplayer = player.GetModPlayer<RewardsPlayer>();
+
+			myplayer.OnFinishPlayerEnterWorldForServer();
+
+			var plr_kill_data = myworld.Logic.GetPlayerData( player );
+			if( plr_kill_data == null ) {
+				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Could not get player " + player.name + "'s (" + to_who + ") kill data." );
+				return;
+			}
+
+			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
+			this.WorldData = myworld.Logic.WorldData;
+			this.PlayerData = plr_kill_data;
+		}
+
+		
 		////////////////
 
 		internal KillDataProtocol( KillData wld_data, KillData plr_data ) {
@@ -28,31 +52,12 @@ namespace Rewards.NetProtocols {
 			this.PlayerData = plr_data;
 		}
 
+
 		////////////////
 
 		protected override bool ReceiveRequestWithServer( int from_who ) {
-			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
-
-			Player player = Main.player[ from_who ];
-			if( player == null || !player.active ) {
-				LogHelpers.Log( "!Rewards.KillDataProtocol.ReceiveRequestWithServer - Invalid player by whoAmI " + from_who );
-				return true;
-			}
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
-
-			myplayer.OnFinishPlayerEnterWorldForServer();
-
-			var plr_kill_data = myworld.Logic.GetPlayerData( player );
-			if( plr_kill_data == null ) {
-				LogHelpers.Log( "!Rewards.KillDataProtocol.ReceiveRequestWithServer - Could not get player "+player.name+"'s ("+from_who+") kill data." );
-				return true;
-			}
-			
-			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
-			this.WorldData = myworld.Logic.WorldData;
-			this.PlayerData = plr_kill_data;
-
+			if( this.WorldData == null ) { return true; }
+			if( this.PlayerData == null ) { return true; }
 			return false;
 		}
 

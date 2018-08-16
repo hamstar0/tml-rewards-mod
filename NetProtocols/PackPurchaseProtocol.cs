@@ -22,11 +22,13 @@ namespace Rewards.NetProtocols {
 		////////////////
 
 
+
 		private PackPurchaseProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
 
 		private PackPurchaseProtocol( ShopPackDefinition pack ) {
 			this.Pack = pack;
 		}
+
 
 		////////////////
 

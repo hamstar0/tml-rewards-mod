@@ -27,7 +27,7 @@ namespace Rewards {
 
 		////////////////
 
-		private void OnSingleConnect() {
+		private void OnConnectSingle() {
 			var mymod = (RewardsMod)this.mod;
 
 			if( !mymod.SuppressConfigAutoSaving ) {
@@ -42,12 +42,12 @@ namespace Rewards {
 			}
 		}
 
-		private void OnCurrentClientConnect() {
+		private void OnConnectCurrentClient() {
 			PacketProtocol.QuickRequestToServer<KillDataProtocol>();
 			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
 		}
 
-		private void OnServerConnect( Player player ) {
+		private void OnConnectServer( Player player ) {
 			this.IsFullySynced = true;
 			this.HasKillData = true;
 			this.HasModSettings = true;
