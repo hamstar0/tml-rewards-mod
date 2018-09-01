@@ -185,23 +185,29 @@ namespace Rewards.Items {
 		////////////////
 
 
-		public void BuyAndOpenPack_Synced( Player player ) {
+		public bool BuyAndOpenPack_Synced( Player player, out string output ) {
 			var mymod = RewardsMod.Instance;
 			ItemHelpers.DestroyItem( this.item );
 
-			if( this.Info == null ) { return; }
+			if( this.Info == null ) {
+				output = "No pack info available.";
+				return false;
+			}
+
 			var info = (ShopPackDefinition)this.Info;
 			int price = info.Price;
 
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
-				throw new HamstarException( "Rewards.ShopPackItem.OpenPack - No player data for " + player.name );
+				output = "No player data for " + player.name;
+				return false;
 			}
 			
 			if( !data.Spend( price ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
-				return;
+				output = "";
+				return true;
 			}
 			
 			if( Main.netMode == 0 ) {
@@ -214,9 +220,9 @@ namespace Rewards.Items {
 				PackPurchaseProtocol.SendSpendToServer( info );
 			}
 
-			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards.ShopPackItem.BuyAndOpenPack_Synced - "+player.name+" bought " + info.Name + " (" + info.Price + ")" );
-			}
+			output = player.name + " bought " + info.Name + " (" + info.Price + ")";
+			
+			return true;
 		}
 	}
 }

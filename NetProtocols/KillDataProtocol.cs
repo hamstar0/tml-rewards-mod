@@ -15,13 +15,13 @@ namespace Rewards.NetProtocols {
 		////////////////
 
 		private KillDataProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
-		
-		public KillDataProtocol() { }
+
+		////////////////
 
 		protected override void SetClientDefaults() { }
 
 		protected override void SetServerDefaults( int to_who ) {
-			Player player = Main.player[to_who];
+			Player player = Main.player[ to_who ];
 			if( player == null || !player.active ) {
 				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Invalid player by whoAmI " + to_who );
 				return;
@@ -42,14 +42,6 @@ namespace Rewards.NetProtocols {
 			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
 			this.WorldData = myworld.Logic.WorldData;
 			this.PlayerData = plr_kill_data;
-		}
-
-		
-		////////////////
-
-		internal KillDataProtocol( KillData wld_data, KillData plr_data ) {
-			this.WorldData = wld_data;
-			this.PlayerData = plr_data;
 		}
 
 

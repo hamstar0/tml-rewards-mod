@@ -44,7 +44,7 @@ namespace Rewards {
 
 			var mymod = (RewardsMod)this.mod;
 
-			Promises.AddWorldInPlayOncePromise( () => {
+			Promises.AddSafeWorldLoadOncePromise( () => {
 				if( Main.netMode == 0 ) {
 					this.OnConnectSingle();
 				}
@@ -68,7 +68,7 @@ namespace Rewards {
 				if( item == null || !item.active ) { continue; }
 				if( item.type != pack_type ) { continue; }
 
-				this.CheckPack( (ShopPackItem)item.modItem );
+				this.OpenPack( item );
 				break;
 			}
 
@@ -81,8 +81,23 @@ namespace Rewards {
 		}
 
 
-		public void CheckPack( ShopPackItem myitem ) {
-			myitem.BuyAndOpenPack_Synced( this.player );
+		public void OpenPack( Item pack_item ) {
+			var mymod = (RewardsMod)this.mod;
+			var myitem = (ShopPackItem)pack_item.modItem;
+			if( myitem == null) {
+				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - Pack item " + pack_item.Name + " missing mod data" );
+				ItemHelpers.DestroyItem( pack_item );
+				return;
+			}
+
+			string output;
+			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
+				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - " + output );
+			} else {
+				if( mymod.Config.DebugModeInfo ) {
+					LogHelpers.Log( "Rewards.RewardsPlayer.OpenPack - " + output );
+				}
+			}
 
 			if( myitem.IsClone( Main.mouseItem ) ) {
 				ItemHelpers.DestroyItem( Main.mouseItem );
