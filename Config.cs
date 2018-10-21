@@ -10,13 +10,12 @@ using Terraria.ID;
 
 namespace Rewards {
 	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static Version ConfigVersion { get { return new Version(1, 5, 1, 3); } }
 		public static string ConfigFileName { get { return "Rewards Config.json"; } }
 
 
 		////////////////
 
-		public string VersionSinceUpdate = RewardsConfigData.ConfigVersion.ToString();
+		public string VersionSinceUpdate = new Version(0,0,0,0).ToString();
 
 		public bool DebugModeInfo = false;
 		public bool DebugModeKillInfo = false;
@@ -117,7 +116,7 @@ namespace Rewards {
 		public bool CanUpdateVersion() {
 			if( this.VersionSinceUpdate == "" ) { return true; }
 			var vers_since = new Version( this.VersionSinceUpdate );
-			return vers_since < RewardsConfigData.ConfigVersion;
+			return vers_since < RewardsMod.Instance.Version;
 		}
 		
 		public void UpdateToLatestVersion() {

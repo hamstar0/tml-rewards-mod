@@ -3,6 +3,14 @@ Future
 -	Set DD2 invasion to give PP
 
 
+v2.0
+-	Implement wayfarer wandering (as setting; defaults true)
+-	Set shop to always have at least 2 free slots
+-	Implement item trading for PP
+-	Implement generic boss kill rewards
+-	Import Rewards configs for Calamity, Thorium, etc.
+-	Separate npc configs into another file
+
 v1.5.0
 -	Remove end game grinding of early game bosses
 -	Fix invasion repeat PP not scaling

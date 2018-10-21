@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.MiscHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
 using System.Collections.Concurrent;
@@ -19,15 +20,17 @@ namespace Rewards.Logic {
 
 		public float ProgressPoints = 0f;
 
-		internal IDictionary<VanillaInvasionType, byte> CurrentEvents = new ConcurrentDictionary<VanillaInvasionType, byte>();
+		internal IDictionary<VanillaEventFlag, byte> CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>();
 
 
 
 		////////////////
 
 		public KillData() {
-			this.CurrentEvents = new ConcurrentDictionary<VanillaInvasionType, byte>(
-				NPCInvasionHelpers.GetCurrentEventTypes().Select( t => new KeyValuePair<VanillaInvasionType, byte>(t, 0) )
+			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+
+			this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags ).Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
 			);
 		}
 

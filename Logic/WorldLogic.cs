@@ -102,9 +102,7 @@ namespace Rewards.Logic {
 		////////////////
 		
 		public KillData GetPlayerData( Player player ) {
-			bool has_uid;
-			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
-			if( !has_uid ) { return null; }
+			string uid = PlayerIdentityHelpers.GetProperUniqueId( player );
 
 			lock( WorldLogic.MyLock ) {
 				if( !this.PlayerData.ContainsKey( uid ) ) {

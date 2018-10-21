@@ -110,13 +110,8 @@ namespace Rewards {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			bool success = false;
-
-			bool has_uid;
-			string player_uid = PlayerIdentityHelpers.GetUniqueId( this.player, out has_uid );
-			if( !has_uid ) {
-				LogHelpers.Log( "!Rewards.RewardsPlayer.OnFinishEnterWorldForHost - Could not enter world for player; no player id." );
-				return;
-			}
+			
+			string player_uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
 
 			KillData plr_data = myworld.Logic.GetPlayerData( this.player );
 			if( plr_data == null ) {
@@ -151,13 +146,8 @@ namespace Rewards {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData plr_data;
-
-			bool has_uid;
-			string uid = PlayerIdentityHelpers.GetUniqueId( player, out has_uid );
-			if( !has_uid ) {
-				LogHelpers.Log( "!Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no player id." );
-				return;
-			}
+			
+			string uid = PlayerIdentityHelpers.GetProperUniqueId( player );
 
 			lock( WorldLogic.MyLock ) {
 				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {

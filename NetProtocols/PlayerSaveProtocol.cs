@@ -16,14 +16,7 @@ namespace Rewards.NetProtocols {
 		private PlayerSaveProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
 
 		protected override void SetClientDefaults() {
-			bool has_uid;
-			string uid = PlayerIdentityHelpers.GetUniqueId( Main.LocalPlayer, out has_uid );
-
-			if( !has_uid ) {
-				throw new HamstarException( "!Rewards.NetProtocols.PlayerSaveProtocol - No uid for local player " + Main.LocalPlayer.name );
-			}
-
-			this.Uid = uid;
+			this.Uid = PlayerIdentityHelpers.GetMyProperUniqueId();
 		}
 
 

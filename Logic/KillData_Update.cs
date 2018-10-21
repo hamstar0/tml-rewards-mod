@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Helpers.DotNetHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,53 +9,57 @@ using Terraria;
 namespace Rewards.Logic {
 	partial class KillData {
 		public void Update() {
-			VanillaInvasionType inv_which = NPCInvasionHelpers.GetInvasionType( Main.invasionType );
+			VanillaEventFlag inv_which = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
 
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.Goblins ) ) {
-				if( inv_which != VanillaInvasionType.Goblins ) {
-					this.CurrentEvents.Remove( VanillaInvasionType.Goblins );
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Goblins ) ) {
+				if( inv_which != VanillaEventFlag.Goblins ) {
+					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
 					this.GoblinsConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.FrostLegion ) ) {
-				if( inv_which != VanillaInvasionType.FrostLegion ) {
-					this.CurrentEvents.Remove( VanillaInvasionType.FrostLegion );
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.FrostLegion ) ) {
+				if( inv_which != VanillaEventFlag.FrostLegion ) {
+					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
 					this.FrostLegionConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.Pirates ) ) {
-				if( inv_which != VanillaInvasionType.Pirates ) {
-					this.CurrentEvents.Remove( VanillaInvasionType.Pirates );
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Pirates ) ) {
+				if( inv_which != VanillaEventFlag.Pirates ) {
+					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
 					this.PiratesConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.Martians ) ) {
-				if( inv_which != VanillaInvasionType.Martians ) {
-					this.CurrentEvents.Remove( VanillaInvasionType.Martians );
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Martians ) ) {
+				if( inv_which != VanillaEventFlag.Martians ) {
+					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
 					this.MartiansConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.PumpkinMoon ) ) {
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.PumpkinMoon ) ) {
 				if( Main.pumpkinMoon ) {
 					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) {
 						this.PumpkinMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
-					this.CurrentEvents.Remove( VanillaInvasionType.PumpkinMoon );
+					this.CurrentEvents.Remove( VanillaEventFlag.PumpkinMoon );
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaInvasionType.FrostMoon ) ) {
+			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.FrostMoon ) ) {
 				if( Main.snowMoon ) {
 					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {
 						this.FrostMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
-					this.CurrentEvents.Remove( VanillaInvasionType.FrostMoon );
+					this.CurrentEvents.Remove( VanillaEventFlag.FrostMoon );
 				}
 			}
-			
-			this.CurrentEvents = new ConcurrentDictionary<VanillaInvasionType, byte>(
-				NPCInvasionHelpers.GetCurrentEventTypes().Select( t => new KeyValuePair<VanillaInvasionType, byte>(t, 0) )
+
+			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+
+			this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags ).Select(
+					t => new KeyValuePair<VanillaEventFlag, byte>( t, 0 )
+				)
 			);
 		}
 	}

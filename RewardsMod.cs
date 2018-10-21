@@ -86,7 +86,7 @@ namespace Rewards {
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
 
-					ErrorLogger.Log( "Rewards updated to " + RewardsConfigData.ConfigVersion.ToString() );
+					ErrorLogger.Log( "Rewards updated to " + this.Version.ToString() );
 					
 					this.ConfigJson.SaveFile();
 				}
