@@ -15,7 +15,7 @@ namespace Rewards {
 
 		////////////////
 
-		public string VersionSinceUpdate = new Version(0,0,0,0).ToString();
+		public string VersionSinceUpdate = "";
 
 		public bool DebugModeInfo = false;
 		public bool DebugModeKillInfo = false;
