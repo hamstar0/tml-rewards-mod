@@ -73,7 +73,7 @@ namespace Rewards.Logic {
 			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, pp_str, pos.X, pos.Y, mymod.Config.PointsDisplayColor, Color.Black, default( Vector2 ), 1f );
 
 			if( Main.mouseX >= pos_x && Main.mouseY >= pos_y && Main.mouseX < (pos_x + 40) && Main.mouseY < (pos_y + 16) ) {
-				var mouse_pos = new Vector2( Main.mouseX - 160, Main.mouseY - 16 );
+				var mouse_pos = new Vector2( Main.mouseX - 160, Main.mouseY + 10 );
 				sb.DrawString( Main.fontMouseText, "Progress Points (see Wayfarer)", mouse_pos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
 			}
 		}
