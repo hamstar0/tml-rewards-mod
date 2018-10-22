@@ -36,10 +36,10 @@ namespace Rewards {
 					LogHelpers.Log( "RewardsPlayer.OnPlayerEnterWorldForSingle - Rewards config could not be loaded." );
 					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
-
-				this.FinishKillDataSync();
-				this.FinishModSettingsSync();
 			}
+
+			this.FinishKillDataSync();
+			this.FinishModSettingsSync();
 		}
 
 		private void OnConnectCurrentClient() {
@@ -48,7 +48,6 @@ namespace Rewards {
 		}
 
 		private void OnConnectServer( Player player ) {
-			this.IsFullySynced = true;
 			this.HasKillData = true;
 			this.HasModSettings = true;
 		}
@@ -59,32 +58,29 @@ namespace Rewards {
 		public void FinishKillDataSync() {
 			this.HasKillData = true;
 
-			this.CheckSync();
+			this.FinishSync();
 		}
 
 		public void FinishModSettingsSync() {
 			this.HasModSettings = true;
 
-			this.CheckSync();
+			this.FinishSync();
 		}
 
 		////////////////
+		
+		private void FinishSync() {
+			if( !this.HasModSettings || !this.HasKillData ) { return; }
 
-		public bool HasEachSyncingOccurred() {
-			return this.HasModSettings && this.HasKillData;
-		}
-
-		private void CheckSync() {
-			if( !this.IsFullySynced && this.HasEachSyncingOccurred() ) {
-				this.IsFullySynced = true;
-
-				if( Main.netMode == 0 ) {
-					this.OnFinishPlayerEnterWorldForSingle();
-				} else if( Main.netMode == 1 ) {
-					this.OnFinishPlayerEnterWorldForClient();
-				} else {
-					throw new HamstarException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
-				}
+			if( this.IsFullySynced ) { return; }
+			this.IsFullySynced = true;
+			
+			if( Main.netMode == 0 ) {
+				this.OnFinishPlayerEnterWorldForSingle();
+			} else if( Main.netMode == 1 ) {
+				this.OnFinishPlayerEnterWorldForClient();
+			} else {
+				throw new HamstarException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
 			}
 		}
 

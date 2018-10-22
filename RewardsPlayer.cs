@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.ItemHelpers;
-using HamstarHelpers.Services.Promises;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -31,9 +30,7 @@ namespace Rewards {
 
 			if( Main.netMode == 2 ) {
 				if( to_who == -1 && from_who == this.player.whoAmI ) {
-					Promises.AddSafeWorldLoadOncePromise( () => {
-						this.OnConnectServer( Main.player[from_who] );
-					} );
+					this.OnConnectServer( Main.player[from_who] );
 				}
 			}
 		}
@@ -43,15 +40,13 @@ namespace Rewards {
 			if( this.player.whoAmI != Main.myPlayer ) { return; }
 
 			var mymod = (RewardsMod)this.mod;
-
-			Promises.AddSafeWorldLoadOncePromise( () => {
-				if( Main.netMode == 0 ) {
-					this.OnConnectSingle();
-				}
-				if( Main.netMode == 1 ) {
-					this.OnConnectCurrentClient();
-				}
-			} );
+			
+			if( Main.netMode == 0 ) {
+				this.OnConnectSingle();
+			}
+			if( Main.netMode == 1 ) {
+				this.OnConnectCurrentClient();
+			}
 		}
 
 
@@ -59,7 +54,7 @@ namespace Rewards {
 
 		public override void PreUpdate() {
 			if( Main.myPlayer != this.player.whoAmI ) { return; }
-			if( !this.HasEachSyncingOccurred() ) { return; }
+			if( !this.IsFullySynced ) { return; }
 
 			int pack_type = this.mod.ItemType<ShopPackItem>();
 
@@ -83,7 +78,7 @@ namespace Rewards {
 
 		public void OpenPack( Item pack_item ) {
 			var mymod = (RewardsMod)this.mod;
-			var myitem = (ShopPackItem)pack_item.modItem;
+			var myitem = pack_item.modItem as ShopPackItem;
 			if( myitem == null) {
 				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - Pack item " + pack_item.Name + " missing mod data" );
 				ItemHelpers.DestroyItem( pack_item );
@@ -91,6 +86,7 @@ namespace Rewards {
 			}
 
 			string output;
+
 			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
 				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - " + output );
 			} else {
