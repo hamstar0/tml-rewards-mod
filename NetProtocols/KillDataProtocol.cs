@@ -23,7 +23,7 @@ namespace Rewards.NetProtocols {
 		protected override void SetServerDefaults( int to_who ) {
 			Player player = Main.player[ to_who ];
 			if( player == null || !player.active ) {
-				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Invalid player by whoAmI " + to_who );
+				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Invalid player ("+player+") by whoAmI " + to_who );
 				return;
 			}
 

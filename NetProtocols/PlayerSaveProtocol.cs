@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Network;
 using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
@@ -9,6 +8,7 @@ using Terraria;
 namespace Rewards.NetProtocols {
 	class PlayerSaveProtocol : PacketProtocol {
 		public string Uid;  // Just in case?
+
 
 
 		////////////////

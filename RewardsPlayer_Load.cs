@@ -43,8 +43,10 @@ namespace Rewards {
 		}
 
 		private void OnConnectCurrentClient() {
-			PacketProtocol.QuickRequestToServer<KillDataProtocol>();
-			PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
+			Promises.AddSafeWorldLoadOncePromise( () => {
+				PacketProtocol.QuickRequestToServer<KillDataProtocol>();
+				PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
+			} );
 		}
 
 		private void OnConnectServer( Player player ) {
