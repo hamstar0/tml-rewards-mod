@@ -8,35 +8,49 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class PackPurchaseProtocol : PacketProtocol {
+	class PackPurchaseProtocol : PacketProtocolSentToEither {
+		protected class MyFactory : Factory<PackPurchaseProtocol> {
+			public ShopPackDefinition Pack;
+
+			public MyFactory( ShopPackDefinition pack ) {
+				this.Pack = pack;
+			}
+
+			protected override void Initialize( PackPurchaseProtocol data ) {
+				data.Pack = this.Pack;
+			}
+		}
+
+		
+		////////////////
+
 		public static void SendSpendToServer( ShopPackDefinition pack ) {
-			var protocol = new PackPurchaseProtocol( pack );
+			var factory = new MyFactory( pack );
+			PackPurchaseProtocol protocol = factory.Create();
+
 			protocol.SendToServer( false );
 		}
 		
+
+
 		////////////////
 		
-
 		public ShopPackDefinition Pack;
 
-		////////////////
-
-
-
-		private PackPurchaseProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
-
-		private PackPurchaseProtocol( ShopPackDefinition pack ) {
-			this.Pack = pack;
-		}
 
 
 		////////////////
 
-		protected override void ReceiveWithServer( int from_who ) {
+		protected PackPurchaseProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+
+
+		////////////////
+
+		protected override void ReceiveOnServer( int from_who ) {
 			this.ReceiveMe( Main.player[ from_who ] );
 		}
 
-		protected override void ReceiveWithClient() {
+		protected override void ReceiveOnClient() {
 			this.ReceiveMe( Main.LocalPlayer );
 		}
 		

@@ -61,7 +61,7 @@ namespace Rewards.Logic {
 			}
 		}
 
-		public void SaveKillData( RewardsMod mymod ) {
+		public void SaveEveryonesKillData( RewardsMod mymod ) {
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
 				LogHelpers.Log( "Rewards.WorldLogicSaveKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}

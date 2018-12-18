@@ -26,7 +26,7 @@ namespace Rewards {
 
 		public override TagCompound Save() {
 			var mymod = (RewardsMod)this.mod;
-			this.Logic.SaveKillData( mymod );
+			this.Logic.SaveEveryonesKillData( mymod );
 			return this.Logic.SaveStateData( mymod );
 		}
 

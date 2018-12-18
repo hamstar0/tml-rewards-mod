@@ -145,7 +145,7 @@ namespace Rewards {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData plr_data;
 			
-			string uid = PlayerIdentityHelpers.GetProperUniqueId( player );
+			string uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
 
 			lock( WorldLogic.MyLock ) {
 				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {

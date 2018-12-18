@@ -1,5 +1,6 @@
 using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
 using Rewards.NetProtocols;

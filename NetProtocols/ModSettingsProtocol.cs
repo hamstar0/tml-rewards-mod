@@ -5,21 +5,23 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class ModSettingsProtocol : PacketProtocol {
+	class ModSettingsProtocol : PacketProtocolRequestToServer {
 		public RewardsConfigData Data;
 
 
 		////////////////
 
-		private ModSettingsProtocol( PacketProtocolDataConstructorLock ctor_lock ) { }
+		protected ModSettingsProtocol( PacketProtocolDataConstructorLock ctorLock ) : base( ctorLock ) { }
 
-		protected override void SetServerDefaults( int to_who ) {
+		////////////////
+
+		protected override void InitializeServerSendData( int fromWho ) {
 			this.Data = RewardsMod.Instance.Config;
 		}
 
 		////////////////
 
-		protected override void ReceiveWithClient() {
+		protected override void ReceiveReply() {
 			RewardsMod.Instance.ConfigJson.SetData( this.Data );
 
 			Player player = Main.LocalPlayer;
