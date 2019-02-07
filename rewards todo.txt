@@ -3,7 +3,7 @@ Future
 -	Set DD2 invasion to give PP
 
 
-v2.0
+v3.0
 -	Implement wayfarer wandering (as setting; defaults true)
 -	Set shop to always have at least 2 free slots
 -	Implement item trading for PP

@@ -10,16 +10,26 @@ namespace Rewards {
 		public bool IsFullySynced { get; private set; }
 		public bool HasKillData { get; private set; }
 		public bool HasModSettings { get; private set; }
+		
+		////////////////
+
+		public override bool CloneNewInstances => false;
+
 
 
 		////////////////
-
-		public override bool CloneNewInstances { get { return false; } }
 
 		public override void Initialize() {
 			this.IsFullySynced = false;
 			this.HasKillData = false;
 			this.HasModSettings = false;
+		}
+
+		public override void clientClone( ModPlayer clientClone ) {
+			var myclone = (RewardsPlayer)clientClone;
+			myclone.IsFullySynced = this.IsFullySynced;
+			myclone.HasKillData = this.HasKillData;
+			myclone.HasModSettings = this.HasModSettings;
 		}
 
 
@@ -75,6 +85,8 @@ namespace Rewards {
 			}
 		}
 
+
+		////////////////
 
 		public void OpenPack( Item packItem ) {
 			var mymod = (RewardsMod)this.mod;

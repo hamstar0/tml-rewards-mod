@@ -30,48 +30,82 @@ namespace Rewards {
 		private void OnConnectSingle() {
 			var mymod = (RewardsMod)this.mod;
 
-			if( !mymod.SuppressConfigAutoSaving ) {
-				if( !mymod.ConfigJson.LoadFile() ) {
-					//mymod.ConfigJson.SaveFile();
-					LogHelpers.Alert( "Rewards config could not be loaded." );
-					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
-				}
-			}
+			this.IsFullySynced = false;
+			this.HasKillData = false;
+			this.HasModSettings = false;
 
-			this.FinishKillDataSync();
-			this.FinishModSettingsSync();
+			if( !mymod.SuppressConfigAutoSaving ) {
+				mymod.ConfigJson.LoadFileAsync( ( success ) => {
+					if( !success ) {
+						//mymod.ConfigJson.SaveFile();
+						LogHelpers.Alert( "Rewards config could not be loaded." );
+						Main.NewText( "Invalid config file. Consider using the /rew-shop-add command or a JSON editor program or site.", Color.Red );
+					}
+					this.FinishLocalKillDataSync();
+					this.FinishLocalModSettingsSync();
+				} );
+			}
 		}
 
 		private void OnConnectCurrentClient() {
-			Promises.AddSafeWorldLoadOncePromise( () => {
-				PacketProtocol.QuickRequestToServer<KillDataProtocol>();
-				PacketProtocol.QuickRequestToServer<ModSettingsProtocol>();
-			} );
+			if( this.player == null ) {
+				LogHelpers.Warn( "Player null" );
+			}
+			if( !this.player.active ) {
+				LogHelpers.Warn( "Player " + this.player.name + " (" + this.player.whoAmI + ") not active" );
+			}
+			if( Main.player[this.player.whoAmI] != this.player ) {
+				LogHelpers.Warn( "Player " + this.player.name + " (" + this.player.whoAmI + ") not found in Main array for some reason..." );
+			}
+
+			this.IsFullySynced = false;
+			this.HasKillData = false;
+			this.HasModSettings = false;
+
+			if( RewardsMod.Instance.Config.DebugModeInfo ) {
+				LogHelpers.Alert( "Requesting kill data and mod settings from server..." );
+			}
+
+			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>();
+			PacketProtocolRequestToServer.QuickRequestToServer<ModSettingsProtocol>();
 		}
 
 		private void OnConnectServer( Player player ) {
+			if( player == null ) {
+				LogHelpers.Warn( "Player null" );
+			}
+			if( !player.active ) {
+				LogHelpers.Warn( "Player "+player.name+" ("+player.whoAmI+") not active" );
+			}
+			if( Main.player[ player.whoAmI ] != player ) {
+				LogHelpers.Warn( "Player "+player.name+" ("+player.whoAmI+") not found in Main array for some reason..." );
+			}
+			if( this.player != player ) {
+				LogHelpers.Warn( "Player " + player.name + " (" + player.whoAmI + ") does not match our ModPlayer.player" );
+			}
+
 			this.HasKillData = true;
 			this.HasModSettings = true;
 		}
-
+		
 
 		////////////////
 
-		public void FinishKillDataSync() {
+		public void FinishLocalKillDataSync() {
 			this.HasKillData = true;
 
-			this.FinishSync();
+			this.AttemptFinishLocalSync();
 		}
 
-		public void FinishModSettingsSync() {
+		public void FinishLocalModSettingsSync() {
 			this.HasModSettings = true;
 
-			this.FinishSync();
+			this.AttemptFinishLocalSync();
 		}
 
 		////////////////
 		
-		private void FinishSync() {
+		private void AttemptFinishLocalSync() {
 			if( !this.HasModSettings || !this.HasKillData ) { return; }
 
 			if( this.IsFullySynced ) { return; }
@@ -89,20 +123,21 @@ namespace Rewards {
 
 		////////////////
 
-		public void OnFinishPlayerEnterWorldForSingle() {
+		private void OnFinishPlayerEnterWorldForSingle() {
 			this.OnFinishPlayerEnterWorldForHost();
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
-		public void OnFinishPlayerEnterWorldForClient() {
+		private void OnFinishPlayerEnterWorldForClient() {
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
-		public void OnFinishPlayerEnterWorldForServer() {
+		internal void OnFinishPlayerEnterWorldForServer() {
 			this.OnFinishPlayerEnterWorldForHost();
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
+		////
 
 		private void OnFinishPlayerEnterWorldForHost() {
 			var mymod = (RewardsMod)this.mod;

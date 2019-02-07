@@ -7,10 +7,10 @@ using Terraria.ModLoader;
 
 namespace Rewards.Commands {
 	class AddPointsCommand : ModCommand {
-		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rew-add-points"; } }
-		public override string Usage { get { return "/"+this.Command+" 100"; } }
-		public override string Description { get { return "Adds the specified amount of progress points."; } }
+		public override CommandType Type => CommandType.Chat;
+		public override string Command => "rew-add-points";
+		public override string Usage => "/" +this.Command+" 100";
+		public override string Description => "Adds the specified amount of progress points.";
 
 
 		////////////////

@@ -66,7 +66,7 @@ namespace Rewards.NetProtocols {
 			plrData.ResetAll();
 			plrData.AddToMe( mymod, this.PlayerData );
 
-			myplayer.FinishKillDataSync();
+			myplayer.FinishLocalKillDataSync();
 		}
 	}
 }

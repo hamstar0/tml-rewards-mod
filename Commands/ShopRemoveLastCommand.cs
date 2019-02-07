@@ -5,10 +5,10 @@ using Terraria.ModLoader;
 
 namespace Rewards.Commands {
 	class ShopRemoveLastCommand : ModCommand {
-		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rew-shop-remove-last"; } }
-		public override string Usage { get { return "/" + this.Command; } }
-		public override string Description { get { return "Removes the last listed item in the Wayfarer's shop."; } }
+		public override CommandType Type => CommandType.Chat;
+		public override string Command => "rew-shop-remove-last";
+		public override string Usage => "/" + this.Command;
+		public override string Description => "Removes the last listed item in the Wayfarer's shop.";
 
 
 		////////////////
@@ -24,9 +24,9 @@ namespace Rewards.Commands {
 			if( def == null ) {
 				caller.Reply( "No shop packs left to remove.", Color.Yellow );
 			} else {
-				mymod.ConfigJson.SaveFile();
-
-				caller.Reply( "Removed shop pack "+((ShopPackDefinition)def).Name, Color.LimeGreen );
+				mymod.ConfigJson.SaveFileAsync( () => {
+					caller.Reply( "Removed shop pack " + ( (ShopPackDefinition)def ).Name, Color.LimeGreen );
+				} );
 			}
 		}
 	}

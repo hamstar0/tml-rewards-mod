@@ -1,12 +1,17 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Terraria;
 
 
 namespace Rewards.NetProtocols {
 	class ModSettingsProtocol : PacketProtocolRequestToServer {
+		public override bool IsAsync => true;
+
+
+		////////////////
+
 		public RewardsConfigData Data;
+
 
 
 		////////////////
@@ -28,7 +33,7 @@ namespace Rewards.NetProtocols {
 			Player player = Main.LocalPlayer;
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			myplayer.FinishModSettingsSync();
+			myplayer.FinishLocalModSettingsSync();
 		}
 	}
 }

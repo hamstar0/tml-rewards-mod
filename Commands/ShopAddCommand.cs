@@ -9,12 +9,12 @@ using Terraria.ModLoader;
 
 namespace Rewards.Commands {
 	class ShopAddCommand : ModCommand {
-		public override CommandType Type { get { return CommandType.Chat; } }
-		public override string Command { get { return "rew-shop-add"; } }
-		public override string Usage { get { return "/"+this.Command+" \"My Pack\" 35 3521:1 1324:10"; } }
-		public override string Description { get { return "Adds an item pack to the Wayfarer's shop."+
+		public override CommandType Type => CommandType.Chat;
+		public override string Command => "rew-shop-add";
+		public override string Usage => "/"+this.Command+" \"My Pack\" 35 3521:1 1324:10";
+		public override string Description => "Adds an item pack to the Wayfarer's shop."+
 			"\n   Parameters: <quote-wrapped pack name> <PP cost> <item id>:<stack quantity> ..."+
-			"\n   Tip: Use this to find out an item's id:  /hhgetitemid \"Gold Pickaxe\""; } }
+			"\n   Tip: Use this to find out an item's id:  /mh-get-item-id \"Gold Pickaxe\"";
 
 
 		////////////////
@@ -85,9 +85,9 @@ namespace Rewards.Commands {
 
 			RewardsAPI.ShopAddPack( def );
 			
-			mymod.ConfigJson.SaveFile();
-
-			caller.Reply( "Pack "+packName+" added successfully.", Color.LimeGreen );
+			mymod.ConfigJson.SaveFileAsync( () => {
+				caller.Reply( "Pack " + packName + " added successfully.", Color.LimeGreen );
+			} );
 		}
 	}
 }

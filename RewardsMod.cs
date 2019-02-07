@@ -2,7 +2,6 @@ using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DotNetHelpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
 using Rewards.NetProtocols;
@@ -21,9 +20,14 @@ namespace Rewards {
 		////////////////
 
 		internal JsonConfig<RewardsConfigData> ConfigJson;
-		public RewardsConfigData Config { get { return ConfigJson.Data; } }
+		public RewardsConfigData Config => ConfigJson.Data;
+
+		////
 
 		public bool SuppressConfigAutoSaving { get; internal set; }
+
+
+		////////////////
 
 		private IList<Action<Player, float>> _OnPointsGainedHooks = new List<Action<Player, float>>();	// Is this needed...?!
 		internal IList<Action<Player, float>> OnPointsGainedHooks {
@@ -75,17 +79,23 @@ namespace Rewards {
 
 
 		private void LoadConfigs() {
-			if( !this.ConfigJson.LoadFile() ) {
+			this.ConfigJson.LoadFileAsync( ( success ) => {
+				if( success ) { return; }
 				this.ConfigJson.SaveFile();
-			}
+			} );
+
+			bool isLoaded = false;
 			
 			Promises.AddPostModLoadPromise( () => {
+				if( !isLoaded ) { isLoaded = true; }	// <- Paranoid failsafe?
+				else { return; }
+
 				if( this.Config.CanUpdateVersion() ) {
 					this.Config.UpdateToLatestVersion();
 
 					ErrorLogger.Log( "Rewards updated to " + this.Version.ToString() );
 					
-					this.ConfigJson.SaveFile();
+					this.ConfigJson.SaveFileAsync( () => { } );
 				}
 			} );
 		}
@@ -105,7 +115,7 @@ namespace Rewards {
 				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 				myplayer.SaveKillData();
 			} else if( Main.netMode == 1 ) {
-				PacketProtocol.QuickSendToServer<PlayerSaveProtocol>();
+				PacketProtocolSendToServer.QuickSendToServer<PlayerSaveProtocol>();
 			}
 		}
 

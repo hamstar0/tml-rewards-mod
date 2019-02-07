@@ -1,11 +1,8 @@
 ﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Helpers.NPCHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Terraria.ID;
 
 
 namespace Rewards {
@@ -83,7 +80,7 @@ namespace Rewards {
 			return versSince < RewardsMod.Instance.Version;
 		}
 		
-		public bool UpdateToLatestVersion() {
+		public void UpdateToLatestVersion() {
 			var mymod = RewardsMod.Instance;
 			var newConfig = new RewardsConfigData();
 			newConfig.SetDefaults();
@@ -97,8 +94,6 @@ namespace Rewards {
 			}
 
 			this.VersionSinceUpdate = mymod.Version.ToString();
-
-			return true;
 		}
 	}
 }

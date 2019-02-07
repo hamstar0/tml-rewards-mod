@@ -24,9 +24,10 @@ namespace Rewards {
 					Main.NewText( "Rewards config settings auto saving suppressed." );
 					return;
 				}
-				if( !mymod.ConfigJson.LoadFile() ) {
+				mymod.ConfigJson.LoadFileAsync( ( success ) => {
+					if( success ) { return; }
 					mymod.ConfigJson.SaveFile();
-				}
+				} );
 			}
 		}
 		public static void ResetConfigFromDefaults() {
@@ -38,7 +39,7 @@ namespace Rewards {
 			configData.SetDefaults();
 			
 			RewardsMod.Instance.ConfigJson.SetData( configData );
-			RewardsMod.Instance.ConfigJson.SaveFile();
+			RewardsMod.Instance.ConfigJson.SaveFileAsync( () => { } );
 		}
 	}
 }
