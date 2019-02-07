@@ -11,40 +11,40 @@ namespace Rewards.Logic {
 		}
 		
 
-		public float CalculateKillReward( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
-			is_grind = false;
-			is_expired = false;
+		public float CalculateKillReward( RewardsMod mymod, NPC npc, out bool isGrind, out bool isExpired ) {
+			isGrind = false;
+			isExpired = false;
 
 			float points = 0;
 
 			if( this.CurrentEvents.Count != 0 ) {
-				float pp_amt = -1;
+				float ppAmt = -1;
 
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.GoblinInvasionReward;
-					is_grind = this.GoblinsConquered > 0;
+					ppAmt = mymod.Config.GoblinInvasionReward;
+					isGrind = this.GoblinsConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.FrostLegionInvasionReward;
-					is_grind = this.FrostLegionConquered > 0;
+					ppAmt = mymod.Config.FrostLegionInvasionReward;
+					isGrind = this.FrostLegionConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.PirateInvasionReward;
-					is_grind = this.PiratesConquered > 0;
+					ppAmt = mymod.Config.PirateInvasionReward;
+					isGrind = this.PiratesConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.MartianInvasionReward;
-					is_grind = this.MartiansConquered > 0;
+					ppAmt = mymod.Config.MartianInvasionReward;
+					isGrind = this.MartiansConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.PumpkingMoonWaveReward;
-					is_grind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
+					ppAmt = mymod.Config.PumpkingMoonWaveReward;
+					isGrind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
 				} else if( NPCIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
-					pp_amt = mymod.Config.FrostMoonWaveReward;
-					is_grind = NPC.waveNumber < this.FrostMoonWavesConquered;
+					ppAmt = mymod.Config.FrostMoonWaveReward;
+					isGrind = NPC.waveNumber < this.FrostMoonWavesConquered;
 				}
 
-				if( pp_amt != -1 ) {
-					points = pp_amt / Main.invasionSizeStart;
-					if( points < 0 || points > pp_amt ) {
+				if( ppAmt != -1 ) {
+					points = ppAmt / Main.invasionSizeStart;
+					if( points < 0 || points > ppAmt ) {
 						points = 0;
-						LogHelpers.Log( "Could not compute invasion kill reward (invasion total default reward: "+pp_amt+", invasion size: "+Main.invasionSizeStart+")" );
+						LogHelpers.Log( "Could not compute invasion kill reward (invasion total default reward: "+ppAmt+", invasion size: "+Main.invasionSizeStart+")" );
 					}
 				}
 			}
@@ -63,19 +63,19 @@ namespace Rewards.Logic {
 				}
 				
 				if( mymod.Config.NpcRewardNotGivenAfterNpcKilled.ContainsKey(name) ) {
-					string blocking_npc_name = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
+					string blockingNpcName = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
 
-					if( NPCIdentityHelpers.NamesToIds.ContainsKey( blocking_npc_name ) ) {
-						int blocking_npc_type = NPCIdentityHelpers.NamesToIds[blocking_npc_name];
+					if( NPCIdentityHelpers.NamesToIds.ContainsKey( blockingNpcName ) ) {
+						int blockingNpcType = NPCIdentityHelpers.NamesToIds[blockingNpcName];
 						
-						if( this.KilledNpcs.ContainsKey( blocking_npc_type ) && this.KilledNpcs[blocking_npc_type] > 0 ) {
-							is_expired = true;
+						if( this.KilledNpcs.ContainsKey( blockingNpcType ) && this.KilledNpcs[blockingNpcType] > 0 ) {
+							isExpired = true;
 						}
 					}
 				}
 				
 				if( this.KilledNpcs.ContainsKey( npc.type ) && this.KilledNpcs[npc.type] > 0 ) {
-					is_grind = true;
+					isGrind = true;
 				} else {
 					/*if( mymod.Config.NpcRewardPrediction ) {
 						Mod boss_list_mod = ModLoader.GetMod( "BossChecklist" );
@@ -96,8 +96,8 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public float RecordKill_NoSync( RewardsMod mymod, NPC npc, out bool is_grind, out bool is_expired ) {
-			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
+		public float RecordKill_NoSync( RewardsMod mymod, NPC npc, out bool isGrind, out bool isExpired ) {
+			float reward = this.CalculateKillReward( mymod, npc, out isGrind, out isExpired );
 			
 			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 				this.KilledNpcs[npc.type]++;
@@ -108,29 +108,29 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKill_Synced( RewardsMod mymod, Player to_player, NPC npc ) {
-			bool is_grind, is_expired;
-			float reward = this.CalculateKillReward( mymod, npc, out is_grind, out is_expired );
+		public void RewardKill_Synced( RewardsMod mymod, Player toPlayer, NPC npc ) {
+			bool isGrind, isExpired;
+			float reward = this.CalculateKillReward( mymod, npc, out isGrind, out isExpired );
 
 			if( mymod.Config.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
-				Main.NewText( "GiveKillReward to: " + to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
-				LogHelpers.Log( " GiveKillReward to: "+to_player.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", is_grind: " + is_grind + ", reward: " + reward );
+				Main.NewText( "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward );
+				LogHelpers.Log( " GiveKillReward to: "+toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward );
 			}
 			
-			this.AddRewardForPlayer( mymod, to_player, is_grind, is_expired, reward );
+			this.AddRewardForPlayer( mymod, toPlayer, isGrind, isExpired, reward );
 
 			if( Main.netMode == 2 ) {
-				KillRewardProtocol.SendRewardToClient( to_player.whoAmI, -1, npc.type );
+				KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc.type );
 			}
 		}
 
 
 		////////////////
 
-		public int GetKillsOfNpc( int npc_type ) {
-			if( this.KilledNpcs.ContainsKey(npc_type) ) {
-				return this.KilledNpcs[ npc_type ];
+		public int GetKillsOfNpc( int npcType ) {
+			if( this.KilledNpcs.ContainsKey(npcType) ) {
+				return this.KilledNpcs[ npcType ];
 			}
 			return 0;
 		}

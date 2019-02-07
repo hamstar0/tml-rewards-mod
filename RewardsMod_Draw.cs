@@ -13,7 +13,7 @@ namespace Rewards {
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
-				GameInterfaceDrawMethod draw_method = delegate {
+				GameInterfaceDrawMethod drawMethod = delegate {
 					if( !LoadHelpers.IsWorldSafelyBeingPlayed() ) { return true; }
 
 					try {
@@ -32,10 +32,10 @@ namespace Rewards {
 					return true;
 				};
 
-				var interface_layer = new LegacyGameInterfaceLayer( "Rewards: Points", draw_method,
+				var interfaceLayer = new LegacyGameInterfaceLayer( "Rewards: Points", drawMethod,
 					InterfaceScaleType.UI );
 
-				layers.Insert( idx, interface_layer );
+				layers.Insert( idx, interfaceLayer );
 			}
 		}
 	}

@@ -30,10 +30,10 @@ namespace Rewards {
 		////////////////
 
 		public bool SetDefaults() {
-			string wof_name = NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh );
-			string plantera_name = NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera );
-			string golem_name = NPCIdentityHelpers.GetQualifiedName( NPCID.Golem );
-			string moonlord_name = NPCIdentityHelpers.GetQualifiedName( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
+			string wofName = NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh );
+			string planteraName = NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera );
+			string golemName = NPCIdentityHelpers.GetQualifiedName( NPCID.Golem );
+			string moonlordName = NPCIdentityHelpers.GetQualifiedName( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
 
 			this.NpcRewards = new Dictionary<string, float> {
 				{ NPCIdentityHelpers.GetQualifiedName( NPCID.KingSlime ), 10f },
@@ -56,7 +56,7 @@ namespace Rewards {
 				{ NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerVortex ), 35f },
 				{ NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerNebula ), 35f },
 				{ NPCIdentityHelpers.GetQualifiedName( NPCID.LunarTowerStardust ), 35f },
-				{ moonlord_name, 250f }
+				{ moonlordName, 250f }
 			};
 
 			this.NpcRewardRequiredAsBoss = new HashSet<string> {
@@ -64,19 +64,19 @@ namespace Rewards {
 			};
 
 			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string> {
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.KingSlime ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.EyeofCthulhu ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.EaterofWorldsHead ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.BrainofCthulhu ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.QueenBee ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.SkeletronHead ), wof_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh ), plantera_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.TheDestroyer ), golem_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Retinazer ), golem_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Spazmatism ), golem_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.SkeletronPrime ), golem_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera ), moonlord_name },
-				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Golem ), moonlord_name }
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.KingSlime ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.EyeofCthulhu ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.EaterofWorldsHead ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.BrainofCthulhu ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.QueenBee ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.SkeletronHead ), wofName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh ), planteraName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.TheDestroyer ), golemName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Retinazer ), golemName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Spazmatism ), golemName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.SkeletronPrime ), golemName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera ), moonlordName },
+				{ NPCIdentityHelpers.GetQualifiedName( NPCID.Golem ), moonlordName }
 			};
 
 			this.ShopLoadout = new List<ShopPackDefinition> {
@@ -136,52 +136,52 @@ namespace Rewards {
 					} ),
 
 				// Hard mode only:
-				new ShopPackDefinition( wof_name, "Mimic's Lament Pack", 35, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Mimic's Lament Pack", 35, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.MagicDagger), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.TitanGlove), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.PhilosophersStone), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.CrossNecklace), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.StarCloak), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Gangster's Pack", 35, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Gangster's Pack", 35, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.Uzi), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.RifleScope), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.EndlessMusketPouch), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.GangstaHat), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Avenger Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Avenger Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.AvengerEmblem), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Life Pack", 150, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Life Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.AnkhCharm), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Lucky Pack", 150, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Lucky Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.CoinRing), 1 )
 					} ),
-				new ShopPackDefinition( wof_name, "Dimensionalist's Pack", 200, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( wofName, "Dimensionalist's Pack", 200, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.RodofDiscord), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.TeleportationPotion), 30 )
 					} ),
 
 				// Post-plantera:
-				new ShopPackDefinition( plantera_name, "Whack Pack", 50, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( planteraName, "Whack Pack", 50, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.TheAxe), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.Bananarang), 10 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.SlapHand), 1 )
 					} ),
 
 				// Post-golem:
-				new ShopPackDefinition( golem_name, "Golem Eye Pack", 25, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( golemName, "Golem Eye Pack", 25, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.EyeoftheGolem), 1 )
 					} ),
-				new ShopPackDefinition( golem_name, "Defender's Pack", 150, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( golemName, "Defender's Pack", 150, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.CelestialShell), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.PaladinsShield), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.FrozenTurtleShell), 1 )
 					} ),
 
 				// Post-moonlord:
-				new ShopPackDefinition( moonlord_name, "Eldritch Pack", 500, new ShopPackItemDefinition[] {
+				new ShopPackDefinition( moonlordName, "Eldritch Pack", 500, new ShopPackItemDefinition[] {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.Meowmere), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.Terrarian), 1 ),
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.StarWrath), 1 ),

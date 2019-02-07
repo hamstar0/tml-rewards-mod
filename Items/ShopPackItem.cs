@@ -12,13 +12,13 @@ using Terraria.ModLoader;
 
 namespace Rewards.Items {
 	class ShopPackItem : ModItem {
-		public static Item CreateItem( ShopPackDefinition pack_info ) {
+		public static Item CreateItem( ShopPackDefinition packInfo ) {
 			Item item = new Item();
 			item.SetDefaults( RewardsMod.Instance.ItemType<ShopPackItem>() );
-			item.SetNameOverride( pack_info.Name );
+			item.SetNameOverride( packInfo.Name );
 
 			var myitem = (ShopPackItem)item.modItem;
-			myitem.Info = pack_info;
+			myitem.Info = packInfo;
 
 			return item;
 		}
@@ -27,7 +27,7 @@ namespace Rewards.Items {
 
 		////////////////
 
-		public override bool CloneNewInstances { get { return true; } }
+		public override bool CloneNewInstances => true;
 
 		internal ShopPackDefinition? Info = null;
 
@@ -37,8 +37,8 @@ namespace Rewards.Items {
 		public bool IsClone( Item item ) {
 			if( !(item.modItem is ShopPackItem) ) { return false; }
 
-			var other_mod_item = (ShopPackItem)item.modItem;
-			var def = (ShopPackDefinition)other_mod_item.Info;
+			var otherModItem = (ShopPackItem)item.modItem;
+			var def = (ShopPackDefinition)otherModItem.Info;
 
 			return def.IsSameAs( (ShopPackDefinition)this.Info );
 		}
@@ -70,56 +70,56 @@ namespace Rewards.Items {
 			tooltips.RemoveRange( 1, tooltips.Count - 1 );
 
 			var info = (ShopPackDefinition)this.Info;
-			var item_set_tip = new TooltipLine( this.mod, "Items", "Items included:" );
-			tooltips.Add( item_set_tip );
+			var itemSetTip = new TooltipLine( this.mod, "Items", "Items included:" );
+			tooltips.Add( itemSetTip );
 
 			for( int i=0; i< info.Items.Length; i++ ) {
-				Color rare_color = Color.Gray;
+				Color rareColor = Color.Gray;
 				Item item = new Item();
 				item.SetDefaults( info.Items[i].ItemType );
 
-				var item_tip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
+				var itemTip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
 
-				if( ItemAttributeHelpers.RarityColor.TryGetValue( item.rare, out rare_color ) ) {
-					item_tip.overrideColor = rare_color;
+				if( ItemAttributeHelpers.RarityColor.TryGetValue( item.rare, out rareColor ) ) {
+					itemTip.overrideColor = rareColor;
 				}
 
-				tooltips.Add( item_tip );
+				tooltips.Add( itemTip );
 			}
 
-			Color tip_color = info.Price <= 10 ?
+			Color tipColor = info.Price <= 10 ?
 				Colors.CoinCopper :
 				( info.Price < 100 ?
 					Colors.CoinSilver :
 					( info.Price < 1000 ?
 						Colors.CoinGold :
 						Colors.CoinPlatinum ) );
-			var pp_tip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
-				overrideColor = tip_color
+			var ppTip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
+				overrideColor = tipColor
 			};
-			tooltips.Add( pp_tip );
+			tooltips.Add( ppTip );
 
-			var instruct_tip = new TooltipLine( this.mod, "Items", "Click to purchase" );
-			tooltips.Add( instruct_tip );
+			var instructTip = new TooltipLine( this.mod, "Items", "Click to purchase" );
+			tooltips.Add( instructTip );
 		}
 
 
 		////////////////
 		
-		public override void PostDrawInInventory( SpriteBatch sb, Vector2 pos, Rectangle frame, Color draw_color, Color item_color, Vector2 origin, float scale ) {
-			int bag_item_type = this.GetItemTypeOfIcon();
-			if( bag_item_type == -1 ) { return; }
+		public override void PostDrawInInventory( SpriteBatch sb, Vector2 pos, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale ) {
+			int bagItemType = this.GetItemTypeOfIcon();
+			if( bagItemType == -1 ) { return; }
 			
-			Texture2D tex = Main.itemTexture[bag_item_type];
-			float sub_scale = scale;
+			Texture2D tex = Main.itemTexture[bagItemType];
+			float subScale = scale;
 
 			if( tex.Width >= tex.Height ) {
 				if( tex.Width > 20 ) {
-					sub_scale /= (float)tex.Width / 20f;
+					subScale /= (float)tex.Width / 20f;
 				}
 			} else {
 				if( tex.Height > 20 ) {
-					sub_scale /= (float)tex.Height / 20f;
+					subScale /= (float)tex.Height / 20f;
 				}
 			}
 
@@ -128,24 +128,24 @@ namespace Rewards.Items {
 			pos.Y += (float)( frame.Height + 6 ) * 0.5f * scale;
 			origin = new Vector2( (float)tex.Width, (float)tex.Height ) * 0.5f;
 
-			sb.Draw( tex, pos, rect, draw_color, 0f, origin, sub_scale, SpriteEffects.None, 1f );
+			sb.Draw( tex, pos, rect, drawColor, 0f, origin, subScale, SpriteEffects.None, 1f );
 		}
 
 
-		public override void PostDrawInWorld( SpriteBatch sb, Color light_color, Color alpha_color, float rotation, float scale, int whoAmI ) {
-			int bag_item_type = this.GetItemTypeOfIcon();
-			if( bag_item_type == -1 ) { return; }
+		public override void PostDrawInWorld( SpriteBatch sb, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI ) {
+			int bagItemType = this.GetItemTypeOfIcon();
+			if( bagItemType == -1 ) { return; }
 			
-			Texture2D tex = Main.itemTexture[ bag_item_type ];
-			float sub_scale = scale;
+			Texture2D tex = Main.itemTexture[ bagItemType ];
+			float subScale = scale;
 
 			if( tex.Width >= tex.Height ) {
 				if( tex.Width > 20 ) {
-					sub_scale /= (float)tex.Width / 20f;
+					subScale /= (float)tex.Width / 20f;
 				}
 			} else {
 				if( tex.Height > 20 ) {
-					sub_scale /= (float)tex.Height / 20f;
+					subScale /= (float)tex.Height / 20f;
 				}
 			}
 
@@ -155,7 +155,7 @@ namespace Rewards.Items {
 			pos.Y += (float)(item.height + 6) * 0.5f * scale;
 			var origin = new Vector2( (float)tex.Width, (float)tex.Height ) * 0.5f;
 
-			sb.Draw( tex, pos, rect, light_color, 0f, origin, sub_scale, SpriteEffects.None, 1f );
+			sb.Draw( tex, pos, rect, lightColor, 0f, origin, subScale, SpriteEffects.None, 1f );
 		}
 
 
@@ -169,14 +169,14 @@ namespace Rewards.Items {
 			if( !info.Validate(out _) ) { return -1; }
 
 			for( int i = 0; i < info.Items.Length; i++ ) {
-				ShopPackItemDefinition item_info = info.Items[i];
-				int bag_item_type = item_info.ItemType;
+				ShopPackItemDefinition itemInfo = info.Items[i];
+				int bagItemType = itemInfo.ItemType;
 
-				if( bag_item_type <= 0 ) { continue; }
-				if( bag_item_type >= Main.itemTexture.Length ) { continue; }
-				if( Main.itemTexture[ bag_item_type ] == null ) { continue; }
+				if( bagItemType <= 0 ) { continue; }
+				if( bagItemType >= Main.itemTexture.Length ) { continue; }
+				if( Main.itemTexture[ bagItemType ] == null ) { continue; }
 
-				return bag_item_type;
+				return bagItemType;
 			}
 			return -1;
 		}

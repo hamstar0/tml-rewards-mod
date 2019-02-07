@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using Terraria;
@@ -14,7 +13,9 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected PlayerSaveProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+		private PlayerSaveProtocol() { }
+
+		////
 
 		protected override void InitializeClientSendData() {
 			this.Uid = PlayerIdentityHelpers.GetMyProperUniqueId();
@@ -23,10 +24,10 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected override void Receive( int from_who ) {
-			Player player = Main.player[ from_who ];
+		protected override void Receive( int fromWho ) {
+			Player player = Main.player[ fromWho ];
 			if( player == null || !player.active ) {
-				throw new HamstarException( "!Rewards.PlayerSaveProtocol.ReceiveWithServer - Player id " + from_who + " invalid?" );
+				throw new HamstarException( "!Rewards.PlayerSaveProtocol.ReceiveWithServer - Player id " + fromWho + " invalid?" );
 			}
 
 			var myplayer = player.GetModPlayer<RewardsPlayer>();

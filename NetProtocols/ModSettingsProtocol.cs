@@ -11,13 +11,14 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected ModSettingsProtocol( PacketProtocolDataConstructorLock ctorLock ) : base( ctorLock ) { }
-
-		////////////////
+		private ModSettingsProtocol() { }
+		
+		////
 
 		protected override void InitializeServerSendData( int fromWho ) {
 			this.Data = RewardsMod.Instance.Config;
 		}
+
 
 		////////////////
 

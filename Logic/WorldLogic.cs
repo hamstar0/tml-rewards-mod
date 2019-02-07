@@ -57,13 +57,13 @@ namespace Rewards.Logic {
 			bool success = this.WorldData.Load( mymod, this.GetDataFileBaseName() );
 
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.WorldLogic.LoadKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
+				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
 		public void SaveEveryonesKillData( RewardsMod mymod ) {
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.WorldLogicSaveKillData - World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
+				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}
 			
 			for( int i = 0; i < Main.player.Length; i++ ) {
@@ -92,8 +92,8 @@ namespace Rewards.Logic {
 			}
 
 			lock( WorldLogic.MyLock ) {
-				foreach( KillData kill_data in this.PlayerData.Values ) {
-					kill_data.Update();
+				foreach( KillData killData in this.PlayerData.Values ) {
+					killData.Update();
 				}
 			}
 		}

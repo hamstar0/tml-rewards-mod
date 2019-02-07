@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Items;
 using Rewards.Logic;
@@ -9,25 +8,8 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class PackPurchaseProtocol : PacketProtocolSentToEither {
-		protected class MyFactory : Factory<PackPurchaseProtocol> {
-			public ShopPackDefinition Pack;
-
-			public MyFactory( ShopPackDefinition pack ) {
-				this.Pack = pack;
-			}
-
-			protected override void Initialize( PackPurchaseProtocol data ) {
-				data.Pack = this.Pack;
-			}
-		}
-
-		
-		////////////////
-
 		public static void SendSpendToServer( ShopPackDefinition pack ) {
-			var factory = new MyFactory( pack );
-			PackPurchaseProtocol protocol = factory.Create();
-
+			var protocol = new PackPurchaseProtocol( pack );
 			protocol.SendToServer( false );
 		}
 		
@@ -41,13 +23,17 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected PackPurchaseProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+		private PackPurchaseProtocol() { }
+
+		private PackPurchaseProtocol( ShopPackDefinition pack ) {
+			this.Pack = pack;
+		}
 
 
 		////////////////
 
-		protected override void ReceiveOnServer( int from_who ) {
-			this.ReceiveMe( Main.player[ from_who ] );
+		protected override void ReceiveOnServer( int fromWho ) {
+			this.ReceiveMe( Main.player[ fromWho ] );
 		}
 
 		protected override void ReceiveOnClient() {
@@ -73,7 +59,7 @@ namespace Rewards.NetProtocols {
 			}
 
 			if( mymod.Config.DebugModeInfo ) {
-				LogHelpers.Log( "Rewards.SpendRewardsProtocol.ReceiveMe - Purchase made for "+player.name+" of "+this.Pack.Name+" ("+this.Pack.Price+")" );
+				LogHelpers.Alert( "Purchase made for "+player.name+" of "+this.Pack.Name+" ("+this.Pack.Price+")" );
 			}
 		}
 	}

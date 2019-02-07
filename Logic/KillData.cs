@@ -69,15 +69,15 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public bool Load( RewardsMod mymod, string base_file_name ) {
+		public bool Load( RewardsMod mymod, string baseFileName ) {
 			KillData data;
 			bool success = false;
 
 			try {
 				if( mymod.Config.DebugModeSaveKillsAsJson ) {
-					data = DataFileHelpers.LoadJson<KillData>( mymod, base_file_name, out success );
+					data = DataFileHelpers.LoadJson<KillData>( mymod, baseFileName, out success );
 				} else {
-					data = DataFileHelpers.LoadBinary<KillData>( mymod, base_file_name, false );
+					data = DataFileHelpers.LoadBinary<KillData>( mymod, baseFileName, false );
 					success = data != null;
 				}
 
@@ -92,21 +92,21 @@ namespace Rewards.Logic {
 					this.ProgressPoints = data.ProgressPoints;
 				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to load file: "+ base_file_name, e );
+				throw new IOException( "Failed to load file: "+ baseFileName, e );
 			}
 
 			return success;
 		}
 
-		public void Save( RewardsMod mymod, string base_file_name ) {
+		public void Save( RewardsMod mymod, string baseFileName ) {
 			try {
 				if( mymod.Config.DebugModeSaveKillsAsJson ) {
-					DataFileHelpers.SaveAsJson<KillData>( mymod, base_file_name, this );
+					DataFileHelpers.SaveAsJson<KillData>( mymod, baseFileName, this );
 				} else {
-					DataFileHelpers.SaveAsBinary<KillData>( mymod, base_file_name, false, this );
+					DataFileHelpers.SaveAsBinary<KillData>( mymod, baseFileName, false, this );
 				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to save file: "+ base_file_name, e );
+				throw new IOException( "Failed to save file: "+ baseFileName, e );
 			}
 		}
 

@@ -15,7 +15,7 @@ namespace Rewards {
 
 		public override void Initialize() {
 			this.Logic = new WorldLogic();
-			LogHelpers.Log( "RewardsWorld.Initialize" );
+			LogHelpers.Alert( "" );
 		}
 
 		public override void Load( TagCompound tags ) {

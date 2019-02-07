@@ -33,50 +33,50 @@ namespace Rewards.Commands {
 				throw new UsageException( "Invalid pack name." );
 			}
 
-			int next_arg_idx = 0;
-			string pack_name = CommandsHelpers.GetQuotedStringFromArgsAt( args, 0, out next_arg_idx );
-			if( next_arg_idx == -1 ) {
+			int nextArgIdx = 0;
+			string packName = CommandsHelpers.GetQuotedStringFromArgsAt( args, 0, out nextArgIdx );
+			if( nextArgIdx == -1 ) {
 				throw new UsageException( "Invalid pack name." );
 			}
 
 			int price;
-			if( !int.TryParse( args[next_arg_idx++], out price ) ) {
-				throw new UsageException( args[next_arg_idx-1] + " is not an integer" );
+			if( !int.TryParse( args[nextArgIdx++], out price ) ) {
+				throw new UsageException( args[nextArgIdx-1] + " is not an integer" );
 			}
 
-			IList<ShopPackItemDefinition> item_defs = new List<ShopPackItemDefinition>();
+			IList<ShopPackItemDefinition> itemDefs = new List<ShopPackItemDefinition>();
 
-			for( int i=next_arg_idx; i<args.Length; i++ ) {
-				string[] int_segs = args[i].Split( ':' );
-				if( int_segs.Length != 2 ) {
+			for( int i=nextArgIdx; i<args.Length; i++ ) {
+				string[] intSegs = args[i].Split( ':' );
+				if( intSegs.Length != 2 ) {
 					throw new UsageException( args[i] + " is not formatted as <item id>:<stack size>" );
 				}
 
-				int item_id;
-				if( !int.TryParse( int_segs[0], out item_id ) ) {
+				int itemId;
+				if( !int.TryParse( intSegs[0], out itemId ) ) {
 					throw new UsageException( args[i] + " is not formated correctly as <item id>:<stack size>" );
 				}
-				if( item_id < 0 || item_id >= Main.itemTexture.Length ) {
+				if( itemId < 0 || itemId >= Main.itemTexture.Length ) {
 					throw new UsageException( args[i] + " is an invalid item type" );
 				}
 
-				int stack_size;
-				if( !int.TryParse( int_segs[1], out stack_size ) ) {
+				int stackSize;
+				if( !int.TryParse( intSegs[1], out stackSize ) ) {
 					throw new UsageException( args[i] + " is not formated correctly as <item id>:<stack size>" );
 				}
 
-				Item new_item = new Item();
-				new_item.SetDefaults( item_id );
+				Item newItem = new Item();
+				newItem.SetDefaults( itemId );
 
-				var item_def = new ShopPackItemDefinition( new_item.Name, stack_size );
-				if( !item_def.Validate() ) {
+				var itemDef = new ShopPackItemDefinition( newItem.Name, stackSize );
+				if( !itemDef.Validate() ) {
 					throw new UsageException( args[i] + " is an invalid item definition" );
 				}
 
-				item_defs.Add( item_def );
+				itemDefs.Add( itemDef );
 			}
 
-			var def = new ShopPackDefinition( "", pack_name, price, item_defs.ToArray() );
+			var def = new ShopPackDefinition( "", packName, price, itemDefs.ToArray() );
 			string fail;
 
 			if( !def.Validate(out fail) ) {
@@ -87,7 +87,7 @@ namespace Rewards.Commands {
 			
 			mymod.ConfigJson.SaveFile();
 
-			caller.Reply( "Pack "+pack_name+" added successfully.", Color.LimeGreen );
+			caller.Reply( "Pack "+packName+" added successfully.", Color.LimeGreen );
 		}
 	}
 }

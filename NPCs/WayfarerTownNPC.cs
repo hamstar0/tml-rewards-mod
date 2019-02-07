@@ -30,13 +30,13 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public static bool CanWayfarerSpawn( RewardsMod mymod ) {
-			int npc_type = mymod.NPCType<WayfarerTownNPC>();
+			int npcType = mymod.NPCType<WayfarerTownNPC>();
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {
-				NPC that_npc = Main.npc[i];
-				if( that_npc == null || !that_npc.active ) { continue; }
+				NPC thatNpc = Main.npc[i];
+				if( thatNpc == null || !thatNpc.active ) { continue; }
 
-				if( that_npc.type == npc_type ) {
+				if( thatNpc.type == npcType ) {
 					return false;
 				}
 			}
@@ -47,8 +47,8 @@ namespace Rewards.NPCs {
 
 		////////////////
 
-		public override string Texture { get { return "Rewards/NPCs/WayfarerTownNPC"; } }
-		public override string HeadTexture { get { return "Rewards/NPCs/WayfarerTownNPC_Head"; } }
+		public override string Texture => "Rewards/NPCs/WayfarerTownNPC";
+		public override string HeadTexture => "Rewards/NPCs/WayfarerTownNPC_Head";
 
 
 		////////////////
@@ -58,21 +58,21 @@ namespace Rewards.NPCs {
 		}
 
 		public override void SetStaticDefaults() {
-			int npc_type = this.npc.type;
+			int npcType = this.npc.type;
 
 			this.DisplayName.SetDefault( "Wayfarer" );
 
-			Main.npcFrameCount[npc_type] = 26;
-			NPCID.Sets.AttackFrameCount[npc_type] = 5;
-			NPCID.Sets.DangerDetectRange[npc_type] = 700;
-			NPCID.Sets.AttackType[npc_type] = 1;
-			NPCID.Sets.AttackTime[npc_type] = 30;
-			NPCID.Sets.AttackAverageChance[npc_type] = 30;
-			NPCID.Sets.HatOffsetY[npc_type] = 4;
+			Main.npcFrameCount[npcType] = 26;
+			NPCID.Sets.AttackFrameCount[npcType] = 5;
+			NPCID.Sets.DangerDetectRange[npcType] = 700;
+			NPCID.Sets.AttackType[npcType] = 1;
+			NPCID.Sets.AttackTime[npcType] = 30;
+			NPCID.Sets.AttackAverageChance[npcType] = 30;
+			NPCID.Sets.HatOffsetY[npcType] = 4;
 		}
 
 		public override void SetDefaults() {
-			int npc_type = this.npc.type;
+			int npcType = this.npc.type;
 			
 			this.npc.townNPC = true;
 			this.npc.friendly = true;
@@ -93,23 +93,23 @@ namespace Rewards.NPCs {
 
 		////////////////
 
-		public override bool CanTownNPCSpawn( int num_town_npcs, int money ) {
-			if( num_town_npcs == 0 ) { return true; }
+		public override bool CanTownNPCSpawn( int numTownNpcs, int money ) {
+			if( numTownNpcs == 0 ) { return true; }
 			
-			int npc_type = this.mod.NPCType<WayfarerTownNPC>();
-			int counted_town_npcs = 0;
+			int npcType = this.mod.NPCType<WayfarerTownNPC>();
+			int countedTownNpcs = 0;
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {
-				NPC that_npc = Main.npc[i];
-				if( that_npc == null || !that_npc.active ) { continue; }
-				if( !that_npc.townNPC ) { continue; }
+				NPC thatNpc = Main.npc[i];
+				if( thatNpc == null || !thatNpc.active ) { continue; }
+				if( !thatNpc.townNPC ) { continue; }
 
-				if( that_npc.type == npc_type ) {
+				if( thatNpc.type == npcType ) {
 					return false;
 				}
 
-				counted_town_npcs++;
-				if( counted_town_npcs >= num_town_npcs ) { break; }
+				countedTownNpcs++;
+				if( countedTownNpcs >= numTownNpcs ) { break; }
 			}
 			return true;
 		}
@@ -212,29 +212,29 @@ namespace Rewards.NPCs {
 		
 		public override void SetChatButtons( ref string button1, ref string button2 ) {
 			var mymod = (RewardsMod)this.mod;
-			int item_count = this.CountShopItems();
-			bool has_button2 = false;
+			int itemCount = this.CountShopItems();
+			bool hasButton2 = false;
 
 			button1 = "Shop";
 
 			if( mymod.Config.ShopLoadout.Count > 40 ) {
-				has_button2 = this.CountShopItems() > 40;
+				hasButton2 = this.CountShopItems() > 40;
 			}
 
-			if( has_button2 ) {
-				int shops = (int)Math.Ceiling( (float)item_count / 40f );
-				int next_shop = (WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
+			if( hasButton2 ) {
+				int shops = (int)Math.Ceiling( (float)itemCount / 40f );
+				int nextShop = (WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
 
-				button2 = "Scroll to shop "+(next_shop+1)+" of "+shops;
+				button2 = "Scroll to shop "+(nextShop+1)+" of "+shops;
 			}
 		}
 
-		public override void OnChatButtonClicked( bool first_button, ref bool shop ) {
-			if( first_button ) {
-				shop = first_button;
+		public override void OnChatButtonClicked( bool firstButton, ref bool shop ) {
+			if( firstButton ) {
+				shop = firstButton;
 			} else {
-				int item_count = this.CountShopItems();
-				int shops = (int)Math.Ceiling( (float)item_count / 40f );
+				int itemCount = this.CountShopItems();
+				int shops = (int)Math.Ceiling( (float)itemCount / 40f );
 
 				if( shops >= 1 ) {
 					WayfarerTownNPC.CurrentShop = ( WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
@@ -245,12 +245,12 @@ namespace Rewards.NPCs {
 
 		////////////////
 
-		public override void SetupShop( Chest shop, ref int next_slot ) {
+		public override void SetupShop( Chest shop, ref int nextSlot ) {
 			var mymod = (RewardsMod)this.mod;
-			int shop_start = WayfarerTownNPC.CurrentShop * 40;
+			int shopStart = WayfarerTownNPC.CurrentShop * 40;
 			
-			for( int i = shop_start; i < mymod.Config.ShopLoadout.Count; i++ ) {
-				if( next_slot >= 40 ) {
+			for( int i = shopStart; i < mymod.Config.ShopLoadout.Count; i++ ) {
+				if( nextSlot >= 40 ) {
 					break;
 				}
 
@@ -265,7 +265,7 @@ namespace Rewards.NPCs {
 					continue;
 				}
 				
-				shop.item[ next_slot++ ] = ShopPackItem.CreateItem( def );
+				shop.item[ nextSlot++ ] = ShopPackItem.CreateItem( def );
 			}
 		}
 

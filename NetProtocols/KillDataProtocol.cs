@@ -14,14 +14,14 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected KillDataProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
+		private KillDataProtocol() { }
 
-		////////////////
+		////
 
-		protected override void InitializeServerSendData( int to_who ) {
-			Player player = Main.player[ to_who ];
+		protected override void InitializeServerSendData( int toWho ) {
+			Player player = Main.player[ toWho ];
 			if( player == null || !player.active ) {
-				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Invalid player ("+player+") by whoAmI " + to_who );
+				LogHelpers.Warn( "Invalid player ("+player+") by whoAmI " + toWho );
 				return;
 			}
 
@@ -31,21 +31,21 @@ namespace Rewards.NetProtocols {
 
 			myplayer.OnFinishPlayerEnterWorldForServer();
 
-			var plr_kill_data = myworld.Logic.GetPlayerData( player );
-			if( plr_kill_data == null ) {
-				LogHelpers.Log( "!Rewards.KillDataProtocol.SetServerDefaults - Could not get player " + player.name + "'s (" + to_who + ") kill data." );
+			var plrKillData = myworld.Logic.GetPlayerData( player );
+			if( plrKillData == null ) {
+				LogHelpers.Warn( "Could not get player " + player.name + "'s (" + toWho + ") kill data." );
 				return;
 			}
 
 			//kill_data.AddToMe( mymod, myworld.Logic.WorldData );	// Why was this here?!
 			this.WorldData = myworld.Logic.WorldData;
-			this.PlayerData = plr_kill_data;
+			this.PlayerData = plrKillData;
 		}
 
 
 		////////////////
 
-		protected override bool ReceiveRequestWithServer( int from_who ) {
+		protected override bool ReceiveRequestWithServer( int fromWho ) {
 			if( this.WorldData == null ) { return true; }
 			if( this.PlayerData == null ) { return true; }
 			return false;
@@ -56,15 +56,15 @@ namespace Rewards.NetProtocols {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 
-			KillData plr_data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
-			KillData wld_data = myworld.Logic.WorldData;
-			if( plr_data == null || wld_data == null ) { return; }
+			KillData plrData = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+			KillData wldData = myworld.Logic.WorldData;
+			if( plrData == null || wldData == null ) { return; }
 
-			wld_data.ResetAll();
-			wld_data.AddToMe( mymod, this.WorldData );
+			wldData.ResetAll();
+			wldData.AddToMe( mymod, this.WorldData );
 
-			plr_data.ResetAll();
-			plr_data.AddToMe( mymod, this.PlayerData );
+			plrData.ResetAll();
+			plrData.AddToMe( mymod, this.PlayerData );
 
 			myplayer.FinishKillDataSync();
 		}

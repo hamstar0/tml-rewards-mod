@@ -8,24 +8,24 @@ using Terraria.ID;
 
 namespace Rewards.Items {
 	public struct ShopPackDefinition {
-		public static Item[] OpenPack( Player player, ShopPackDefinition pack_def ) {
-			Item[] pack_items = new Item[ pack_def.Items.Length ];
+		public static Item[] OpenPack( Player player, ShopPackDefinition packDef ) {
+			Item[] packItems = new Item[ packDef.Items.Length ];
 			int i = 0;
 
-			foreach( ShopPackItemDefinition item_info in pack_def.Items ) {
-				if( !item_info.Validate() || !item_info.IsAvailable() ) { continue; }
+			foreach( ShopPackItemDefinition itemInfo in packDef.Items ) {
+				if( !itemInfo.Validate() || !itemInfo.IsAvailable() ) { continue; }
 
-				Item new_item = new Item();
-				new_item.SetDefaults( item_info.ItemType );
+				Item newItem = new Item();
+				newItem.SetDefaults( itemInfo.ItemType );
 
-				ItemHelpers.CreateItem( player.position, item_info.ItemType, item_info.Stack, new_item.width, new_item.height );
+				ItemHelpers.CreateItem( player.position, itemInfo.ItemType, itemInfo.Stack, newItem.width, newItem.height );
 
-				pack_items[i++] = new_item;
+				packItems[i++] = newItem;
 			}
 
 			Main.PlaySound( SoundID.Coins );
 
-			return pack_items;
+			return packItems;
 		}
 
 
@@ -41,8 +41,8 @@ namespace Rewards.Items {
 
 		////////////////
 
-		internal ShopPackDefinition( string needed_boss, string name, int price, ShopPackItemDefinition[] items ) {
-			this.NeededBossKill = needed_boss;
+		internal ShopPackDefinition( string neededBoss, string name, int price, ShopPackItemDefinition[] items ) {
+			this.NeededBossKill = neededBoss;
 			this.Name = name;
 			this.Price = price;
 			this.Items = items;
@@ -59,9 +59,9 @@ namespace Rewards.Items {
 				error = "no items";
 				return false;
 			}
-			foreach( ShopPackItemDefinition item_info in this.Items ) {
-				if( !item_info.Validate() ) {
-					error = item_info.Name;
+			foreach( ShopPackItemDefinition itemInfo in this.Items ) {
+				if( !itemInfo.Validate() ) {
+					error = itemInfo.Name;
 					return false;
 				}
 			}
@@ -86,8 +86,8 @@ namespace Rewards.Items {
 				return true;
 			}
 
-			ISet<int> npc_types;
-			if( !NPCIdentityHelpers.NamesToIds.TryGetValues( this.NeededBossKill, out npc_types ) ) {
+			ISet<int> npcTypes;
+			if( !NPCIdentityHelpers.NamesToIds.TryGetValues( this.NeededBossKill, out npcTypes ) ) {
 				Main.NewText( "Required kill npc " + this.NeededBossKill + " for "+this.Name+" not found." );
 				LogHelpers.Log( " Required kill npc " + this.NeededBossKill + " for " + this.Name + " not found." );
 				return false;
@@ -95,8 +95,8 @@ namespace Rewards.Items {
 
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 
-			foreach( int npc_type in npc_types ) {
-				if( myworld.Logic.WorldData.GetKillsOfNpc(npc_type) > 0 ) {
+			foreach( int npcType in npcTypes ) {
+				if( myworld.Logic.WorldData.GetKillsOfNpc(npcType) > 0 ) {
 					return true;
 				}
 			}
@@ -129,10 +129,10 @@ namespace Rewards.Items {
 
 		////////////////
 
-		internal ShopPackItemDefinition( string name, int stack, bool? crimson_only = null ) {
+		internal ShopPackItemDefinition( string name, int stack, bool? crimsonOnly = null ) {
 			this.Name = name;
 			this.Stack = stack;
-			this.CrimsonWorldOnly = crimson_only;
+			this.CrimsonWorldOnly = crimsonOnly;
 			this._ItemType = -1;
 		}
 
@@ -153,10 +153,10 @@ namespace Rewards.Items {
 			return this.ItemType > 0;
 		}
 
-		public bool IsSameAs( ShopPackItemDefinition item_def ) {
-			if( this.Name.Equals( item_def.Name ) ) { return false; }
-			if( this.Stack != item_def.Stack ) { return false; }
-			if( this.CrimsonWorldOnly != item_def.CrimsonWorldOnly ) { return false; }
+		public bool IsSameAs( ShopPackItemDefinition itemDef ) {
+			if( this.Name.Equals( itemDef.Name ) ) { return false; }
+			if( this.Stack != itemDef.Stack ) { return false; }
+			if( this.CrimsonWorldOnly != itemDef.CrimsonWorldOnly ) { return false; }
 			return true;
 		}
 	}

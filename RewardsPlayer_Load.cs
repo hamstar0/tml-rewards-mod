@@ -33,7 +33,7 @@ namespace Rewards {
 			if( !mymod.SuppressConfigAutoSaving ) {
 				if( !mymod.ConfigJson.LoadFile() ) {
 					//mymod.ConfigJson.SaveFile();
-					LogHelpers.Log( "RewardsPlayer.OnPlayerEnterWorldForSingle - Rewards config could not be loaded." );
+					LogHelpers.Alert( "Rewards config could not be loaded." );
 					Main.NewText( "Invalid config file. Consider using the /rewardsshopadd command or a JSON editor.", Color.Red );
 				}
 			}
@@ -109,23 +109,23 @@ namespace Rewards {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			bool success = false;
 			
-			string player_uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
+			string playerUid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
 
-			KillData plr_data = myworld.Logic.GetPlayerData( this.player );
-			if( plr_data == null ) {
-				LogHelpers.Log( "!Rewards.RewardsPlayer.OnFinishEnterWorldForHost - Could not get player " + this.player.name + "'s (" + this.player.whoAmI + ") kill data." );
+			KillData plrData = myworld.Logic.GetPlayerData( this.player );
+			if( plrData == null ) {
+				LogHelpers.Warn( "Could not get player " + this.player.name + "'s (" + this.player.whoAmI + ") kill data." );
 				return;
 			}
 			
-			success = plr_data.Load( mymod, player_uid );
+			success = plrData.Load( mymod, playerUid );
 			if( !success ) {
 				if( KillData.CanReceiveOtherPlayerKillRewards( mymod ) ) {
-					plr_data.AddToMe( mymod, myworld.Logic.WorldData );
+					plrData.AddToMe( mymod, myworld.Logic.WorldData );
 				}
 			}
 
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.RewardsPlayer.OnFinishEnterWorldForHost - who: " + this.player.whoAmI + " success: " + success + ", " + plr_data.ToString() );
+				LogHelpers.Alert( "who: " + this.player.whoAmI + " success: " + success + ", " + plrData.ToString() );
 			}
 		}
 
@@ -143,22 +143,22 @@ namespace Rewards {
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			KillData plr_data;
+			KillData plrData;
 			
 			string uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
 
 			lock( WorldLogic.MyLock ) {
 				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {
-					LogHelpers.Log( "!Rewards.RewardsPlayer.SaveKillData - Could not save player kill data; no data found." );
+					LogHelpers.Warn( "Could not save player kill data; no data found." );
 					return;
 				}
-				plr_data = myworld.Logic.PlayerData[uid];
+				plrData = myworld.Logic.PlayerData[uid];
 			}
 
-			plr_data.Save( mymod, uid );
+			plrData.Save( mymod, uid );
 
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.RewardsPlayer.SaveKillData - uid: " + uid + ", data: " + plr_data.ToString() );
+				LogHelpers.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
 			}
 		}
 	}

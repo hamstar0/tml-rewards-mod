@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Logic;
 using Terraria;
@@ -8,30 +7,9 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillRewardProtocol : PacketProtocolSentToEither {
-		protected class MyFactory : Factory<KillRewardProtocol> {
-			public int KillerWho;
-			public int NpcType;
-
-			public MyFactory( int killer_who, int npc_type ) {
-				this.KillerWho = killer_who;
-				this.NpcType = npc_type;
-			}
-
-			protected override void Initialize( KillRewardProtocol data ) {
-				data.KillerWho = this.KillerWho;
-				data.NpcType = this.NpcType;
-			}
-		}
-
-
-
-		////////////////
-
-		public static void SendRewardToClient( int to_who, int ignore_who, int npc_type ) {
-			var factory = new MyFactory( to_who, npc_type );
-			KillRewardProtocol protocol = factory.Create();
-
-			protocol.SendToClient( to_who, ignore_who );
+		public static void SendRewardToClient( int toWho, int ignoreWho, int npcType ) {
+			var protocol = new KillRewardProtocol( toWho, npcType );
+			protocol.SendToClient( toWho, ignoreWho );
 		}
 			
 		////////////////
@@ -48,8 +26,14 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected KillRewardProtocol( PacketProtocolDataConstructorLock ctor_lock ) : base( ctor_lock ) { }
-		
+		private KillRewardProtocol() { }
+
+		private KillRewardProtocol( int killerWho, int npcType ) {
+			this.KillerWho = killerWho;
+			this.NpcType = npcType;
+		}
+
+
 		////////////////
 
 		protected override void ReceiveOnClient() {
@@ -63,10 +47,10 @@ namespace Rewards.NetProtocols {
 			NPC npc = new NPC();
 			npc.SetDefaults( this.NpcType );
 
-			bool is_grind, is_expired;
-			float reward = data.RecordKill_NoSync( mymod, npc, out is_grind, out is_expired );
+			bool isGrind, isExpired;
+			float reward = data.RecordKill_NoSync( mymod, npc, out isGrind, out isExpired );
 
-			data.AddRewardForPlayer( mymod, Main.LocalPlayer, is_grind, is_expired, reward );
+			data.AddRewardForPlayer( mymod, Main.LocalPlayer, isGrind, isExpired, reward );
 		}
 
 		protected override void ReceiveOnServer( int fromWho ) {

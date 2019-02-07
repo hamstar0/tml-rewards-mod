@@ -25,12 +25,12 @@ namespace Rewards {
 
 		////////////////
 
-		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
 			var mymod = (RewardsMod)this.mod;
 
 			if( Main.netMode == 2 ) {
-				if( to_who == -1 && from_who == this.player.whoAmI ) {
-					this.OnConnectServer( Main.player[from_who] );
+				if( toWho == -1 && fromWho == this.player.whoAmI ) {
+					this.OnConnectServer( Main.player[fromWho] );
 				}
 			}
 		}
@@ -56,12 +56,12 @@ namespace Rewards {
 			if( Main.myPlayer != this.player.whoAmI ) { return; }
 			if( !this.IsFullySynced ) { return; }
 
-			int pack_type = this.mod.ItemType<ShopPackItem>();
+			int packType = this.mod.ItemType<ShopPackItem>();
 
 			for( int i = 0; i < this.player.inventory.Length; i++ ) {
 				Item item = this.player.inventory[i];
 				if( item == null || !item.active ) { continue; }
-				if( item.type != pack_type ) { continue; }
+				if( item.type != packType ) { continue; }
 
 				this.OpenPack( item );
 				break;
@@ -76,22 +76,22 @@ namespace Rewards {
 		}
 
 
-		public void OpenPack( Item pack_item ) {
+		public void OpenPack( Item packItem ) {
 			var mymod = (RewardsMod)this.mod;
-			var myitem = pack_item.modItem as ShopPackItem;
+			var myitem = packItem.modItem as ShopPackItem;
 			if( myitem == null) {
-				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - Pack item " + pack_item.Name + " missing mod data" );
-				ItemHelpers.DestroyItem( pack_item );
+				LogHelpers.Warn( "Pack item " + packItem.Name + " missing mod data" );
+				ItemHelpers.DestroyItem( packItem );
 				return;
 			}
 
 			string output;
 
 			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
-				LogHelpers.Log( "!Rewards.RewardsPlayer.OpenPack - " + output );
+				LogHelpers.Warn( output );
 			} else {
 				if( mymod.Config.DebugModeInfo ) {
-					LogHelpers.Log( "Rewards.RewardsPlayer.OpenPack - " + output );
+					LogHelpers.Alert( output );
 				}
 			}
 

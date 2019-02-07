@@ -8,12 +8,12 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool is_grind, bool is_expired, float reward ) {
-			if( is_expired ) {
+		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool isGrind, bool isExpired, float reward ) {
+			if( isExpired ) {
 				return;
 			}
 
-			if( is_grind ) {
+			if( isGrind ) {
 				reward *= mymod.Config.GrindKillMultiplier;
 			}
 
@@ -21,7 +21,7 @@ namespace Rewards.Logic {
 				if( Math.Abs(reward) >= 0.01f ) {
 					string msg = "+" + Math.Round( reward, 2 ) + " PP";
 					Color color = reward > 0 ?
-						is_grind ? Color.DarkGray : Color.GreenYellow :
+						isGrind ? Color.DarkGray : Color.GreenYellow :
 						Color.Red;
 
 					PlayerMessages.AddPlayerLabel( player, msg, color, 60 * 3, true, false );
@@ -61,20 +61,20 @@ namespace Rewards.Logic {
 
 
 		public void DrawPointScore( RewardsMod mymod, SpriteBatch sb ) {
-			float pos_x = mymod.Config.PointsDisplayX;
-			float pos_y = mymod.Config.PointsDisplayY;
-			pos_x = pos_x < 0 ? Main.screenWidth + pos_x : pos_x;
-			pos_y = pos_y < 0 ? Main.screenHeight + pos_y : pos_y;
-			Vector2 pos = new Vector2( pos_x, pos_y );
+			float posX = mymod.Config.PointsDisplayX;
+			float posY = mymod.Config.PointsDisplayY;
+			posX = posX < 0 ? Main.screenWidth + posX : posX;
+			posY = posY < 0 ? Main.screenHeight + posY : posY;
+			Vector2 pos = new Vector2( posX, posY );
 
-			string pp_str = "PP: " + (int)this.ProgressPoints;
+			string ppStr = "PP: " + (int)this.ProgressPoints;
 
 			//sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
-			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, pp_str, pos.X, pos.Y, mymod.Config.PointsDisplayColor, Color.Black, default( Vector2 ), 1f );
+			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, mymod.Config.PointsDisplayColor, Color.Black, default( Vector2 ), 1f );
 
-			if( Main.mouseX >= pos_x && Main.mouseY >= pos_y && Main.mouseX < (pos_x + 40) && Main.mouseY < (pos_y + 16) ) {
-				var mouse_pos = new Vector2( Main.mouseX - 160, Main.mouseY + 10 );
-				sb.DrawString( Main.fontMouseText, "Progress Points (see Wayfarer)", mouse_pos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
+			if( Main.mouseX >= posX && Main.mouseY >= posY && Main.mouseX < (posX + 40) && Main.mouseY < (posY + 16) ) {
+				var mousePos = new Vector2( Main.mouseX - 160, Main.mouseY + 10 );
+				sb.DrawString( Main.fontMouseText, "Progress Points (see Wayfarer)", mousePos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
 			}
 		}
 	}

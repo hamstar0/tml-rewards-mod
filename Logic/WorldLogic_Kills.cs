@@ -9,24 +9,24 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			if( mymod.Config.DebugModeKillInfo ) {
-				LogHelpers.Log( "Rewards.WorldLogic.AddKillReward " + NPCIdentityHelpers.GetQualifiedName(npc) );
+				LogHelpers.Alert( NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
 			
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
-			bool to_all = KillData.CanReceiveOtherPlayerKillRewards( mymod );
+			bool toAll = KillData.CanReceiveOtherPlayerKillRewards( mymod );
 
 			if( Main.netMode == 2 ) {
-				if( to_all ) {
+				if( toAll ) {
 					for( int i = 0; i < Main.player.Length; i++ ) {
-						Player to_player = Main.player[i];
-						if( to_player == null || !to_player.active ) { continue; }
+						Player toPlayer = Main.player[i];
+						if( toPlayer == null || !toPlayer.active ) { continue; }
 
-						this.AddKillRewardForPlayer_Synced( mymod, to_player, npc );
+						this.AddKillRewardForPlayer_Synced( mymod, toPlayer, npc );
 					}
 				} else {
-					Player to_player = Main.player[npc.lastInteraction];
-					if( to_player != null && to_player.active ) {
+					Player toPlayer = Main.player[npc.lastInteraction];
+					if( toPlayer != null && toPlayer.active ) {
 						this.AddKillRewardForPlayer_Synced( mymod, Main.player[npc.lastInteraction], npc );
 					}
 				}
@@ -40,12 +40,12 @@ namespace Rewards.Logic {
 		}
 
 
-		private void AddKillRewardForPlayer_Synced( RewardsMod mymod, Player to_player, NPC npc ) {
+		private void AddKillRewardForPlayer_Synced( RewardsMod mymod, Player toPlayer, NPC npc ) {
 			bool _;
-			KillData data = this.GetPlayerData( to_player );
+			KillData data = this.GetPlayerData( toPlayer );
 			if( data == null ) { return; }
 
-			data.RewardKill_Synced( mymod, to_player, npc );
+			data.RewardKill_Synced( mymod, toPlayer, npc );
 			data.RecordKill_NoSync( mymod, npc, out _, out _ );
 		}
 	}

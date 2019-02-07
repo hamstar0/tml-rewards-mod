@@ -9,28 +9,28 @@ using Terraria;
 namespace Rewards.Logic {
 	partial class KillData {
 		public void Update() {
-			VanillaEventFlag inv_which = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
+			VanillaEventFlag invWhich = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
 
 			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Goblins ) ) {
-				if( inv_which != VanillaEventFlag.Goblins ) {
+				if( invWhich != VanillaEventFlag.Goblins ) {
 					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
 					this.GoblinsConquered++;
 				}
 			}
 			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.FrostLegion ) ) {
-				if( inv_which != VanillaEventFlag.FrostLegion ) {
+				if( invWhich != VanillaEventFlag.FrostLegion ) {
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
 					this.FrostLegionConquered++;
 				}
 			}
 			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Pirates ) ) {
-				if( inv_which != VanillaEventFlag.Pirates ) {
+				if( invWhich != VanillaEventFlag.Pirates ) {
 					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
 					this.PiratesConquered++;
 				}
 			}
 			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Martians ) ) {
-				if( inv_which != VanillaEventFlag.Martians ) {
+				if( invWhich != VanillaEventFlag.Martians ) {
 					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
 					this.MartiansConquered++;
 				}

@@ -1,5 +1,7 @@
 using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
 using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
@@ -48,12 +50,6 @@ namespace Rewards {
 
 		public RewardsMod() {
 			RewardsMod.Instance = this;
-
-			this.Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
 			
 			this.ConfigJson = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
 		}
@@ -117,15 +113,22 @@ namespace Rewards {
 		////////////////
 
 		public override object Call( params object[] args ) {
-			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }
+			if( args == null || args.Length == 0 ) { throw new HamstarException( "Undefined call type." ); }
 
-			string call_type = args[0] as string;
-			if( args == null ) { throw new Exception("Invalid call type."); }
+			string callType = args[0] as string;
+			if( callType == null ) { throw new HamstarException( "Invalid call type." ); }
 
-			var new_args = new object[ args.Length - 1 ];
-			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
+			var methodInfo = typeof( RewardsAPI ).GetMethod( callType );
+			if( methodInfo == null ) { throw new HamstarException( "Invalid call type " + callType ); }
 
-			return RewardsAPI.Call( call_type, new_args );
+			var newArgs = new object[args.Length - 1];
+			Array.Copy( args, 1, newArgs, 0, args.Length - 1 );
+
+			try {
+				return ReflectionHelpers.SafeCall( methodInfo, null, newArgs );
+			} catch( Exception e ) {
+				throw new HamstarException( "Barriers.BarrierMod.Call - Bad API call.", e );
+			}
 		}
 	}
 }
