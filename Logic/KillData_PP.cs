@@ -73,9 +73,10 @@ namespace Rewards.Logic {
 			Vector2 pos = new Vector2( posX, posY );
 
 			string ppStr = "PP: " + (int)this.ProgressPoints;
+			Color color = mymod.Config.PointsDisplayColor;
 
 			//sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
-			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, mymod.Config.PointsDisplayColor, Color.Black, default( Vector2 ), 1f );
+			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, color, Color.Black, default( Vector2 ), 1f );
 
 			if( Main.mouseX >= posX && Main.mouseY >= posY && Main.mouseX < (posX + 40) && Main.mouseY < (posY + 16) ) {
 				var mousePos = new Vector2( Main.mouseX - 160, Main.mouseY + 10 );
