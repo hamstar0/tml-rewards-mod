@@ -8,10 +8,12 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayer( RewardsMod mymod, Player player, bool isGrind, bool isExpired, float reward ) {
+		public void AddRewardForPlayer( Player player, bool isGrind, bool isExpired, float reward ) {
 			if( isExpired ) {
 				return;
 			}
+
+			var mymod = RewardsMod.Instance;
 
 			if( isGrind ) {
 				reward *= mymod.Config.GrindKillMultiplier;
@@ -51,7 +53,9 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public bool CanDrawPoints( RewardsMod mymod ) {
+		public bool CanDrawPoints() {
+			var mymod = RewardsMod.Instance;
+
 			if( !mymod.Config.ShowPoints ) { return false; }
 			if( !mymod.Config.PointsDisplayWithoutInventory ) {
 				return Main.playerInventory;
@@ -60,7 +64,8 @@ namespace Rewards.Logic {
 		}
 
 
-		public void DrawPointScore( RewardsMod mymod, SpriteBatch sb ) {
+		public void DrawPointScore( SpriteBatch sb ) {
+			var mymod = RewardsMod.Instance;
 			float posX = mymod.Config.PointsDisplayX;
 			float posY = mymod.Config.PointsDisplayY;
 			posX = posX < 0 ? Main.screenWidth + posX : posX;

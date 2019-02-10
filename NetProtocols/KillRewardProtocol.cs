@@ -11,17 +11,18 @@ namespace Rewards.NetProtocols {
 			var protocol = new KillRewardProtocol( toWho, npcType );
 			protocol.SendToClient( toWho, ignoreWho );
 		}
-			
+		
+
+
 		////////////////
 
-
 		public override bool IsVerbose { get { return false; } }
-
-
+		
 		////////////////
 
 		public int KillerWho;
 		public int NpcType;
+
 
 
 		////////////////
@@ -41,16 +42,16 @@ namespace Rewards.NetProtocols {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
-				throw new HamstarException( "RewardsModNpcKillRewardProtocol.ReceiveOnClient() - No player data for " + Main.LocalPlayer.name );
+				throw new HamstarException( "No player data for " + Main.LocalPlayer.name );
 			}
 
 			NPC npc = new NPC();
 			npc.SetDefaults( this.NpcType );
 
 			bool isGrind, isExpired;
-			float reward = data.RecordKill_NoSync( mymod, npc, out isGrind, out isExpired );
+			float reward = data.RecordKill_NoSync( npc, out isGrind, out isExpired );
 
-			data.AddRewardForPlayer( mymod, Main.LocalPlayer, isGrind, isExpired, reward );
+			data.AddRewardForPlayer( Main.LocalPlayer, isGrind, isExpired, reward );
 		}
 
 		protected override void ReceiveOnServer( int fromWho ) {

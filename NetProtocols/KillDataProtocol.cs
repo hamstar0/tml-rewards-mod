@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Components.Network.Data;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Logic;
 using Terraria;
@@ -7,6 +6,10 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillDataProtocol : PacketProtocolRequestToServer {
+		public override bool IsAsync => true;
+
+		////////////////
+
 		public KillData WorldData = null;
 		public KillData PlayerData = null;
 
@@ -21,7 +24,7 @@ namespace Rewards.NetProtocols {
 		protected override void InitializeServerSendData( int toWho ) {
 			Player player = Main.player[ toWho ];
 			if( player == null || !player.active ) {
-				LogHelpers.Warn( "Invalid player ("+player+") by whoAmI " + toWho );
+				LogHelpers.Warn( "Invalid player "+player.name+" (" + toWho+")" );
 				return;
 			}
 
@@ -61,10 +64,10 @@ namespace Rewards.NetProtocols {
 			if( plrData == null || wldData == null ) { return; }
 
 			wldData.ResetAll();
-			wldData.AddToMe( mymod, this.WorldData );
+			wldData.AddToMe( this.WorldData );
 
 			plrData.ResetAll();
-			plrData.AddToMe( mymod, this.PlayerData );
+			plrData.AddToMe( this.PlayerData );
 
 			myplayer.FinishLocalKillDataSync();
 		}

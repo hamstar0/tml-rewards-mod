@@ -24,8 +24,8 @@ namespace Rewards {
 							throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name );
 						}
 
-						if( data.CanDrawPoints( RewardsMod.Instance ) ) {
-							data.DrawPointScore( RewardsMod.Instance, Main.spriteBatch );
+						if( data.CanDrawPoints() ) {
+							data.DrawPointScore( Main.spriteBatch );
 						}
 					} catch( Exception ) { }
 

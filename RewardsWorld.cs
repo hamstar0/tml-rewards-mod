@@ -19,15 +19,13 @@ namespace Rewards {
 		}
 
 		public override void Load( TagCompound tags ) {
-			var mymod = (RewardsMod)this.mod;
-			this.Logic.LoadStateData( mymod, tags );
-			this.Logic.LoadKillData( mymod );
+			this.Logic.LoadStateData( tags );
+			this.Logic.LoadKillData();
 		}
 
 		public override TagCompound Save() {
-			var mymod = (RewardsMod)this.mod;
-			this.Logic.SaveEveryonesKillData( mymod );
-			return this.Logic.SaveStateData( mymod );
+			this.Logic.SaveEveryonesKillData();
+			return this.Logic.SaveStateData();
 		}
 
 
@@ -35,7 +33,7 @@ namespace Rewards {
 		
 		public override void PreUpdate() {
 			if( LoadHelpers.IsWorldLoaded() ) {
-				this.Logic.Update( (RewardsMod)this.mod );
+				this.Logic.Update();
 			}
 		}
 	}

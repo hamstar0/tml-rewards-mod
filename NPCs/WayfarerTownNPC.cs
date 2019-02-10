@@ -29,7 +29,8 @@ namespace Rewards.NPCs {
 
 		////////////////
 
-		public static bool CanWayfarerSpawn( RewardsMod mymod ) {
+		public static bool CanWayfarerSpawn() {
+			var mymod = RewardsMod.Instance;
 			int npcType = mymod.NPCType<WayfarerTownNPC>();
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {

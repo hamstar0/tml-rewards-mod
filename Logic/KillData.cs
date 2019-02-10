@@ -49,7 +49,9 @@ namespace Rewards.Logic {
 			this.ProgressPoints = 0;
 		}
 
-		public void AddToMe( RewardsMod mymod, KillData data ) {
+		public void AddToMe( KillData data ) {
+			var mymod = RewardsMod.Instance;
+
 			foreach( var kv in data.KilledNpcs ) {
 				if( this.KilledNpcs.ContainsKey( kv.Key ) ) {
 					this.KilledNpcs[kv.Key] += kv.Value;
@@ -69,7 +71,8 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public bool Load( RewardsMod mymod, string baseFileName ) {
+		public bool Load( string baseFileName ) {
+			var mymod = RewardsMod.Instance;
 			KillData data;
 			bool success = false;
 
@@ -98,7 +101,9 @@ namespace Rewards.Logic {
 			return success;
 		}
 
-		public void Save( RewardsMod mymod, string baseFileName ) {
+		public void Save( string baseFileName ) {
+			var mymod = RewardsMod.Instance;
+
 			try {
 				if( mymod.Config.DebugModeSaveKillsAsJson ) {
 					DataFileHelpers.SaveAsJson<KillData>( mymod, baseFileName, this );

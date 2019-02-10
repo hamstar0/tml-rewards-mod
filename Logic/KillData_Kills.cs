@@ -6,12 +6,14 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public static bool CanReceiveOtherPlayerKillRewards( RewardsMod mymod ) {
+		public static bool CanReceiveOtherPlayerKillRewards() {
+			var mymod = RewardsMod.Instance;
 			return mymod.Config.SharedRewards;
 		}
 		
 
-		public float CalculateKillReward( RewardsMod mymod, NPC npc, out bool isGrind, out bool isExpired ) {
+		public float CalculateKillReward( NPC npc, out bool isGrind, out bool isExpired ) {
+			var mymod = RewardsMod.Instance;
 			isGrind = false;
 			isExpired = false;
 
@@ -96,8 +98,8 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public float RecordKill_NoSync( RewardsMod mymod, NPC npc, out bool isGrind, out bool isExpired ) {
-			float reward = this.CalculateKillReward( mymod, npc, out isGrind, out isExpired );
+		public float RecordKill_NoSync( NPC npc, out bool isGrind, out bool isExpired ) {
+			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 			
 			if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 				this.KilledNpcs[npc.type]++;
@@ -108,9 +110,10 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKill_Synced( RewardsMod mymod, Player toPlayer, NPC npc ) {
+		public void RewardKill_Synced( Player toPlayer, NPC npc ) {
+			var mymod = RewardsMod.Instance;
 			bool isGrind, isExpired;
-			float reward = this.CalculateKillReward( mymod, npc, out isGrind, out isExpired );
+			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 
 			if( mymod.Config.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
@@ -118,7 +121,7 @@ namespace Rewards.Logic {
 				LogHelpers.Log( " GiveKillReward to: "+toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward );
 			}
 			
-			this.AddRewardForPlayer( mymod, toPlayer, isGrind, isExpired, reward );
+			this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
 
 			if( Main.netMode == 2 ) {
 				KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc.type );

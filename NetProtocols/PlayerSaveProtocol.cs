@@ -27,13 +27,13 @@ namespace Rewards.NetProtocols {
 		protected override void Receive( int fromWho ) {
 			Player player = Main.player[ fromWho ];
 			if( player == null || !player.active ) {
-				throw new HamstarException( "!Rewards.PlayerSaveProtocol.ReceiveWithServer - Player id " + fromWho + " invalid?" );
+				throw new HamstarException( "Player id " + fromWho + " invalid?" );
 			}
 
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
 			if( PlayerIdentityHelpers.GetProperUniqueId(player) != this.Uid ) {
-				throw new HamstarException( "!Rewards.PlayerSaveProtocol.ReceiveWithServer - Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
+				throw new HamstarException( "Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
 			}
 
 			myplayer.SaveKillData();

@@ -47,7 +47,7 @@ namespace Rewards.NetProtocols {
 
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
-				throw new HamstarException( "Rewards.SpendRewardsProtocol.ReceiveMe - No player data for " + player.name );
+				throw new HamstarException( "No player data for " + player.name );
 			}
 
 			data.Spend( (int)this.Pack.Price );

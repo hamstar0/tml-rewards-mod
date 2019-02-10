@@ -25,7 +25,7 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public void LoadStateData( RewardsMod mymod, TagCompound tags ) {
+		public void LoadStateData( TagCompound tags ) {
 			if( tags.ContainsKey("has_checked_instant_wayfarer") ) {
 				this.HasCheckedInstantWayfarer = tags.GetBool( "has_checked_instant_wayfarer" );
 			}
@@ -34,7 +34,7 @@ namespace Rewards.Logic {
 			}
 		}
 
-		public TagCompound SaveStateData( RewardsMod mymod ) {
+		public TagCompound SaveStateData() {
 			var tags = new TagCompound {
 				{ "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer }
 			};
@@ -53,15 +53,18 @@ namespace Rewards.Logic {
 		}
 
 		
-		public void LoadKillData( RewardsMod mymod ) {
-			bool success = this.WorldData.Load( mymod, this.GetDataFileBaseName() );
+		public void LoadKillData() {
+			var mymod = RewardsMod.Instance;
+			bool success = this.WorldData.Load( this.GetDataFileBaseName() );
 
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
 				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
-		public void SaveEveryonesKillData( RewardsMod mymod ) {
+		public void SaveEveryonesKillData() {
+			var mymod = RewardsMod.Instance;
+
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
 				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}
@@ -74,18 +77,20 @@ namespace Rewards.Logic {
 				myplayer.SaveKillData();
 			}
 
-			this.WorldData.Save( mymod, this.GetDataFileBaseName() );
+			this.WorldData.Save( this.GetDataFileBaseName() );
 		}
 
 
 		////////////////
 
-		public void Update( RewardsMod mymod ) {
+		public void Update() {
+			var mymod = RewardsMod.Instance;
+
 			if( !this.HasCheckedInstantWayfarer && mymod.NPCType<WayfarerTownNPC>() != 0 ) {
 				this.HasCheckedInstantWayfarer = true;
 				
 				if( mymod.Config.InstantWayfarer ) {
-					if( WayfarerTownNPC.CanWayfarerSpawn(mymod) ) {
+					if( WayfarerTownNPC.CanWayfarerSpawn() ) {
 						NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 					}
 				}

@@ -66,8 +66,8 @@ namespace Rewards {
 				LogHelpers.Alert( "Requesting kill data and mod settings from server..." );
 			}
 
-			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>();
-			PacketProtocolRequestToServer.QuickRequestToServer<ModSettingsProtocol>();
+			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>( -1 );
+			PacketProtocolRequestToServer.QuickRequestToServer<ModSettingsProtocol>( -1 );
 		}
 
 		private void OnConnectServer( Player player ) {
@@ -152,10 +152,10 @@ namespace Rewards {
 				return;
 			}
 			
-			success = plrData.Load( mymod, playerUid );
+			success = plrData.Load( playerUid );
 			if( !success ) {
-				if( KillData.CanReceiveOtherPlayerKillRewards( mymod ) ) {
-					plrData.AddToMe( mymod, myworld.Logic.WorldData );
+				if( KillData.CanReceiveOtherPlayerKillRewards( ) ) {
+					plrData.AddToMe( myworld.Logic.WorldData );
 				}
 			}
 
@@ -190,7 +190,7 @@ namespace Rewards {
 				plrData = myworld.Logic.PlayerData[uid];
 			}
 
-			plrData.Save( mymod, uid );
+			plrData.Save( uid );
 
 			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
 				LogHelpers.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
