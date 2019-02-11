@@ -77,7 +77,7 @@ namespace Rewards.Logic {
 			bool success = false;
 
 			try {
-				if( mymod.Config.DebugModeSaveKillsAsJson ) {
+				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
 					data = DataFileHelpers.LoadJson<KillData>( mymod, baseFileName, out success );
 				} else {
 					data = DataFileHelpers.LoadBinary<KillData>( mymod, baseFileName, false );
@@ -105,7 +105,7 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 
 			try {
-				if( mymod.Config.DebugModeSaveKillsAsJson ) {
+				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
 					DataFileHelpers.SaveAsJson<KillData>( mymod, baseFileName, this );
 				} else {
 					DataFileHelpers.SaveAsBinary<KillData>( mymod, baseFileName, false, this );

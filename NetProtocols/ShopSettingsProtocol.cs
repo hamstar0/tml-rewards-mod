@@ -5,36 +5,36 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class ModSettingsProtocol : PacketProtocolRequestToServer {
+	class ShopSettingsProtocol : PacketProtocolRequestToServer {
 		public override bool IsAsync => true;
 
 
 		////////////////
 
-		public RewardsSettingsConfigData Data;
+		public RewardsShopConfigData Data;
 
 
 
 		////////////////
 
-		private ModSettingsProtocol() { }
+		private ShopSettingsProtocol() { }
 		
 		////
 
 		protected override void InitializeServerSendData( int fromWho ) {
-			this.Data = RewardsMod.Instance.SettingsConfig;
+			this.Data = RewardsMod.Instance.ShopConfig;
 		}
 
 
 		////////////////
 
 		protected override void ReceiveReply() {
-			RewardsMod.Instance.SettingsConfigJson.SetData( this.Data );
+			RewardsMod.Instance.ShopConfigJson.SetData( this.Data );
 
 			Player player = Main.LocalPlayer;
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			myplayer.FinishLocalModSettingsSync();
+			myplayer.FinishLocalShopSettingsSync();
 		}
 	}
 }

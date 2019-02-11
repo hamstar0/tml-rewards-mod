@@ -8,7 +8,7 @@ namespace Rewards.Logic {
 	partial class KillData {
 		public static bool CanReceiveOtherPlayerKillRewards() {
 			var mymod = RewardsMod.Instance;
-			return mymod.Config.SharedRewards;
+			return mymod.SettingsConfig.SharedRewards;
 		}
 		
 
@@ -23,22 +23,22 @@ namespace Rewards.Logic {
 				float ppAmt = -1;
 
 				if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.GoblinInvasionReward;
+					ppAmt = mymod.PointsConfig.GoblinInvasionReward;
 					isGrind = this.GoblinsConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.FrostLegionInvasionReward;
+					ppAmt = mymod.PointsConfig.FrostLegionInvasionReward;
 					isGrind = this.FrostLegionConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.PirateInvasionReward;
+					ppAmt = mymod.PointsConfig.PirateInvasionReward;
 					isGrind = this.PiratesConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.MartianInvasionReward;
+					ppAmt = mymod.PointsConfig.MartianInvasionReward;
 					isGrind = this.MartiansConquered > 0;
 				} else if( NPCIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.PumpkingMoonWaveReward;
+					ppAmt = mymod.PointsConfig.PumpkingMoonWaveReward;
 					isGrind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
 				} else if( NPCIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
-					ppAmt = mymod.Config.FrostMoonWaveReward;
+					ppAmt = mymod.PointsConfig.FrostMoonWaveReward;
 					isGrind = NPC.waveNumber < this.FrostMoonWavesConquered;
 				}
 
@@ -54,18 +54,18 @@ namespace Rewards.Logic {
 			if( points == 0 ) {
 				string name = NPCIdentityHelpers.GetQualifiedName( npc );
 
-				if( mymod.Config.NpcRewards.ContainsKey( name ) ) {
-					points = mymod.Config.NpcRewards[ name ];
+				if( mymod.PointsConfig.NpcRewards.ContainsKey( name ) ) {
+					points = mymod.PointsConfig.NpcRewards[ name ];
 				}
 
-				if( mymod.Config.NpcRewardRequiredAsBoss.Contains( name ) ) {
+				if( mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name ) ) {
 					if( !npc.boss ) {
 						points = 0;
 					}
 				}
 				
-				if( mymod.Config.NpcRewardNotGivenAfterNpcKilled.ContainsKey(name) ) {
-					string blockingNpcName = mymod.Config.NpcRewardNotGivenAfterNpcKilled[ name ];
+				if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey(name) ) {
+					string blockingNpcName = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[ name ];
 
 					if( NPCIdentityHelpers.NamesToIds.ContainsKey( blockingNpcName ) ) {
 						int blockingNpcType = NPCIdentityHelpers.NamesToIds[blockingNpcName];
@@ -115,7 +115,7 @@ namespace Rewards.Logic {
 			bool isGrind, isExpired;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 
-			if( mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
 				Main.NewText( "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward );
 				LogHelpers.Log( " GiveKillReward to: "+toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward );

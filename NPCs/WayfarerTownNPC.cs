@@ -218,7 +218,7 @@ namespace Rewards.NPCs {
 
 			button1 = "Shop";
 
-			if( mymod.Config.ShopLoadout.Count > 40 ) {
+			if( mymod.ShopConfig.ShopLoadout.Count > 40 ) {
 				hasButton2 = this.CountShopItems() > 40;
 			}
 
@@ -250,12 +250,12 @@ namespace Rewards.NPCs {
 			var mymod = (RewardsMod)this.mod;
 			int shopStart = WayfarerTownNPC.CurrentShop * 40;
 			
-			for( int i = shopStart; i < mymod.Config.ShopLoadout.Count; i++ ) {
+			for( int i = shopStart; i < mymod.ShopConfig.ShopLoadout.Count; i++ ) {
 				if( nextSlot >= 40 ) {
 					break;
 				}
 
-				ShopPackDefinition def = mymod.Config.ShopLoadout[i];
+				ShopPackDefinition def = mymod.ShopConfig.ShopLoadout[i];
 				string fail;
 
 				if( !def.Validate(out fail) ) {
@@ -278,7 +278,7 @@ namespace Rewards.NPCs {
 			int count = 0;
 
 			string _;
-			foreach( ShopPackDefinition def in mymod.Config.ShopLoadout ) {
+			foreach( ShopPackDefinition def in mymod.ShopConfig.ShopLoadout ) {
 				if( def.Validate( out _ ) && def.RequirementsMet() ) {
 					count++;
 				}

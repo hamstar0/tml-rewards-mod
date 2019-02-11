@@ -25,11 +25,11 @@ namespace Rewards.Commands {
 		public override void Action( CommandCaller caller, string input, string[] args ) {
 			var mymod = (RewardsMod)this.mod;
 
-			if( mymod.Config.DebugModeEnableCheats ) {
-				mymod.Config.DebugModeEnableCheats = false;
+			if( mymod.SettingsConfig.DebugModeEnableCheats ) {
+				mymod.SettingsConfig.DebugModeEnableCheats = false;
 				caller.Reply( "Cheat mode off.", Color.LimeGreen );
 			} else {
-				mymod.Config.DebugModeEnableCheats = true;
+				mymod.SettingsConfig.DebugModeEnableCheats = true;
 				caller.Reply( "Cheat mode on.", Color.LimeGreen );
 			}
 

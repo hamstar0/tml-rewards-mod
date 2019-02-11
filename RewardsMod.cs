@@ -4,6 +4,7 @@ using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
+using Rewards.Configs;
 using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,15 @@ namespace Rewards {
 
 		////////////////
 
-		internal JsonConfig<RewardsConfigData> ConfigJson;
-		public RewardsConfigData Config => ConfigJson.Data;
+		internal JsonConfig<RewardsSettingsConfigData> SettingsConfigJson;
+		public RewardsSettingsConfigData SettingsConfig => SettingsConfigJson.Data;
+
+		internal JsonConfig<RewardsPointsConfigData> PointsConfigJson;
+		public RewardsPointsConfigData PointsConfig => PointsConfigJson.Data;
+
+		internal JsonConfig<RewardsShopConfigData> ShopConfigJson;
+		public RewardsShopConfigData ShopConfig => ShopConfigJson.Data;
+
 
 		////
 
@@ -55,7 +63,12 @@ namespace Rewards {
 		public RewardsMod() {
 			RewardsMod.Instance = this;
 			
-			this.ConfigJson = new JsonConfig<RewardsConfigData>( RewardsConfigData.ConfigFileName, ConfigurationDataBase.RelativePath );
+			this.SettingsConfigJson = new JsonConfig<RewardsSettingsConfigData>( RewardsSettingsConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath );
+			this.PointsConfigJson = new JsonConfig<RewardsPointsConfigData>( RewardsPointsConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath );
+			this.ShopConfigJson = new JsonConfig<RewardsShopConfigData>( RewardsShopConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath );
 		}
 
 		public override void Load() {
@@ -79,9 +92,11 @@ namespace Rewards {
 
 
 		private void LoadConfigs() {
-			this.ConfigJson.LoadFileAsync( ( success ) => {
+			this.SettingsConfigJson.LoadFileAsync( ( success ) => {
 				if( success ) { return; }
-				this.ConfigJson.SaveFile();
+				this.SettingsConfigJson.SaveFile();
+				this.PointsConfigJson.SaveFile();
+				this.ShopConfigJson.SaveFile();
 			} );
 
 			bool isLoaded = false;
@@ -90,12 +105,14 @@ namespace Rewards {
 				if( !isLoaded ) { isLoaded = true; }	// <- Paranoid failsafe?
 				else { return; }
 
-				if( this.Config.CanUpdateVersion() ) {
-					this.Config.UpdateToLatestVersion();
+				if( this.SettingsConfig.CanUpdateVersion() ) {
+					this.SettingsConfig.UpdateToLatestVersion();
 
 					ErrorLogger.Log( "Rewards updated to " + this.Version.ToString() );
 					
-					this.ConfigJson.SaveFileAsync( () => { } );
+					this.SettingsConfigJson.SaveFile();
+					this.PointsConfigJson.SaveFileAsync( () => { } );
+					this.ShopConfigJson.SaveFileAsync( () => { } );
 				}
 			} );
 		}

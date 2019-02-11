@@ -16,10 +16,10 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 
 			if( isGrind ) {
-				reward *= mymod.Config.GrindKillMultiplier;
+				reward *= mymod.PointsConfig.GrindKillMultiplier;
 			}
 
-			if( Main.netMode != 2 && mymod.Config.ShowPointsPopups ) {
+			if( Main.netMode != 2 && mymod.SettingsConfig.ShowPointsPopups ) {
 				if( Math.Abs(reward) >= 0.01f ) {
 					string msg = "+" + Math.Round( reward, 2 ) + " PP";
 					Color color = reward > 0 ?
@@ -56,8 +56,8 @@ namespace Rewards.Logic {
 		public bool CanDrawPoints() {
 			var mymod = RewardsMod.Instance;
 
-			if( !mymod.Config.ShowPoints ) { return false; }
-			if( !mymod.Config.PointsDisplayWithoutInventory ) {
+			if( !mymod.SettingsConfig.ShowPoints ) { return false; }
+			if( !mymod.SettingsConfig.PointsDisplayWithoutInventory ) {
 				return Main.playerInventory;
 			}
 			return true;
@@ -66,14 +66,14 @@ namespace Rewards.Logic {
 
 		public void DrawPointScore( SpriteBatch sb ) {
 			var mymod = RewardsMod.Instance;
-			float posX = mymod.Config.PointsDisplayX;
-			float posY = mymod.Config.PointsDisplayY;
+			float posX = mymod.SettingsConfig.PointsDisplayX;
+			float posY = mymod.SettingsConfig.PointsDisplayY;
 			posX = posX < 0 ? Main.screenWidth + posX : posX;
 			posY = posY < 0 ? Main.screenHeight + posY : posY;
 			Vector2 pos = new Vector2( posX, posY );
 
 			string ppStr = "PP: " + (int)this.ProgressPoints;
-			Color color = mymod.Config.PointsDisplayColor;
+			Color color = mymod.SettingsConfig.PointsDisplayColor;
 
 			//sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
 			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, color, Color.Black, default( Vector2 ), 1f );

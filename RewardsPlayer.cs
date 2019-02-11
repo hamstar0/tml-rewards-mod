@@ -10,7 +10,9 @@ namespace Rewards {
 		public bool IsFullySynced { get; private set; }
 		public bool HasKillData { get; private set; }
 		public bool HasModSettings { get; private set; }
-		
+		public bool HasShopSettings { get; private set; }
+		public bool HasPointsSettings { get; private set; }
+
 		////////////////
 
 		public override bool CloneNewInstances => false;
@@ -23,6 +25,8 @@ namespace Rewards {
 			this.IsFullySynced = false;
 			this.HasKillData = false;
 			this.HasModSettings = false;
+			this.HasShopSettings = false;
+			this.HasPointsSettings = false;
 		}
 
 		public override void clientClone( ModPlayer clientClone ) {
@@ -30,6 +34,8 @@ namespace Rewards {
 			myclone.IsFullySynced = this.IsFullySynced;
 			myclone.HasKillData = this.HasKillData;
 			myclone.HasModSettings = this.HasModSettings;
+			myclone.HasShopSettings = this.HasShopSettings;
+			myclone.HasPointsSettings = this.HasPointsSettings;
 		}
 
 
@@ -102,7 +108,7 @@ namespace Rewards {
 			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
 				LogHelpers.Warn( output );
 			} else {
-				if( mymod.Config.DebugModeInfo ) {
+				if( mymod.SettingsConfig.DebugModeInfo ) {
 					LogHelpers.Alert( output );
 				}
 			}

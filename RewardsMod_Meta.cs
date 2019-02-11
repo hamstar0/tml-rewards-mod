@@ -1,4 +1,5 @@
 using HamstarHelpers.Components.Config;
+using Rewards.Configs;
 using System;
 using System.IO;
 using Terraria;
@@ -11,7 +12,7 @@ namespace Rewards {
 		public static string GithubProjectName => "tml-rewards-mod";
 
 		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + RewardsConfigData.ConfigFileName; }
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + RewardsSettingsConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
@@ -24,9 +25,20 @@ namespace Rewards {
 					Main.NewText( "Rewards config settings auto saving suppressed." );
 					return;
 				}
-				mymod.ConfigJson.LoadFileAsync( ( success ) => {
+
+				mymod.SettingsConfigJson.LoadFileAsync( ( success ) => {
 					if( success ) { return; }
-					mymod.ConfigJson.SaveFile();
+					mymod.SettingsConfigJson.SaveFile();
+				} );
+
+				mymod.PointsConfigJson.LoadFileAsync( ( success ) => {
+					if( success ) { return; }
+					mymod.PointsConfigJson.SaveFile();
+				} );
+
+				mymod.ShopConfigJson.LoadFileAsync( ( success ) => {
+					if( success ) { return; }
+					mymod.PointsConfigJson.SaveFile();
 				} );
 			}
 		}
@@ -35,11 +47,22 @@ namespace Rewards {
 				throw new Exception( "Cannot reset to default configs outside of single player." );
 			}
 
-			var configData = new RewardsConfigData();
-			configData.SetDefaults();
-			
-			RewardsMod.Instance.ConfigJson.SetData( configData );
-			RewardsMod.Instance.ConfigJson.SaveFileAsync( () => { } );
+			var mymod = RewardsMod.Instance;
+			var settingsConfigData = new RewardsSettingsConfigData();
+			var pointsConfigData = new RewardsPointsConfigData();
+			var shopConfigData = new RewardsShopConfigData();
+
+			settingsConfigData.SetDefaults();
+			pointsConfigData.SetDefaults();
+			shopConfigData.SetDefaults();
+
+			mymod.SettingsConfigJson.SetData( settingsConfigData );
+			mymod.PointsConfigJson.SetData( pointsConfigData );
+			mymod.ShopConfigJson.SetData( shopConfigData );
+
+			mymod.SettingsConfigJson.SaveFile();
+			mymod.PointsConfigJson.SaveFileAsync( () => { } );
+			mymod.ShopConfigJson.SaveFileAsync( () => { } );
 		}
 	}
 }

@@ -45,7 +45,7 @@ namespace Rewards.Logic {
 		////////////////
 
 		public string GetDataFileBaseName() {
-			if( RewardsMod.Instance.Config.UseUpdatedWorldFileNameConvention ) {
+			if( RewardsMod.Instance.SettingsConfig.UseUpdatedWorldFileNameConvention ) {
 				return WorldHelpers.GetUniqueIdWithSeed();
 			} else {
 				return "World_" + FileHelpers.SanitizePath( Main.worldName ) + "_" + Main.worldID;
@@ -57,7 +57,7 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 			bool success = this.WorldData.Load( this.GetDataFileBaseName() );
 
-			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
@@ -65,7 +65,7 @@ namespace Rewards.Logic {
 		public void SaveEveryonesKillData() {
 			var mymod = RewardsMod.Instance;
 
-			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
 			}
 			
@@ -89,7 +89,7 @@ namespace Rewards.Logic {
 			if( !this.HasCheckedInstantWayfarer && mymod.NPCType<WayfarerTownNPC>() != 0 ) {
 				this.HasCheckedInstantWayfarer = true;
 				
-				if( mymod.Config.InstantWayfarer ) {
+				if( mymod.SettingsConfig.InstantWayfarer ) {
 					if( WayfarerTownNPC.CanWayfarerSpawn() ) {
 						NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 					}

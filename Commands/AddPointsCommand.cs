@@ -17,7 +17,7 @@ namespace Rewards.Commands {
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {
 			var mymod = (RewardsMod)this.mod;
-			if( !mymod.Config.DebugModeEnableCheats ) {
+			if( !mymod.SettingsConfig.DebugModeEnableCheats ) {
 				throw new UsageException( "Cheat mode not enabled." );
 			}
 

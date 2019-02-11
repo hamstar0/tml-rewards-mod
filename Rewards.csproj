@@ -40,8 +40,11 @@
     <Compile Include="Commands\ShopAddCommand.cs" />
     <Compile Include="Commands\ShopClearCommand.cs" />
     <Compile Include="Commands\AddPointsCommand.cs" />
-    <Compile Include="Config_Defaults.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Configs\PointsConfig.cs" />
+    <Compile Include="Configs\PointsConfig_Defaults.cs" />
+    <Compile Include="Configs\ShopConfig_Defaults.cs" />
+    <Compile Include="Configs\ShopConfig.cs" />
+    <Compile Include="Configs\SettingsConfig.cs" />
     <Compile Include="Items\ShopPackDefinition.cs" />
     <Compile Include="Items\ShopPackItem.cs" />
     <Compile Include="Logic\KillData_Kills.cs" />
@@ -49,6 +52,8 @@
     <Compile Include="Logic\KillData_PP.cs" />
     <Compile Include="Logic\KillData_Update.cs" />
     <Compile Include="Logic\WorldLogic_Kills.cs" />
+    <Compile Include="NetProtocols\PointsSettingsProtocol.cs" />
+    <Compile Include="NetProtocols\ShopSettingsProtocol.cs" />
     <Compile Include="NetProtocols\PlayerSaveProtocol.cs" />
     <Compile Include="NetProtocols\PackPurchaseProtocol.cs" />
     <Compile Include="NetProtocols\KillRewardProtocol.cs" />

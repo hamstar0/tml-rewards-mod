@@ -1,33 +1,16 @@
 ﻿using HamstarHelpers.Components.Config;
-using Microsoft.Xna.Framework;
-using Rewards.Items;
 using System;
 using System.Collections.Generic;
 
 
-namespace Rewards {
-	public partial class RewardsConfigData : ConfigurationDataBase {
-		public static string ConfigFileName => "Rewards Config.json";
+namespace Rewards.Configs {
+	public partial class RewardsPointsConfigData : ConfigurationDataBase {
+		public static string ConfigFileName => "Rewards Points Config.json";
 
 
 		////////////////
 
 		public string VersionSinceUpdate = "";
-
-		public bool DebugModeInfo = false;
-		public bool DebugModeKillInfo = false;
-		public bool DebugModeEnableCheats = false;
-		public bool DebugModeSaveKillsAsJson = false;
-
-		public bool ShowPoints = true;
-		public bool ShowPointsPopups = true;
-
-		public bool PointsDisplayWithoutInventory = false;
-		public int PointsDisplayX = 448;
-		public int PointsDisplayY = 1;
-		public Color PointsDisplayColor = Color.YellowGreen;
-
-		public bool SharedRewards = true;
 
 		public float GrindKillMultiplier = 0.1f;
 
@@ -38,38 +21,12 @@ namespace Rewards {
 		public float PumpkingMoonWaveReward = 10f;
 		public float FrostMoonWaveReward = 10f;
 
-		public bool InstantWayfarer = false;
-
 		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
 		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
 		public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
 		public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
 		//public bool NpcRewardPrediction = true;
 
-		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
-
-		public bool UseUpdatedWorldFileNameConvention = true;
-
-
-
-		////////////////
-
-		public static bool UpdatePackIfFound( string name, int oldPrice, IList<ShopPackDefinition> oldShop, IList<ShopPackDefinition> newShop ) {
-			for( int i = 0; i < oldShop.Count; i++ ) {
-				if( oldShop[i].Name != name ) { continue; }
-
-				for( int j = 0; j < newShop.Count; j++ ) {
-					if( newShop[j].Name != name ) { continue; }
-
-					if( oldShop[i].Price == oldPrice ) {
-						oldShop[i] = newShop[j];
-						return true;
-					}
-					return false;
-				}
-			}
-			return false;
-		}
 
 
 		////////////////
@@ -82,7 +39,7 @@ namespace Rewards {
 		
 		public void UpdateToLatestVersion() {
 			var mymod = RewardsMod.Instance;
-			var newConfig = new RewardsConfigData();
+			var newConfig = new RewardsSettingsConfigData();
 			newConfig.SetDefaults();
 
 			var versSince = this.VersionSinceUpdate != "" ?

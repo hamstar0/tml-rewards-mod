@@ -35,7 +35,7 @@ namespace Rewards {
 			this.HasModSettings = false;
 
 			if( !mymod.SuppressConfigAutoSaving ) {
-				mymod.ConfigJson.LoadFileAsync( ( success ) => {
+				mymod.SettingsConfigJson.LoadFileAsync( ( success ) => {
 					if( !success ) {
 						//mymod.ConfigJson.SaveFile();
 						LogHelpers.Alert( "Rewards config could not be loaded." );
@@ -62,12 +62,14 @@ namespace Rewards {
 			this.HasKillData = false;
 			this.HasModSettings = false;
 
-			if( RewardsMod.Instance.Config.DebugModeInfo ) {
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "Requesting kill data and mod settings from server..." );
 			}
 
 			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>( -1 );
 			PacketProtocolRequestToServer.QuickRequestToServer<ModSettingsProtocol>( -1 );
+			PacketProtocolRequestToServer.QuickRequestToServer<PointsSettingsProtocol>( -1 );
+			PacketProtocolRequestToServer.QuickRequestToServer<ShopSettingsProtocol>( -1 );
 		}
 
 		private void OnConnectServer( Player player ) {
@@ -103,10 +105,22 @@ namespace Rewards {
 			this.AttemptFinishLocalSync();
 		}
 
+		public void FinishLocalShopSettingsSync() {
+			this.HasShopSettings = true;
+
+			this.AttemptFinishLocalSync();
+		}
+
+		public void FinishLocalPointsSettingsSync() {
+			this.HasPointsSettings = true;
+
+			this.AttemptFinishLocalSync();
+		}
+
 		////////////////
-		
+
 		private void AttemptFinishLocalSync() {
-			if( !this.HasModSettings || !this.HasKillData ) { return; }
+			if( !this.HasModSettings || !this.HasKillData || !this.HasShopSettings || !this.HasPointsSettings ) { return; }
 
 			if( this.IsFullySynced ) { return; }
 			this.IsFullySynced = true;
@@ -159,7 +173,7 @@ namespace Rewards {
 				}
 			}
 
-			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( "who: " + this.player.whoAmI + " success: " + success + ", " + plrData.ToString() );
 			}
 		}
@@ -192,7 +206,7 @@ namespace Rewards {
 
 			plrData.Save( uid );
 
-			if( mymod.Config.DebugModeInfo || mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
 			}
 		}

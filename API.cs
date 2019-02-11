@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.NPCHelpers;
+using Rewards.Configs;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NPCs;
@@ -10,12 +11,22 @@ using Terraria;
 
 namespace Rewards {
 	public static partial class RewardsAPI {
-		public static RewardsConfigData GetModSettings() {
-			return RewardsMod.Instance.Config;
+		public static RewardsSettingsConfigData GetModSettings() {
+			return RewardsMod.Instance.SettingsConfig;
 		}
-		
+
+		public static RewardsShopConfigData GetShopSettings() {
+			return RewardsMod.Instance.ShopConfig;
+		}
+
+		public static RewardsPointsConfigData GetPointsSettings() {
+			return RewardsMod.Instance.PointsConfig;
+		}
+
+		////
+
 		public static void SaveModSettingsChanges() {
-			RewardsMod.Instance.ConfigJson.SaveFile();
+			RewardsMod.Instance.SettingsConfigJson.SaveFile();
 		}
 
 		////////////////
@@ -98,12 +109,12 @@ namespace Rewards {
 
 		public static void ShopClear() {
 			var mymod = RewardsMod.Instance;
-			mymod.Config.ShopLoadout = new List<ShopPackDefinition>();
+			mymod.ShopConfig.ShopLoadout = new List<ShopPackDefinition>();
 		}
 		
 		public static ShopPackDefinition? ShopRemoveLastPack() {
 			var mymod = RewardsMod.Instance;
-			IList<ShopPackDefinition> shop = mymod.Config.ShopLoadout;
+			IList<ShopPackDefinition> shop = mymod.ShopConfig.ShopLoadout;
 			int last = shop.Count - 1;
 			ShopPackDefinition? def = null;
 			string _;
@@ -123,7 +134,7 @@ namespace Rewards {
 			string fail;
 			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
-			mymod.Config.ShopLoadout.Add( pack );
+			mymod.ShopConfig.ShopLoadout.Add( pack );
 		}
 
 		////////////////

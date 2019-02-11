@@ -9,7 +9,7 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			var mymod = RewardsMod.Instance;
-			if( mymod.Config.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( NPCIdentityHelpers.GetQualifiedName(npc) );
 			}
 

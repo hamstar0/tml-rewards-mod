@@ -5,7 +5,7 @@ using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class ModSettingsProtocol : PacketProtocolRequestToServer {
+	class PointsSettingsProtocol : PacketProtocolRequestToServer {
 		public override bool IsAsync => true;
 
 
@@ -17,7 +17,7 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		private ModSettingsProtocol() { }
+		private PointsSettingsProtocol() { }
 		
 		////
 
@@ -34,7 +34,7 @@ namespace Rewards.NetProtocols {
 			Player player = Main.LocalPlayer;
 			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			myplayer.FinishLocalModSettingsSync();
+			myplayer.FinishLocalPointsSettingsSync();
 		}
 	}
 }

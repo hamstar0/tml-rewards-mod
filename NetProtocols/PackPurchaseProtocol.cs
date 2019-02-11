@@ -58,7 +58,7 @@ namespace Rewards.NetProtocols {
 				hook( player, this.Pack.Name, this.Pack.Price, items );
 			}
 
-			if( mymod.Config.DebugModeInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "Purchase made for "+player.name+" of "+this.Pack.Name+" ("+this.Pack.Price+")" );
 			}
 		}
