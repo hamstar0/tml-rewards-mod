@@ -55,7 +55,11 @@ namespace Rewards {
 				return this._OnPointsSpentHooks;
 			}
 		}
-		
+
+		////
+
+		internal bool RecentlyUpdatedConfig = false;
+
 
 
 		////////////////
@@ -111,6 +115,7 @@ namespace Rewards {
 					ErrorLogger.Log( "Rewards settings updated to " + this.Version.ToString() );
 					
 					this.SettingsConfigJson.SaveFile();
+					this.RecentlyUpdatedConfig = true;
 				}
 
 				if( this.PointsConfig.CanUpdateVersion() ) {
@@ -119,6 +124,7 @@ namespace Rewards {
 					ErrorLogger.Log( "Rewards points settings to " + this.Version.ToString() );
 					
 					this.PointsConfigJson.SaveFileAsync( () => { } );
+					this.RecentlyUpdatedConfig = true;
 				}
 
 				if( this.ShopConfig.CanUpdateVersion() ) {
@@ -127,6 +133,7 @@ namespace Rewards {
 					ErrorLogger.Log( "Rewards shop settings updated to " + this.Version.ToString() );
 					
 					this.ShopConfigJson.SaveFileAsync( () => { } );
+					this.RecentlyUpdatedConfig = true;
 				}
 			} );
 		}

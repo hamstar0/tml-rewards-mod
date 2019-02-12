@@ -1,7 +1,8 @@
 ﻿using HamstarHelpers.Components.Config;
 using Microsoft.Xna.Framework;
+using Rewards.Items;
 using System;
-
+using System.Collections.Generic;
 
 namespace Rewards.Configs {
 	public partial class RewardsSettingsConfigData : ConfigurationDataBase {
@@ -30,6 +31,26 @@ namespace Rewards.Configs {
 		public bool InstantWayfarer = false;
 		
 		public bool UseUpdatedWorldFileNameConvention = true;
+
+		////
+
+		public string _OBSOLETE_SETTINGS_BELOW_ = "";
+
+		 public float GrindKillMultiplier = 0.1f;
+
+		 public float GoblinInvasionReward = 15f;
+		 public float FrostLegionInvasionReward = 15f;
+		 public float PirateInvasionReward = 25f;
+		 public float MartianInvasionReward = 200f;
+		 public float PumpkingMoonWaveReward = 10f;
+		 public float FrostMoonWaveReward = 10f;
+
+		 public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
+		 public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
+		 public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
+		 public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
+
+		 public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
 
 
 

@@ -36,8 +36,6 @@ namespace Rewards.Configs {
 		
 		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
 
-		public bool UseUpdatedWorldFileNameConvention = true;
-
 
 
 		////////////////

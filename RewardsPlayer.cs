@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.ItemHelpers;
+using HamstarHelpers.Services.Messages;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -56,7 +57,15 @@ namespace Rewards {
 			if( this.player.whoAmI != Main.myPlayer ) { return; }
 
 			var mymod = (RewardsMod)this.mod;
-			
+
+			if( mymod.RecentlyUpdatedConfig ) {
+				mymod.RecentlyUpdatedConfig = false;
+				InboxMessages.SetMessage( "Rewards21ConfigUpdate",
+					"Rewards config file format modified. Modified configs will have to be brought up to date.",
+					false
+				);
+			}
+
 			if( Main.netMode == 0 ) {
 				this.OnConnectSingle();
 			}
