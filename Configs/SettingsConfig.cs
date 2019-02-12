@@ -1,4 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.DebugHelpers;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
@@ -34,23 +36,36 @@ namespace Rewards.Configs {
 
 		////
 
+		[PacketProtocolIgnore]
 		public string _OBSOLETE_SETTINGS_BELOW_ = "";
 
-		 public float GrindKillMultiplier = 0.1f;
+		[PacketProtocolIgnore]
+		public float GrindKillMultiplier = 0.1f;
 
-		 public float GoblinInvasionReward = 15f;
-		 public float FrostLegionInvasionReward = 15f;
-		 public float PirateInvasionReward = 25f;
-		 public float MartianInvasionReward = 200f;
-		 public float PumpkingMoonWaveReward = 10f;
-		 public float FrostMoonWaveReward = 10f;
+		[PacketProtocolIgnore]
+		public float GoblinInvasionReward = 15f;
+		[PacketProtocolIgnore]
+		public float FrostLegionInvasionReward = 15f;
+		[PacketProtocolIgnore]
+		public float PirateInvasionReward = 25f;
+		[PacketProtocolIgnore]
+		public float MartianInvasionReward = 200f;
+		[PacketProtocolIgnore]
+		public float PumpkingMoonWaveReward = 10f;
+		[PacketProtocolIgnore]
+		public float FrostMoonWaveReward = 10f;
 
-		 public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
-		 public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
-		 public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
-		 public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
+		[PacketProtocolIgnore]
+		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
+		[PacketProtocolIgnore]
+		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
+		[PacketProtocolIgnore]
+		public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
+		[PacketProtocolIgnore]
+		public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
 
-		 public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
+		[PacketProtocolIgnore]
+		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
 
 
 

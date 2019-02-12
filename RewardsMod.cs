@@ -2,6 +2,7 @@ using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DotNetHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using HamstarHelpers.Services.DataDumper;
 using HamstarHelpers.Services.Promises;
 using Rewards.Configs;
@@ -76,6 +77,9 @@ namespace Rewards {
 		}
 
 		public override void Load() {
+			string depErr = TmlHelpers.ReportBadDependencyMods( this );
+			if( depErr != null ) { throw new HamstarException( depErr ); }
+
 			this.LoadConfigs();
 
 			DataDumper.SetDumpSource( "Rewards", () => {
@@ -96,22 +100,27 @@ namespace Rewards {
 
 
 		private void LoadConfigs() {
-			this.SettingsConfigJson.LoadFileAsync( ( success ) => {
-				if( success ) { return; }
+			if( !this.SettingsConfigJson.LoadFile() ) {
+				ErrorLogger.Log( "Creating rewards configs anew..." );
 				this.SettingsConfigJson.SaveFile();
+			}
+			if( !this.PointsConfigJson.LoadFile() ) {
+				ErrorLogger.Log( "Creating rewards points configs anew..." );
 				this.PointsConfigJson.SaveFile();
+			}
+			if( !this.ShopConfigJson.LoadFile() ) {
+				ErrorLogger.Log( "Creating rewards shop configs anew..." );
 				this.ShopConfigJson.SaveFile();
-			} );
+			}
 
 			bool isLoaded = false;
 			
 			Promises.AddPostModLoadPromise( () => {
 				if( !isLoaded ) { isLoaded = true; }	// <- Paranoid failsafe?
 				else { return; }
-
+				
 				if( this.SettingsConfig.CanUpdateVersion() ) {
 					this.SettingsConfig.UpdateToLatestVersion();
-
 					ErrorLogger.Log( "Rewards settings updated to " + this.Version.ToString() );
 					
 					this.SettingsConfigJson.SaveFile();
@@ -120,7 +129,6 @@ namespace Rewards {
 
 				if( this.PointsConfig.CanUpdateVersion() ) {
 					this.PointsConfig.UpdateToLatestVersion();
-
 					ErrorLogger.Log( "Rewards points settings to " + this.Version.ToString() );
 					
 					this.PointsConfigJson.SaveFileAsync( () => { } );
@@ -129,7 +137,6 @@ namespace Rewards {
 
 				if( this.ShopConfig.CanUpdateVersion() ) {
 					this.ShopConfig.UpdateToLatestVersion();
-
 					ErrorLogger.Log( "Rewards shop settings updated to " + this.Version.ToString() );
 					
 					this.ShopConfigJson.SaveFileAsync( () => { } );
