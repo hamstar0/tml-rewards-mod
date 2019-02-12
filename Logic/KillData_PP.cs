@@ -73,7 +73,9 @@ namespace Rewards.Logic {
 			Vector2 pos = new Vector2( posX, posY );
 
 			string ppStr = "PP: " + (int)this.ProgressPoints;
-			Color color = mymod.SettingsConfig.PointsDisplayColor;
+
+			byte[] c = mymod.SettingsConfig.PointsDisplayColorRGB;
+			var color = new Color( c[0], c[1], c[2] );
 
 			//sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
 			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, color, Color.Black, default( Vector2 ), 1f );

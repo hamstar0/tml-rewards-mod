@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Configs;
 using Terraria;
@@ -6,7 +7,7 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class ShopSettingsProtocol : PacketProtocolRequestToServer {
-		public override bool IsAsync => true;
+		//public override bool IsAsync => true;
 
 
 		////////////////
@@ -23,6 +24,9 @@ namespace Rewards.NetProtocols {
 
 		protected override void InitializeServerSendData( int fromWho ) {
 			this.Data = RewardsMod.Instance.ShopConfig;
+			if( this.Data == null ) {
+				throw new HamstarException( "No shop settings available." );
+			}
 		}
 
 

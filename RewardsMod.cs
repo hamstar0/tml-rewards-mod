@@ -108,10 +108,24 @@ namespace Rewards {
 				if( this.SettingsConfig.CanUpdateVersion() ) {
 					this.SettingsConfig.UpdateToLatestVersion();
 
-					ErrorLogger.Log( "Rewards updated to " + this.Version.ToString() );
+					ErrorLogger.Log( "Rewards settings updated to " + this.Version.ToString() );
 					
 					this.SettingsConfigJson.SaveFile();
+				}
+
+				if( this.PointsConfig.CanUpdateVersion() ) {
+					this.PointsConfig.UpdateToLatestVersion();
+
+					ErrorLogger.Log( "Rewards points settings to " + this.Version.ToString() );
+					
 					this.PointsConfigJson.SaveFileAsync( () => { } );
+				}
+
+				if( this.ShopConfig.CanUpdateVersion() ) {
+					this.ShopConfig.UpdateToLatestVersion();
+
+					ErrorLogger.Log( "Rewards shop settings updated to " + this.Version.ToString() );
+					
 					this.ShopConfigJson.SaveFileAsync( () => { } );
 				}
 			} );

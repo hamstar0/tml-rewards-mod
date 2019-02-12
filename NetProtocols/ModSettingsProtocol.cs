@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using Rewards.Configs;
 using Terraria;
@@ -6,11 +7,6 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class ModSettingsProtocol : PacketProtocolRequestToServer {
-		public override bool IsAsync => true;
-
-
-		////////////////
-
 		public RewardsSettingsConfigData Data;
 
 
@@ -23,6 +19,9 @@ namespace Rewards.NetProtocols {
 
 		protected override void InitializeServerSendData( int fromWho ) {
 			this.Data = RewardsMod.Instance.SettingsConfig;
+			if( this.Data == null ) {
+				throw new HamstarException( "No mod settings available." );
+			}
 		}
 
 

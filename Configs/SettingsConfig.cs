@@ -23,7 +23,7 @@ namespace Rewards.Configs {
 		public bool PointsDisplayWithoutInventory = false;
 		public int PointsDisplayX = 448;
 		public int PointsDisplayY = 1;
-		public Color PointsDisplayColor = Color.YellowGreen;
+		public byte[] PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
 
 		public bool SharedRewards = true;
 
@@ -35,7 +35,9 @@ namespace Rewards.Configs {
 
 		////////////////
 
-		public void SetDefaults() { }
+		public void SetDefaults() {
+			this.PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
+		}
 
 		////
 

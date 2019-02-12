@@ -61,6 +61,8 @@ namespace Rewards {
 			this.IsFullySynced = false;
 			this.HasKillData = false;
 			this.HasModSettings = false;
+			this.HasPointsSettings = false;
+			this.HasShopSettings = false;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "Requesting kill data and mod settings from server..." );
@@ -77,7 +79,7 @@ namespace Rewards {
 				LogHelpers.Warn( "Player null" );
 			}
 			if( !player.active ) {
-				LogHelpers.Warn( "Player "+player.name+" ("+player.whoAmI+") not active" );
+				LogHelpers.Alert( "Player "+player.name+" ("+player.whoAmI+") not active" );
 			}
 			if( Main.player[ player.whoAmI ] != player ) {
 				LogHelpers.Warn( "Player "+player.name+" ("+player.whoAmI+") not found in Main array for some reason..." );

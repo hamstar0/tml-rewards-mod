@@ -49,8 +49,10 @@ namespace Rewards.NetProtocols {
 		////////////////
 
 		protected override bool ReceiveRequestWithServer( int fromWho ) {
-			if( this.WorldData == null ) { return true; }
-			if( this.PlayerData == null ) { return true; }
+			if( this.WorldData == null || this.PlayerData == null ) {
+				LogHelpers.Alert( "Could not reply to request; no player id available." );
+				return true;
+			}
 			return false;
 		}
 
