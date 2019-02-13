@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.ItemHelpers;
 using HamstarHelpers.Services.Messages;
+using Microsoft.Xna.Framework;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -79,7 +80,6 @@ namespace Rewards {
 
 		public override void PreUpdate() {
 			if( Main.myPlayer != this.player.whoAmI ) { return; }
-			if( !this.IsFullySynced ) { return; }
 
 			int packType = this.mod.ItemType<ShopPackItem>();
 
@@ -88,7 +88,18 @@ namespace Rewards {
 				if( item == null || !item.active ) { continue; }
 				if( item.type != packType ) { continue; }
 
-				this.OpenPack( item );
+				if( !this.IsFullySynced ) {
+					Main.NewText( "Cannot open pack: An error occurred synchronizing with the server.", Color.Red );
+					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server. "
+						+"(HasKillData:"+this.HasKillData+", HasModSettings:"+this.HasModSettings
+						+", HasPointsSettings:"+this.HasPointsSettings+", HasShopSettings:"+this.HasShopSettings+")" );
+
+					ItemHelpers.DestroyItem( item );
+					this.player.inventory[i] = new Item();
+				} else {
+					this.OpenPack( item );
+				}
+
 				break;
 			}
 
