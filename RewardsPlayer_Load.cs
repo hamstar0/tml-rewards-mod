@@ -90,6 +90,8 @@ namespace Rewards {
 
 			this.HasKillData = true;
 			this.HasModSettings = true;
+			this.HasShopSettings = true;
+			this.HasPointsSettings = true;
 		}
 		
 
