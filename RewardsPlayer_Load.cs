@@ -99,25 +99,33 @@ namespace Rewards {
 
 		public void FinishLocalKillDataSync() {
 			this.HasKillData = true;
-
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+				LogHelpers.Alert();
+			}
 			this.AttemptFinishLocalSync();
 		}
 
 		public void FinishLocalModSettingsSync() {
 			this.HasModSettings = true;
-
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+				LogHelpers.Alert();
+			}
 			this.AttemptFinishLocalSync();
 		}
 
 		public void FinishLocalShopSettingsSync() {
 			this.HasShopSettings = true;
-
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+				LogHelpers.Alert();
+			}
 			this.AttemptFinishLocalSync();
 		}
 
 		public void FinishLocalPointsSettingsSync() {
 			this.HasPointsSettings = true;
-
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+				LogHelpers.Alert();
+			}
 			this.AttemptFinishLocalSync();
 		}
 
@@ -128,7 +136,11 @@ namespace Rewards {
 
 			if( this.IsFullySynced ) { return; }
 			this.IsFullySynced = true;
-			
+
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+				LogHelpers.Alert();
+			}
+
 			if( Main.netMode == 0 ) {
 				this.OnFinishPlayerEnterWorldForSingle();
 			} else if( Main.netMode == 1 ) {

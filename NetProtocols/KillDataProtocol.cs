@@ -6,7 +6,7 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillDataProtocol : PacketProtocolRequestToServer {
-		public override bool IsAsync => true;
+		//public override bool IsAsync => true;
 
 		////////////////
 
@@ -23,16 +23,13 @@ namespace Rewards.NetProtocols {
 
 		protected override void InitializeServerSendData( int toWho ) {
 			Player player = Main.player[ toWho ];
-			if( player == null || !player.active ) {
+			if( player == null /*|| !player.active*/ ) {
 				LogHelpers.Warn( "Invalid player "+player.name+" (" + toWho+")" );
 				return;
 			}
 
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
-
-			myplayer.OnFinishPlayerEnterWorldForServer();
 
 			var plrKillData = myworld.Logic.GetPlayerData( player );
 			if( plrKillData == null ) {
@@ -50,9 +47,16 @@ namespace Rewards.NetProtocols {
 
 		protected override bool ReceiveRequestWithServer( int fromWho ) {
 			if( this.WorldData == null || this.PlayerData == null ) {
-				LogHelpers.Alert( "Could not reply to request; no player id available." );
+				LogHelpers.Alert( "Could not reply to request; no player id available ("
+						+"WorldData:" + ( this.WorldData != null ) + ", PlayerData:" + ( this.PlayerData != null ) + ")." );
 				return true;
 			}
+
+			Player player = Main.player[ fromWho ];
+			var myplayer = player.GetModPlayer<RewardsPlayer>();
+
+			myplayer.OnFinishPlayerEnterWorldForServer();
+
 			return false;
 		}
 

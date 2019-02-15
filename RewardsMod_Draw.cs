@@ -21,7 +21,7 @@ namespace Rewards {
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 
 						if( data == null ) {
-							throw new HamstarException( "RewardsMod.ModifyInterfaceLayers() - No player data for " + Main.LocalPlayer.name );
+							throw new HamstarException( "No player data for " + Main.LocalPlayer.name );
 						}
 
 						if( data.CanDrawPoints() ) {
