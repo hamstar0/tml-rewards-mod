@@ -27,8 +27,8 @@ namespace Rewards.Configs {
 		public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
 		//public bool NpcRewardPrediction = true;
 
-
-
+		
+		
 		////////////////
 		
 		public bool CanUpdateVersion() {

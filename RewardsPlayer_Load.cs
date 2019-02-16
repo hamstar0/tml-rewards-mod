@@ -33,6 +33,8 @@ namespace Rewards {
 			this.IsFullySynced = false;
 			this.HasKillData = false;
 			this.HasModSettings = false;
+			this.HasPointsSettings = false;
+			this.HasShopSettings = false;
 
 			if( !mymod.SuppressConfigAutoSaving ) {
 				mymod.SettingsConfigJson.LoadFileAsync( ( success ) => {
@@ -43,6 +45,8 @@ namespace Rewards {
 					}
 					this.FinishLocalKillDataSync();
 					this.FinishLocalModSettingsSync();
+					this.FinishLocalPointsSettingsSync();
+					this.FinishLocalShopSettingsSync();
 				} );
 			}
 		}

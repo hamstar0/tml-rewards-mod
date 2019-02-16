@@ -77,10 +77,17 @@ namespace Rewards.Configs {
 
 		////
 
-		public bool CanUpdateVersion() {
-			if( this.VersionSinceUpdate == "" ) { return true; }
+		public bool CanUpdateVersion( out bool formatChanged ) {
+			if( this.VersionSinceUpdate == "" ) {
+				formatChanged = false;
+				return true;
+			}
+
 			var versSince = new Version( this.VersionSinceUpdate );
-			return versSince < RewardsMod.Instance.Version;
+			bool canUpdate = versSince < RewardsMod.Instance.Version;
+
+			formatChanged = versSince < new Version( 2, 1, 0 );
+			return canUpdate;
 		}
 		
 		public void UpdateToLatestVersion() {
