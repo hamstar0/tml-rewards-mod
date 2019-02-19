@@ -149,9 +149,9 @@ namespace Rewards.Logic {
 				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
 
 				Main.NewText( "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")" );
-				LogHelpers.Log( " GiveKillReward to: "+toPlayer.name + ", npc: " + npc.TypeName+" ("+npc.type+")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")" );
+				LogHelpers.Log( " GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss + " (is? " + npc.boss + ")" );
 			}
-			
+
 			this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
 
 			if( Main.netMode == 2 ) {

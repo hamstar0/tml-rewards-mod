@@ -6,6 +6,7 @@ using Rewards.Items;
 using System;
 using System.Collections.Generic;
 
+
 namespace Rewards.Configs {
 	public partial class RewardsSettingsConfigData : ConfigurationDataBase {
 		public static string ConfigFileName => "Rewards Config.json";
@@ -92,8 +93,6 @@ namespace Rewards.Configs {
 		
 		public void UpdateToLatestVersion() {
 			var mymod = RewardsMod.Instance;
-			var newConfig = new RewardsSettingsConfigData();
-			newConfig.SetDefaults();
 
 			var versSince = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
