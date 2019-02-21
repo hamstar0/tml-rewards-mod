@@ -4,7 +4,7 @@ Use the provided in-game chat commands (type /help to list, scroll with arrow ke
 
 Mod recommendations:
 BossChecklist = Keeps track of bosses killed.
-Expeditions = A "quests" mod template. May have some multiplayer "wonkiness" (as of 2/21/19).
-ExpeditionsContent = Associated content mode for Expeditions. Other content mods may exist.
+Expeditions = A "quests" template and provider mod base.
+ExpeditionsContent = Implements content for Expeditions. Other content mods may exist.
 Antiaris = Extensive "mega mod" content mod that adds quests.
 Licenses = Uses Rewards and Nihilism to require items to be unlocked by Progress Points to be used.
