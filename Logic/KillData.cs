@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Config;
+using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.MiscHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
@@ -83,19 +84,19 @@ namespace Rewards.Logic {
 					data = DataFileHelpers.LoadBinary<KillData>( mymod, baseFileName, false );
 					success = data != null;
 				}
-
-				if( success ) {
-					this.KilledNpcs = data.KilledNpcs;
-					this.GoblinsConquered = data.GoblinsConquered;
-					this.FrostLegionConquered = data.FrostLegionConquered;
-					this.PiratesConquered = data.PiratesConquered;
-					this.MartiansConquered = data.MartiansConquered;
-					this.PumpkinMoonWavesConquered = data.PumpkinMoonWavesConquered;
-					this.FrostMoonWavesConquered = data.FrostMoonWavesConquered;
-					this.ProgressPoints = data.ProgressPoints;
-				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to load file: "+ baseFileName, e );
+				throw new HamstarException( "Failed to load file: "+ baseFileName, e );
+			}
+
+			if( success ) {
+				this.KilledNpcs = data.KilledNpcs;
+				this.GoblinsConquered = data.GoblinsConquered;
+				this.FrostLegionConquered = data.FrostLegionConquered;
+				this.PiratesConquered = data.PiratesConquered;
+				this.MartiansConquered = data.MartiansConquered;
+				this.PumpkinMoonWavesConquered = data.PumpkinMoonWavesConquered;
+				this.FrostMoonWavesConquered = data.FrostMoonWavesConquered;
+				this.ProgressPoints = data.ProgressPoints;
 			}
 
 			return success;
@@ -106,12 +107,12 @@ namespace Rewards.Logic {
 
 			try {
 				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
-					DataFileHelpers.SaveAsJson<KillData>( mymod, baseFileName, this );
+					DataFileHelpers.SaveAsJson( mymod, baseFileName, this );
 				} else {
-					DataFileHelpers.SaveAsBinary<KillData>( mymod, baseFileName, false, this );
+					DataFileHelpers.SaveAsBinary( mymod, baseFileName, false, this );
 				}
 			} catch( IOException e ) {
-				throw new IOException( "Failed to save file: "+ baseFileName, e );
+				throw new HamstarException( "Failed to save file: "+ baseFileName, e );
 			}
 		}
 

@@ -47,6 +47,7 @@ namespace Rewards.NetProtocols {
 
 			NPC npc = new NPC();
 			npc.SetDefaults( this.NpcType );
+			npc.boss = true;
 
 			bool isGrind, isExpired;
 			float reward = data.RecordKill_NoSync( npc, out isGrind, out isExpired );

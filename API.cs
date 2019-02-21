@@ -54,7 +54,7 @@ namespace Rewards {
 		public static float GetPoints( Player player ) {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new HamstarException( "RewardsAPI.GetPoints() - No player data for "+player.name ); }
+			if( data == null ) { throw new HamstarException( "No player data for "+player.name ); }
 
 			return data.ProgressPoints;
 		}
@@ -63,7 +63,7 @@ namespace Rewards {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new HamstarException( "RewardsAPI.AddPoints() - No player data for " + player.name ); }
+			if( data == null ) { throw new HamstarException( "No player data for " + player.name ); }
 
 			data.AddRewardForPlayer( player, false, false, points );
 		}
@@ -132,7 +132,7 @@ namespace Rewards {
 		public static void ShopAddPack( ShopPackDefinition pack ) {
 			var mymod = RewardsMod.Instance;
 			string fail;
-			if( !pack.Validate(out fail) ) { throw new Exception("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
+			if( !pack.Validate(out fail) ) { throw new HamstarException("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.ShopConfig.ShopLoadout.Add( pack );
 		}

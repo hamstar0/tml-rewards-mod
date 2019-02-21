@@ -46,7 +46,7 @@ namespace Rewards.Logic {
 			KillData data = this.GetPlayerData( toPlayer );
 			if( data == null ) { return; }
 
-			data.RewardKill_Synced( toPlayer, npc );
+			data.RewardKill_SyncedFromServer( toPlayer, npc );
 			data.RecordKill_NoSync( npc, out _, out _ );
 		}
 	}

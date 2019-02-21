@@ -126,8 +126,9 @@ namespace Rewards.Logic {
 
 			string name = NPCIdentityHelpers.GetQualifiedName( npc );
 			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
-			if( !needsBoss || (needsBoss && npc.boss) ) {
+			if( canReward ) {
 				if( this.KilledNpcs.ContainsKey( npc.type ) ) {
 					this.KilledNpcs[npc.type]++;
 				} else {
@@ -138,7 +139,7 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKill_Synced( Player toPlayer, NPC npc ) {
+		public void RewardKill_SyncedFromServer( Player toPlayer, NPC npc ) {
 			var mymod = RewardsMod.Instance;
 			bool isGrind, isExpired;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
@@ -148,8 +149,10 @@ namespace Rewards.Logic {
 				string name = NPCIdentityHelpers.GetQualifiedName( npc );
 				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
 
-				Main.NewText( "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")" );
-				LogHelpers.Log( " GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills + ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss + " (is? " + npc.boss + ")" );
+				string msg = "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
+						+ ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")";
+				Main.NewText( msg );
+				LogHelpers.Log( " "+ msg );
 			}
 
 			this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
