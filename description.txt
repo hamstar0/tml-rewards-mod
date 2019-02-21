@@ -1,3 +1,10 @@
 This mod rewards players for game progression with Progress Points; a spendable, non-transferable currency to purchase rare, hard-to-grind items to speed up the game. Consult the Wayfarer town npc for spending options (note that more purchases are unlocked as you progress the game).
 
 Use the provided in-game chat commands (type /help to list, scroll with arrow keys to find) or the Mod Helpers control panel to adjust settings and shop loadout.
+
+Mod recommendations:
+BossChecklist = Keeps track of bosses killed.
+Expeditions = A "quests" mod template. May have some multiplayer "wonkiness" (as of 2/21/19).
+ExpeditionsContent = Associated content mode for Expeditions. Other content mods may exist.
+Antiaris = Extensive "mega mod" content mod that adds quests.
+Licenses = Uses Rewards and Nihilism to require items to be unlocked by Progress Points to be used.
