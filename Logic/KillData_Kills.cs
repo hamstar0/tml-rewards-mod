@@ -120,7 +120,7 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		public float RecordKill_NoSync( NPC npc, out bool isGrind, out bool isExpired ) {
+		public float RecordKill( NPC npc, out bool isGrind, out bool isExpired ) {
 			var mymod = RewardsMod.Instance;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 
@@ -139,7 +139,7 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKill_SyncedFromServer( Player toPlayer, NPC npc ) {
+		public void RewardKill_SyncsFromHost( Player toPlayer, NPC npc ) {
 			var mymod = RewardsMod.Instance;
 			bool isGrind, isExpired;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
@@ -158,7 +158,7 @@ namespace Rewards.Logic {
 			this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
 
 			if( Main.netMode == 2 ) {
-				KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc.type );
+				KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc );
 			}
 		}
 

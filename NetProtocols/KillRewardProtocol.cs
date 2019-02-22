@@ -7,21 +7,22 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillRewardProtocol : PacketProtocolSentToEither {
-		public static void SendRewardToClient( int toWho, int ignoreWho, int npcType ) {
-			var protocol = new KillRewardProtocol( toWho, npcType );
+		public static void SendRewardToClient( int toWho, int ignoreWho, NPC npc ) {
+			var protocol = new KillRewardProtocol( toWho, npc.type, npc.boss );
 			protocol.SendToClient( toWho, ignoreWho );
 		}
-		
+
 
 
 		////////////////
 
-		public override bool IsVerbose { get { return false; } }
+		public override bool IsVerbose => false;
 		
 		////////////////
 
 		public int KillerWho;
 		public int NpcType;
+		public bool IsBoss;
 
 
 
@@ -29,9 +30,10 @@ namespace Rewards.NetProtocols {
 
 		private KillRewardProtocol() { }
 
-		private KillRewardProtocol( int killerWho, int npcType ) {
+		private KillRewardProtocol( int killerWho, int npcType, bool isBoss ) {
 			this.KillerWho = killerWho;
 			this.NpcType = npcType;
+			this.IsBoss = isBoss;
 		}
 
 
@@ -47,10 +49,10 @@ namespace Rewards.NetProtocols {
 
 			NPC npc = new NPC();
 			npc.SetDefaults( this.NpcType );
-			npc.boss = true;
+			npc.boss = this.IsBoss;
 
 			bool isGrind, isExpired;
-			float reward = data.RecordKill_NoSync( npc, out isGrind, out isExpired );
+			float reward = data.RecordKill( npc, out isGrind, out isExpired );
 
 			data.AddRewardForPlayer( Main.LocalPlayer, isGrind, isExpired, reward );
 		}

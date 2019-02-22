@@ -4,6 +4,7 @@ Use the provided in-game chat commands (type /help to list, scroll with arrow ke
 
 Mod recommendations:
 BossChecklist = Keeps track of bosses killed.
+ReducedGrinding = Adds numerous features that remove or reduce tedious gameplay elements.
 Expeditions = A "quests" template and provider mod base.
 ExpeditionsContent = Implements content for Expeditions. Other content mods may exist.
 Antiaris = Extensive "mega mod" content mod that adds quests.

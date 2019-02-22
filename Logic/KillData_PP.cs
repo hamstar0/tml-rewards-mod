@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Services.Messages;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Services.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -14,15 +15,17 @@ namespace Rewards.Logic {
 			}
 
 			var mymod = RewardsMod.Instance;
+			float finalReward = reward;
+			float oldPP = this.ProgressPoints;
 
 			if( isGrind ) {
-				reward *= mymod.PointsConfig.GrindKillMultiplier;
+				finalReward *= mymod.PointsConfig.GrindKillMultiplier;
 			}
 
 			if( Main.netMode != 2 && mymod.SettingsConfig.ShowPointsPopups ) {
-				if( Math.Abs(reward) >= 0.01f ) {
-					string msg = "+" + Math.Round( reward, 2 ) + " PP";
-					Color color = reward > 0 ?
+				if( Math.Abs(finalReward) >= 0.01f ) {
+					string msg = "+" + Math.Round( finalReward, 2 ) + " PP";
+					Color color = finalReward > 0 ?
 						isGrind ? Color.DarkGray : Color.GreenYellow :
 						Color.Red;
 
@@ -30,10 +33,18 @@ namespace Rewards.Logic {
 				}
 			}
 
-			this.ProgressPoints += reward;
+			this.ProgressPoints += finalReward;
 
 			foreach( var hook in mymod.OnPointsGainedHooks ) {
-				hook( player, reward );
+				hook( player, finalReward );
+			}
+
+			if( mymod.SettingsConfig.DebugModeKillInfo ) {
+				LogHelpers.Log( "  AddRewardForPlayer - Player: " + player.name + " ("+player.whoAmI+ ")"
+					+ ", reward: " + finalReward + ((finalReward != reward) ? (" (was " + reward + ")") : "" )
+					+ ", isGrind:" + isGrind + ", isExpired:" + isExpired
+					+ ", PP: " + this.ProgressPoints + " (was " + oldPP + ")"
+				);
 			}
 		}
 
