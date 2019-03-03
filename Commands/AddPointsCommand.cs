@@ -13,6 +13,7 @@ namespace Rewards.Commands {
 		public override string Description => "Adds the specified amount of progress points.";
 
 
+
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {

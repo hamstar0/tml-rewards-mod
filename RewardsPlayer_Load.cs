@@ -43,12 +43,13 @@ namespace Rewards {
 						LogHelpers.Alert( "Rewards config could not be loaded." );
 						Main.NewText( "Invalid config file. Consider using the /rew-shop-add command or a JSON editor program or site.", Color.Red );
 					}
-					this.FinishLocalKillDataSync();
-					this.FinishLocalModSettingsSync();
-					this.FinishLocalPointsSettingsSync();
-					this.FinishLocalShopSettingsSync();
 				} );
 			}
+
+			this.FinishLocalKillDataSync();
+			this.FinishLocalModSettingsSync();
+			this.FinishLocalPointsSettingsSync();
+			this.FinishLocalShopSettingsSync();
 		}
 
 		private void OnConnectCurrentClient() {
