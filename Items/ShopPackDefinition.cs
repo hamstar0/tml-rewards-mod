@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.ItemHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -26,6 +27,30 @@ namespace Rewards.Items {
 			Main.PlaySound( SoundID.Coins );
 
 			return packItems;
+		}
+
+		public static ShopPackDefinition[] GetValidatedLoadout( bool outputValidationErrors ) {
+			var mymod = RewardsMod.Instance;
+			var defs = new List<ShopPackDefinition>();
+
+			for( int i = 0; i < mymod.ShopConfig.ShopLoadout.Count; i++ ) {
+				ShopPackDefinition def = mymod.ShopConfig.ShopLoadout[i];
+				string fail;
+
+				if( !def.Validate( out fail ) ) {
+					if( outputValidationErrors ) {
+						Main.NewText( "Could not load shop item " + def.Name + " (" + fail + ")", Color.Red );
+					}
+					continue;
+				}
+				if( !def.RequirementsMet() ) {
+					continue;
+				}
+
+				defs.Add( def );
+			}
+
+			return defs.ToArray();
 		}
 
 

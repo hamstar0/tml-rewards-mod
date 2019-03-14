@@ -1,3 +1,4 @@
+using HamstarHelpers.Components.Errors;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
@@ -34,7 +35,9 @@ namespace Rewards.NPCs {
 				int shops = (int)Math.Ceiling( (float)itemCount / 40f );
 
 				if( shops >= 1 ) {
-					WayfarerTownNPC.CurrentShop = ( WayfarerTownNPC.CurrentShop + 1) >= shops ? 0 : ( WayfarerTownNPC.CurrentShop + 1);
+					WayfarerTownNPC.CurrentShop = ( WayfarerTownNPC.CurrentShop + 1) >= shops ?
+						0 :
+						( WayfarerTownNPC.CurrentShop + 1);
 				}
 			}
 		}
@@ -45,24 +48,14 @@ namespace Rewards.NPCs {
 		public override void SetupShop( Chest shop, ref int nextSlot ) {
 			var mymod = (RewardsMod)this.mod;
 			int shopStart = WayfarerTownNPC.CurrentShop * 40;
+			ShopPackDefinition[] defs = ShopPackDefinition.GetValidatedLoadout( true );
 			
-			for( int i = shopStart; i < mymod.ShopConfig.ShopLoadout.Count; i++ ) {
+			for( int i = shopStart; i < defs.Length; i++ ) {
 				if( nextSlot >= 40 ) {
 					break;
 				}
-
-				ShopPackDefinition def = mymod.ShopConfig.ShopLoadout[i];
-				string fail;
-
-				if( !def.Validate(out fail) ) {
-					Main.NewText( "Could not load shop item " + def.Name + " ("+fail+")", Color.Red );
-					continue;
-				}
-				if( !def.RequirementsMet() ) {
-					continue;
-				}
 				
-				shop.item[ nextSlot++ ] = ShopPackItem.CreateItem( def );
+				shop.item[ nextSlot++ ] = ShopPackItem.CreateItem( defs[i] );
 			}
 		}
 
@@ -71,16 +64,8 @@ namespace Rewards.NPCs {
 
 		public int CountShopItems() {
 			var mymod = (RewardsMod)this.mod;
-			int count = 0;
-
-			string _;
-			foreach( ShopPackDefinition def in mymod.ShopConfig.ShopLoadout ) {
-				if( def.Validate( out _ ) && def.RequirementsMet() ) {
-					count++;
-				}
-			}
-
-			return count;
+			ShopPackDefinition[] defs = ShopPackDefinition.GetValidatedLoadout( false );
+			return defs.Length;
 		}
 	}
 }
