@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace Rewards.NPCs {
 	[AutoloadHead]
-	class WayfarerTownNPC : ModNPC {
+	partial class WayfarerTownNPC : ModNPC {
 		public readonly static IList<string> PossibleNames = new List<string>( new string[] {
 			"Croft", "Grylls", "Jack", "Jones", "Shiren", "Yukino", "Wander"
 		} );
@@ -25,6 +25,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		private static int CurrentShop = 0;
+
 
 
 		////////////////
@@ -50,6 +51,7 @@ namespace Rewards.NPCs {
 
 		public override string Texture => "Rewards/NPCs/WayfarerTownNPC";
 		public override string HeadTexture => "Rewards/NPCs/WayfarerTownNPC_Head";
+
 
 
 		////////////////

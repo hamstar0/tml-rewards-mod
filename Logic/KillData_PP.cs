@@ -23,13 +23,13 @@ namespace Rewards.Logic {
 			}
 
 			if( Main.netMode != 2 && mymod.SettingsConfig.ShowPointsPopups ) {
+				Color color = isGrind ? Color.DarkGray : Color.GreenYellow;
+
 				if( Math.Abs(finalReward) >= 0.01f ) {
 					string msg = "+" + Math.Round( finalReward, 2 ) + " PP";
-					Color color = finalReward > 0 ?
-						isGrind ? Color.DarkGray : Color.GreenYellow :
-						Color.Red;
-
 					PlayerMessages.AddPlayerLabel( player, msg, color, 60 * 3, true, false );
+				} else if( Math.Abs( finalReward ) > 0 ) {
+					PlayerMessages.AddPlayerLabel( player, "+PP", color, 60, true, false );
 				}
 			}
 
