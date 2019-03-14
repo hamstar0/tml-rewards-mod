@@ -59,6 +59,8 @@
     <Compile Include="NetProtocols\KillRewardProtocol.cs" />
     <Compile Include="NetProtocols\KillDataProtocol.cs" />
     <Compile Include="NetProtocols\ModSettingsProtocol.cs" />
+    <Compile Include="NPCs\WayfarerTownNPC_Spawn.cs" />
+    <Compile Include="NPCs\WayfarerTownNPC_Shop.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />
     <Compile Include="RewardsMod_Draw.cs" />
