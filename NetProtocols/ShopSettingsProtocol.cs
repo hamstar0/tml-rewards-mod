@@ -7,11 +7,6 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class ShopSettingsProtocol : PacketProtocolRequestToServer {
-		//public override bool IsAsync => true;
-
-
-		////////////////
-
 		public RewardsShopConfigData Data;
 
 

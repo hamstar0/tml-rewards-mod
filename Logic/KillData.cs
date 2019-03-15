@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.MiscHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
@@ -46,8 +47,14 @@ namespace Rewards.Logic {
 		}
 
 		public void ResetAll() {
+			var mymod = RewardsMod.Instance;
+
 			this.ClearKills();
 			this.ProgressPoints = 0;
+
+			if( mymod.SettingsConfig.DebugModePPInfo ) {
+				LogHelpers.Alert( "PP reset" );
+			}
 		}
 
 		public void AddToMe( KillData data ) {
@@ -67,6 +74,10 @@ namespace Rewards.Logic {
 			this.PumpkinMoonWavesConquered += data.PumpkinMoonWavesConquered;
 			this.FrostMoonWavesConquered += data.FrostMoonWavesConquered;
 			this.ProgressPoints += data.ProgressPoints;
+
+			if( mymod.SettingsConfig.DebugModePPInfo && data.ProgressPoints != 0 ) {
+				LogHelpers.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints+")" );
+			}
 		}
 
 
@@ -97,6 +108,10 @@ namespace Rewards.Logic {
 				this.PumpkinMoonWavesConquered = data.PumpkinMoonWavesConquered;
 				this.FrostMoonWavesConquered = data.FrostMoonWavesConquered;
 				this.ProgressPoints = data.ProgressPoints;
+				
+				if( mymod.SettingsConfig.DebugModePPInfo ) {
+					LogHelpers.Alert( "PP set: " + data.ProgressPoints );
+				}
 			}
 
 			return success;

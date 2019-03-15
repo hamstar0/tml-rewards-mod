@@ -46,6 +46,9 @@ namespace Rewards.Logic {
 					+ ", PP: " + this.ProgressPoints + " (was " + oldPP + ")"
 				);
 			}
+			if( mymod.SettingsConfig.DebugModePPInfo && finalReward != 0 ) {
+				LogHelpers.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints+")" );
+			}
 		}
 
 
@@ -56,7 +59,13 @@ namespace Rewards.Logic {
 				return false;
 			}
 
+			var mymod = RewardsMod.Instance;
+			
 			this.ProgressPoints -= points;
+			
+			if( mymod.SettingsConfig.DebugModePPInfo && points != 0 ) {
+				LogHelpers.Alert( "PP spent: " + points + " (now "+this.ProgressPoints+")" );
+			}
 
 			return true;
 		}

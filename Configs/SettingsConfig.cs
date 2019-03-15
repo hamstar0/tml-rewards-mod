@@ -17,6 +17,7 @@ namespace Rewards.Configs {
 		public string VersionSinceUpdate = "";
 
 		public bool DebugModeInfo = false;
+		public bool DebugModePPInfo = true;	// Defaults true
 		public bool DebugModeKillInfo = false;
 		public bool DebugModeEnableCheats = false;
 		public bool DebugModeSaveKillsAsJson = false;

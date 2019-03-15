@@ -50,7 +50,9 @@ namespace Rewards.NetProtocols {
 				throw new HamstarException( "No player data for " + player.name );
 			}
 
-			data.Spend( (int)this.Pack.Price );
+			if( !data.Spend( (int)this.Pack.Price ) ) {
+				LogHelpers.Warn( "Not enough PP. PP out of sync." );
+			}
 
 			Item[] items = ShopPackDefinition.OpenPack( player, this.Pack );
 
