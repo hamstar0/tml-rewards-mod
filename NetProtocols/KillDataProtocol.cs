@@ -6,10 +6,6 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class KillDataProtocol : PacketProtocolRequestToServer {
-		//public override bool IsAsync => true;
-
-		////////////////
-
 		public KillData WorldData = null;
 		public KillData PlayerData = null;
 

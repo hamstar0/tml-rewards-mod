@@ -48,6 +48,7 @@
     <Compile Include="Configs\SettingsConfig.cs" />
     <Compile Include="Items\ShopPackDefinition.cs" />
     <Compile Include="Items\ShopPackItem.cs" />
+    <Compile Include="Logic\KillData_KillPP.cs" />
     <Compile Include="Logic\KillData_Kills.cs" />
     <Compile Include="Logic\KillData.cs" />
     <Compile Include="Logic\KillData_PP.cs" />
