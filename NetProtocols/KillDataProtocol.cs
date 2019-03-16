@@ -69,11 +69,11 @@ namespace Rewards.NetProtocols {
 			KillData wldData = myworld.Logic.WorldData;
 			if( plrData == null || wldData == null ) { return; }
 
-			wldData.ResetAll();
+			wldData.ResetAll( Main.LocalPlayer );
 			wldData.AddToMe( this.WorldData );
 
-			plrData.ResetAll();
-			plrData.AddToMe( this.PlayerData );
+			plrData.ResetAll( Main.LocalPlayer );
+			plrData.AddToMe( this.PlayerData, Main.LocalPlayer );
 
 			myplayer.FinishLocalKillDataSync();
 		}

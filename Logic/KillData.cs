@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria;
 
 
 namespace Rewards.Logic {
@@ -46,18 +47,18 @@ namespace Rewards.Logic {
 			this.FrostMoonWavesConquered = 0;
 		}
 
-		public void ResetAll() {
+		public void ResetAll( Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;
 
 			this.ClearKills();
 			this.ProgressPoints = 0;
 
 			if( mymod.SettingsConfig.DebugModePPInfo ) {
-				LogHelpers.Alert( "PP reset" );
+				LogHelpers.Alert( "PP reset (for " + ( forPlayer?.name ?? "world" ) + ")" );
 			}
 		}
 
-		public void AddToMe( KillData data ) {
+		public void AddToMe( KillData data, Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;
 
 			foreach( var kv in data.KilledNpcs ) {
@@ -76,14 +77,15 @@ namespace Rewards.Logic {
 			this.ProgressPoints += data.ProgressPoints;
 
 			if( mymod.SettingsConfig.DebugModePPInfo && data.ProgressPoints != 0 ) {
-				LogHelpers.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints+")" );
+				LogHelpers.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints
+					+", for " + ( forPlayer?.name ?? "world" ) + ")" );
 			}
 		}
 
 
 		////////////////
 
-		public bool Load( string baseFileName ) {
+		public bool Load( string baseFileName, Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;
 			KillData data;
 			bool success = false;
@@ -110,7 +112,7 @@ namespace Rewards.Logic {
 				this.ProgressPoints = data.ProgressPoints;
 				
 				if( mymod.SettingsConfig.DebugModePPInfo ) {
-					LogHelpers.Alert( "PP set: " + data.ProgressPoints );
+					LogHelpers.Alert( "PP set: "+this.ProgressPoints+" (for "+(forPlayer?.name??"world")+")" );
 				}
 			}
 

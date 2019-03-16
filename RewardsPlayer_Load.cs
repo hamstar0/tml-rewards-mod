@@ -187,7 +187,7 @@ namespace Rewards {
 				return;
 			}
 			
-			success = plrData.Load( playerUid );
+			success = plrData.Load( playerUid, this.player );
 			if( !success ) {
 				if( KillData.CanReceiveOtherPlayerKillRewards( ) ) {
 					plrData.AddToMe( myworld.Logic.WorldData );

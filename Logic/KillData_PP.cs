@@ -47,14 +47,15 @@ namespace Rewards.Logic {
 				);
 			}
 			if( mymod.SettingsConfig.DebugModePPInfo && finalReward != 0 ) {
-				LogHelpers.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints+")" );
+				LogHelpers.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints
+					+" for " + ( player?.name ?? "world" ) + ")" );
 			}
 		}
 
 
 		////////////////
 
-		public bool Spend( int points ) {
+		public bool Spend( int points, Player forPlayer ) {
 			if( this.ProgressPoints < points ) {
 				return false;
 			}
@@ -64,7 +65,8 @@ namespace Rewards.Logic {
 			this.ProgressPoints -= points;
 			
 			if( mymod.SettingsConfig.DebugModePPInfo && points != 0 ) {
-				LogHelpers.Alert( "PP spent: " + points + " (now "+this.ProgressPoints+")" );
+				LogHelpers.Alert( "PP spent: " + points + " (now "+this.ProgressPoints
+					+" for " + ( forPlayer.name ) + ")" );
 			}
 
 			return true;

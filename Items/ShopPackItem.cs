@@ -203,7 +203,7 @@ namespace Rewards.Items {
 				return false;
 			}
 			
-			if( !data.Spend( price ) ) {
+			if( !data.Spend( price, player ) ) {
 				Main.NewText( "Not enough progress points.", Color.Red );
 				output = "";
 				return true;
