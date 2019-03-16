@@ -44,7 +44,7 @@ namespace Rewards.Logic {
 				string name = NPCIdentityHelpers.GetQualifiedName( npc );
 				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
 
-				string msg = "GiveKillReward to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
+				string msg = "RewardKill_SyncsFromHost to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")";
 				Main.NewText( msg );
 				LogHelpers.Log( " "+ msg );

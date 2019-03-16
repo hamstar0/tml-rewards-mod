@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.NPCHelpers;
 using Rewards.Logic;
 using Terraria;
 
@@ -53,6 +54,18 @@ namespace Rewards.NetProtocols {
 
 			bool isGrind, isExpired;
 			float reward = data.RecordKill( npc, out isGrind, out isExpired );
+
+			if( mymod.SettingsConfig.DebugModeKillInfo ) {
+				int kills = data.KilledNpcs.ContainsKey( npc.type ) ? data.KilledNpcs[npc.type] : -1;
+				string name = NPCIdentityHelpers.GetQualifiedName( npc );
+				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+
+				string msg = "ReceiveOnClient npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
+						+ ", isGrind: " + isGrind + ", isExpired: "+isExpired+", reward: " + reward
+						+ ", needsBoss:" + needsBoss + " (is? " + npc.boss + ")";
+				Main.NewText( msg );
+				LogHelpers.Log( " " + msg );
+			}
 
 			data.AddRewardForPlayer( Main.LocalPlayer, isGrind, isExpired, reward );
 		}
