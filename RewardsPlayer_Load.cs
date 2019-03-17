@@ -70,7 +70,7 @@ namespace Rewards {
 			this.HasShopSettings = false;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert( "Requesting kill data and mod settings from server..." );
+				LogHelpers.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
 			}
 
 			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>( -1 );
@@ -227,7 +227,7 @@ namespace Rewards {
 
 			plrData.Save( uid );
 
-			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
+			if( mymod.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
 			}
 		}

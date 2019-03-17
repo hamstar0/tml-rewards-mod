@@ -91,7 +91,7 @@ namespace Rewards {
 					return "  Invalid player data";
 				}
 
-				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
 
 				return "  IsFullySynced: " + myplayer.IsFullySynced
 					+ ", HasKillData: " + myplayer.HasKillData
@@ -115,11 +115,11 @@ namespace Rewards {
 			}
 
 			bool isLoaded = false;
-			
+
 			Promises.AddPostModLoadPromise( () => {
-				if( !isLoaded ) { isLoaded = true; }	// <- Paranoid failsafe?
+				if( !isLoaded ) { isLoaded = true; }    // <- Paranoid failsafe?
 				else { return; }
-				
+
 				if( this.SettingsConfig.CanUpdateVersion( out this.RecentlyUpdatedConfig ) ) {
 					this.SettingsConfig.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards settings updated to " + this.Version.ToString() );
@@ -130,16 +130,23 @@ namespace Rewards {
 				if( this.PointsConfig.CanUpdateVersion() ) {
 					this.PointsConfig.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards points settings to " + this.Version.ToString() );
-					
+
 					this.PointsConfigJson.SaveFileAsync( () => { } );
 				}
 
 				if( this.ShopConfig.CanUpdateVersion() ) {
 					this.ShopConfig.UpdateToLatestVersion();
 					ErrorLogger.Log( "Rewards shop settings updated to " + this.Version.ToString() );
-					
+
 					this.ShopConfigJson.SaveFileAsync( () => { } );
 				}
+			} );
+
+			Promises.AddPostWorldUnloadEachPromise( () => {
+				try {
+					var myworld = this.GetModWorld<RewardsWorld>();
+					myworld.Logic = null;
+				} catch { }
 			} );
 		}
 
@@ -155,7 +162,7 @@ namespace Rewards {
 			if( Main.netMode == 2 ) { return; }	// Redundant?
 
 			if( Main.netMode == 0 ) {
-				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
 				myplayer.SaveKillData();
 			} else if( Main.netMode == 1 ) {
 				PacketProtocolSendToServer.QuickSendToServer<PlayerSaveProtocol>();

@@ -9,9 +9,9 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class KillData {
-		public void AddRewardForPlayer( Player player, bool isGrind, bool isExpired, float reward ) {
+		public float AddRewardForPlayer( Player player, bool isGrind, bool isExpired, float reward ) {
 			if( isExpired ) {
-				return;
+				return 0f;
 			}
 
 			var mymod = RewardsMod.Instance;
@@ -50,6 +50,8 @@ namespace Rewards.Logic {
 				LogHelpers.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints
 					+" for " + ( player?.name ?? "world" ) + ")" );
 			}
+
+			return finalReward;
 		}
 
 

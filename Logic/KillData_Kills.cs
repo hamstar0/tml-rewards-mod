@@ -50,10 +50,12 @@ namespace Rewards.Logic {
 				LogHelpers.Log( " "+ msg );
 			}
 
-			this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
+			float finalReward = this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
 
 			if( Main.netMode == 2 ) {
-				KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc );
+				if( finalReward > 0 ) {	// <- Careful! Any uses for 0 reward packets?
+					KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc );
+				}
 			}
 		}
 

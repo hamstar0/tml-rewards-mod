@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Rewards.Logic;
 using Terraria;
 
@@ -59,7 +60,7 @@ namespace Rewards.NetProtocols {
 		protected override void ReceiveReply() {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
+			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, mymod, "RewardsPlayer" );
 
 			KillData plrData = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			KillData wldData = myworld.Logic.WorldData;
