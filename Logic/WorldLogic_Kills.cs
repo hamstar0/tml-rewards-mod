@@ -4,7 +4,7 @@ using Terraria;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
-		public void AddKillReward_SyncsFromHost( NPC npc ) {
+		public void AddKillReward_Host( NPC npc ) {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			var mymod = RewardsMod.Instance;
@@ -18,16 +18,16 @@ namespace Rewards.Logic {
 						Player toPlayer = Main.player[i];
 						if( toPlayer == null || !toPlayer.active ) { continue; }
 
-						this.AddKillRewardForPlayer_SyncsFromHost( toPlayer, npc );
+						this.AddKillRewardForPlayer_Host( toPlayer, npc );
 					}
 				} else {
 					Player toPlayer = Main.player[npc.lastInteraction];
 					if( toPlayer != null && toPlayer.active ) {
-						this.AddKillRewardForPlayer_SyncsFromHost( Main.player[npc.lastInteraction], npc );
+						this.AddKillRewardForPlayer_Host( Main.player[npc.lastInteraction], npc );
 					}
 				}
 			} else if( Main.netMode == 0 ) {
-				this.AddKillRewardForPlayer_SyncsFromHost( Main.LocalPlayer, npc );
+				this.AddKillRewardForPlayer_Host( Main.LocalPlayer, npc );
 			}
 
 			// Also for the world
@@ -36,12 +36,12 @@ namespace Rewards.Logic {
 		}
 
 
-		private void AddKillRewardForPlayer_SyncsFromHost( Player toPlayer, NPC npc ) {
+		private void AddKillRewardForPlayer_Host( Player toPlayer, NPC npc ) {
 			bool _;
 			KillData data = this.GetPlayerData( toPlayer );
 			if( data == null ) { return; }
 
-			data.RewardKill_SyncsFromHost( toPlayer, npc );
+			data.RewardKill_Host( toPlayer, npc );
 			data.RecordKill( npc, out _, out _ );
 		}
 	}

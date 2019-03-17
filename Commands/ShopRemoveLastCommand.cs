@@ -11,6 +11,7 @@ namespace Rewards.Commands {
 		public override string Description => "Removes the last listed item in the Wayfarer's shop.";
 
 
+
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {

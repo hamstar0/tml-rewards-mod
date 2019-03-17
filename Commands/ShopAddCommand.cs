@@ -17,6 +17,7 @@ namespace Rewards.Commands {
 			"\n   Tip: Use this to find out an item's id:  /mh-get-item-id \"Gold Pickaxe\"";
 
 
+
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {

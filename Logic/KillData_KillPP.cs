@@ -54,8 +54,8 @@ namespace Rewards.Logic {
 			}
 
 			if( ppAmt != -1 ) {
-				points = ppAmt / Main.invasionSizeStart;
-				if( points < 0 || points > ppAmt ) {
+				points = ppAmt / (float)Main.invasionSizeStart;
+				if( Single.IsNaN(points) || points < 0 || points > ppAmt ) {
 					points = 0;
 					LogHelpers.Log( "Could not compute invasion kill reward (invasion total default reward: " + ppAmt + ", invasion size: " + Main.invasionSizeStart + ")" );
 				}

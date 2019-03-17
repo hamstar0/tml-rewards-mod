@@ -213,16 +213,12 @@ namespace Rewards {
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			KillData plrData;
-			
 			string uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
 
-			lock( WorldLogic.MyLock ) {
-				if( !myworld.Logic.PlayerData.ContainsKey( uid ) ) {
-					LogHelpers.Warn( "Could not save player kill data; no data found." );
-					return;
-				}
-				plrData = myworld.Logic.PlayerData[uid];
+			KillData plrData = myworld.Logic.GetPlayerData( this.player );
+			if( plrData == null ) {
+				LogHelpers.Warn( "Could not save player kill data; no data found." );
+				return;
 			}
 
 			plrData.Save( uid );

@@ -34,7 +34,7 @@ namespace Rewards.Logic {
 			return reward;
 		}
 
-		public void RewardKill_SyncsFromHost( Player toPlayer, NPC npc ) {
+		public void RewardKill_Host( Player toPlayer, NPC npc ) {
 			var mymod = RewardsMod.Instance;
 			bool isGrind, isExpired;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );

@@ -20,6 +20,7 @@ namespace Rewards.Commands {
 		public override string Description => "Toggles cheat mode on or off. Applies for all players.";
 
 
+
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {

@@ -10,6 +10,7 @@ namespace Rewards.Commands {
 		public override string Description => "Clears the Wayfarer's shop of items.";
 
 
+
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {

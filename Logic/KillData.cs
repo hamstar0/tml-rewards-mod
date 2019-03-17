@@ -78,7 +78,7 @@ namespace Rewards.Logic {
 
 			if( mymod.SettingsConfig.DebugModePPInfo && data.ProgressPoints != 0 ) {
 				LogHelpers.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints
-					+", for " + ( forPlayer?.name ?? "world" ) + ")" );
+					+", for " + ( forPlayer?.name ?? "world?" ) + ")" );
 			}
 		}
 
