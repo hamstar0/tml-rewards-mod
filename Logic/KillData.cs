@@ -7,7 +7,6 @@ using HamstarHelpers.Helpers.NPCHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria;
 
 
@@ -23,7 +22,7 @@ namespace Rewards.Logic {
 
 		public float ProgressPoints = 0f;
 
-		internal IDictionary<VanillaEventFlag, byte> CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>();
+		internal ISet<VanillaEventFlag> CurrentEvents = new HashSet<VanillaEventFlag>();
 
 
 
@@ -32,8 +31,12 @@ namespace Rewards.Logic {
 		public KillData() {
 			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
 
-			this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags ).Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
+			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+					.Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
+			);*/
+			this.CurrentEvents = new HashSet<VanillaEventFlag>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
 			);
 		}
 
@@ -49,6 +52,16 @@ namespace Rewards.Logic {
 
 		public void ResetAll( Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;
+
+			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+
+			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+					.Select( t => new KeyValuePair<VanillaEventFlag, byte>( t, 0 ) )
+			);*/
+			this.CurrentEvents = new HashSet<VanillaEventFlag>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+			);
 
 			this.ClearKills();
 			this.ProgressPoints = 0;

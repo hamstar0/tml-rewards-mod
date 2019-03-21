@@ -54,6 +54,7 @@
     <Compile Include="Logic\KillData_PP.cs" />
     <Compile Include="Logic\KillData_Update.cs" />
     <Compile Include="Logic\WorldLogic_Kills.cs" />
+    <Compile Include="NetProtocols\EventsSyncProtocol.cs" />
     <Compile Include="NetProtocols\PointsSettingsProtocol.cs" />
     <Compile Include="NetProtocols\ShopSettingsProtocol.cs" />
     <Compile Include="NetProtocols\PlayerSaveProtocol.cs" />

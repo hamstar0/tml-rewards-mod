@@ -1,66 +1,103 @@
-﻿using HamstarHelpers.Helpers.DotNetHelpers;
+﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
-using System.Collections.Concurrent;
+using Rewards.NetProtocols;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 
 
 namespace Rewards.Logic {
 	partial class KillData {
 		public void Update() {
-			VanillaEventFlag invWhich = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
+			if( Main.netMode == 1 ) { return; }
 
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Goblins ) ) {
-				if( invWhich != VanillaEventFlag.Goblins ) {
+			VanillaEventFlag invasionFlag = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
+			VanillaEventFlag eventFlags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)eventFlags );
+			bool eventsChanged = false;
+
+			eventsChanged = this.UpdateForInvasionEndings( invasionFlag );
+			eventsChanged = this.UpdateForEventAdditions( eventFlagSet ) || eventsChanged;
+
+			if( eventsChanged ) {
+				if( Main.netMode == 2 ) {
+					PacketProtocolSendToClient.QuickSend<EventsSyncProtocol>( -1, -1 );
+				}
+			}
+		}
+
+
+		////////////////
+
+		internal bool UpdateForInvasionEndings( VanillaEventFlag invasionFlag ) {
+			bool eventsChanged = false;
+
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
+				if( invasionFlag != VanillaEventFlag.Goblins ) {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
 					this.GoblinsConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.FrostLegion ) ) {
-				if( invWhich != VanillaEventFlag.FrostLegion ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
+				if( invasionFlag != VanillaEventFlag.FrostLegion ) {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
 					this.FrostLegionConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Pirates ) ) {
-				if( invWhich != VanillaEventFlag.Pirates ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
+				if( invasionFlag != VanillaEventFlag.Pirates ) {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
 					this.PiratesConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.Martians ) ) {
-				if( invWhich != VanillaEventFlag.Martians ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
+				if( invasionFlag != VanillaEventFlag.Martians ) {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
 					this.MartiansConquered++;
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.PumpkinMoon ) ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.PumpkinMoon ) ) {
 				if( Main.pumpkinMoon ) {
 					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) {
+						eventsChanged = true;
 						this.PumpkinMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.PumpkinMoon );
 				}
 			}
-			if( this.CurrentEvents.ContainsKey( VanillaEventFlag.FrostMoon ) ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostMoon ) ) {
 				if( Main.snowMoon ) {
 					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {
+						eventsChanged = true;
 						this.FrostMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {
+					eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostMoon );
 				}
 			}
 
-			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+			return eventsChanged;
+		}
 
-			this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags ).Select(
-					t => new KeyValuePair<VanillaEventFlag, byte>( t, 0 )
-				)
-			);
+
+		internal bool UpdateForEventAdditions( IEnumerable<VanillaEventFlag> eventFlagSet ) {
+			bool eventsChanged = false;
+
+			foreach( var flag in eventFlagSet ) {
+				if( !this.CurrentEvents.Contains( flag ) ) {
+					eventsChanged = true;
+					this.CurrentEvents.Add( flag );
+				}
+			}
+
+			return eventsChanged;
 		}
 	}
 }
