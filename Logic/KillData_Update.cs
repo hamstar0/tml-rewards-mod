@@ -11,13 +11,11 @@ namespace Rewards.Logic {
 		public void Update() {
 			if( Main.netMode == 1 ) { return; }
 
-			VanillaEventFlag invasionFlag = NPCInvasionHelpers.GetEventTypeOfInvasionType( Main.invasionType );
-			VanillaEventFlag eventFlags = NPCInvasionHelpers.GetCurrentEventTypeSet();
-			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)eventFlags );
+			VanillaEventFlag currentEventFlags = NPCInvasionHelpers.GetCurrentEventTypeSet();
 			bool eventsChanged = false;
 
-			eventsChanged = this.UpdateForInvasionEndings( invasionFlag );
-			eventsChanged = this.UpdateForEventAdditions( eventFlagSet ) || eventsChanged;
+			eventsChanged = this.UpdateForEventChangesAndEndings( currentEventFlags );
+			eventsChanged = this.UpdateForEventsBeginnings( currentEventFlags ) || eventsChanged;
 
 			if( eventsChanged ) {
 				if( Main.netMode == 2 ) {
@@ -29,71 +27,122 @@ namespace Rewards.Logic {
 
 		////////////////
 
-		internal bool UpdateForInvasionEndings( VanillaEventFlag invasionFlag ) {
+		internal bool UpdateForEventsBeginnings( VanillaEventFlag eventFlags ) {
 			bool eventsChanged = false;
+			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)eventFlags );
 
-			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
-				if( invasionFlag != VanillaEventFlag.Goblins ) {
+			foreach( VanillaEventFlag flag in eventFlagSet ) {
+				if( this.CurrentEvents.Contains( flag ) ) { continue; }
+
+				switch( flag ) {
+				case VanillaEventFlag.Sandstorm:
+				case VanillaEventFlag.BloodMoon:
+				case VanillaEventFlag.SlimeRain:
+				case VanillaEventFlag.SolarEclipse:
+				case VanillaEventFlag.LunarApocalypse:
+					break;
+				default:
 					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
-					this.GoblinsConquered++;
+					break;
 				}
-			}
-			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
-				if( invasionFlag != VanillaEventFlag.FrostLegion ) {
-					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
-					this.FrostLegionConquered++;
-				}
-			}
-			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
-				if( invasionFlag != VanillaEventFlag.Pirates ) {
-					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
-					this.PiratesConquered++;
-				}
-			}
-			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
-				if( invasionFlag != VanillaEventFlag.Martians ) {
-					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
-					this.MartiansConquered++;
-				}
-			}
-			if( this.CurrentEvents.Contains( VanillaEventFlag.PumpkinMoon ) ) {
-				if( Main.pumpkinMoon ) {
-					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) {
-						eventsChanged = true;
-						this.PumpkinMoonWavesConquered = NPC.waveNumber;
-					}
-				} else {
-					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.PumpkinMoon );
-				}
-			}
-			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostMoon ) ) {
-				if( Main.snowMoon ) {
-					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {
-						eventsChanged = true;
-						this.FrostMoonWavesConquered = NPC.waveNumber;
-					}
-				} else {
-					eventsChanged = true;
-					this.CurrentEvents.Remove( VanillaEventFlag.FrostMoon );
-				}
+
+				this.CurrentEvents.Add( flag );
 			}
 
 			return eventsChanged;
 		}
 
 
-		internal bool UpdateForEventAdditions( IEnumerable<VanillaEventFlag> eventFlagSet ) {
+		internal bool UpdateForEventChangesAndEndings( VanillaEventFlag eventFlags ) {
 			bool eventsChanged = false;
 
-			foreach( var flag in eventFlagSet ) {
-				if( !this.CurrentEvents.Contains( flag ) ) {
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
+				if( (eventFlags & VanillaEventFlag.Goblins) == 0 ) {
 					eventsChanged = true;
-					this.CurrentEvents.Add( flag );
+					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
+					this.GoblinsConquered++;
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
+				if( (eventFlags & VanillaEventFlag.FrostLegion) == 0 ) {
+					eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
+					this.FrostLegionConquered++;
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
+				if( (eventFlags & VanillaEventFlag.Pirates) == 0 ) {
+					eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
+					this.PiratesConquered++;
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
+				if( (eventFlags & VanillaEventFlag.Martians) == 0 ) {
+					eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
+					this.MartiansConquered++;
+				}
+			}
+
+			if( this.CurrentEvents.Contains( VanillaEventFlag.PumpkinMoon ) ) {
+				//if( Main.pumpkinMoon ) {
+				if( (eventFlags & VanillaEventFlag.PumpkinMoon) != 0 ) {
+					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) { // Change wave
+						eventsChanged = true;
+						this.PumpkinMoonWavesConquered = NPC.waveNumber;
+					}
+				} else {	// End event
+					eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.PumpkinMoon );
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostMoon ) ) {
+				//if( Main.snowMoon ) {
+				if( (eventFlags & VanillaEventFlag.FrostMoon) != 0 ) {
+					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {   // Change wave
+						eventsChanged = true;
+						this.FrostMoonWavesConquered = NPC.waveNumber;
+					}
+				} else {    // End event
+					eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.FrostMoon );
+				}
+			}
+
+			if( this.CurrentEvents.Contains( VanillaEventFlag.Sandstorm ) ) {
+				//if( !Sandstorm.Happening ) {
+				if( (eventFlags & VanillaEventFlag.Sandstorm ) != 0 ) {
+					//eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.Sandstorm );
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.BloodMoon ) ) {
+				//if( !Main.bloodMoon ) {
+				if( ( eventFlags & VanillaEventFlag.BloodMoon ) != 0 ) {
+					//eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.BloodMoon );
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.SlimeRain ) ) {
+				//if( !Main.slimeRain ) {
+				if( ( eventFlags & VanillaEventFlag.SlimeRain ) != 0 ) {
+					//eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.SlimeRain );
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.SolarEclipse ) ) {
+				//if( !Main.eclipse ) {
+				if( ( eventFlags & VanillaEventFlag.SolarEclipse ) != 0 ) {
+					//eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.SolarEclipse );
+				}
+			}
+			if( this.CurrentEvents.Contains( VanillaEventFlag.LunarApocalypse ) ) {
+				//if( !NPC.LunarApocalypseIsUp ) {
+				if( ( eventFlags & VanillaEventFlag.LunarApocalypse ) != 0 ) {
+					//eventsChanged = true;
+					this.CurrentEvents.Remove( VanillaEventFlag.LunarApocalypse );
 				}
 			}
 
