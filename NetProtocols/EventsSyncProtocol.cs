@@ -1,7 +1,6 @@
 ﻿using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.NPCHelpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 
@@ -25,7 +24,7 @@ namespace Rewards.NetProtocols {
 
 		protected override void Receive() {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
-			var events = new HashSet<VanillaEventFlag>( this.Events.Select( e => (VanillaEventFlag)e ) );
+			var eventsFlags = (VanillaEventFlag)this.Events.Sum();
 
 			myworld.Logic.WorldData.UpdateForEventChangesAndEndings( eventsFlags );
 			myworld.Logic.WorldData.UpdateForEventsBeginnings( eventsFlags );
