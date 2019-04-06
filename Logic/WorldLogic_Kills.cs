@@ -133,5 +133,51 @@ namespace Rewards.Logic {
 				data.FrostMoonWavesConquered += amt;
 			}
 		}
+		
+		////////////////
+
+		public bool UpdatePumpkinMoonWaves() {
+			bool isUpdated = this.UpdatePumpkinMoonWavesForKillData( this.WorldData );
+			foreach( KillData data in this.PlayerData.Values ) {
+				this.UpdatePumpkinMoonWavesForKillData( data );
+			}
+
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo && isUpdated ) {
+				LogHelpers.Alert( "Pumpkin Moon event wave (for world only): " + NPC.waveNumber );
+			}
+
+			return isUpdated;
+		}
+
+		public bool UpdateFrostMoonWaves() {
+			bool isUpdated = this.UpdateFrostMoonWavesForKillData( this.WorldData );
+			foreach( KillData data in this.PlayerData.Values ) {
+				this.UpdateFrostMoonWavesForKillData( data );
+			}
+
+			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo && isUpdated ) {
+				LogHelpers.Alert( "Frost Moon event wave (for world only): " + NPC.waveNumber );
+			}
+
+			return isUpdated;
+		}
+
+		////
+
+		private bool UpdatePumpkinMoonWavesForKillData( KillData killData ) {
+			if( NPC.waveNumber > killData.PumpkinMoonWavesConquered ) { // Change wave
+				killData.PumpkinMoonWavesConquered = NPC.waveNumber;
+				return true;
+			}
+			return false;
+		}
+
+		private bool UpdateFrostMoonWavesForKillData( KillData killData ) {
+			if( NPC.waveNumber > killData.FrostMoonWavesConquered ) { // Change wave
+				killData.FrostMoonWavesConquered = NPC.waveNumber;
+				return true;
+			}
+			return false;
+		}
 	}
 }

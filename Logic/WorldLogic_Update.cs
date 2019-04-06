@@ -45,7 +45,7 @@ namespace Rewards.Logic {
 					break;
 				default:
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Event added: "+Enum.GetName(typeof(VanillaEventFlag), flag) );
+						LogHelpers.Alert( "Event added: " + Enum.GetName( typeof( VanillaEventFlag ), flag ) );
 					}
 					eventsChanged = true;
 					break;
@@ -62,61 +62,54 @@ namespace Rewards.Logic {
 			bool eventsChanged = false;
 
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
-				if( (eventFlags & VanillaEventFlag.Goblins) == 0 ) {
+				if( ( eventFlags & VanillaEventFlag.Goblins ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Goblin event ended." );
 					}
 					eventsChanged = true;
 
 					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
-					this.GoblinsConquered++;
+					this.AddGoblinsConquered( 1 );
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
-				if( (eventFlags & VanillaEventFlag.FrostLegion) == 0 ) {
+				if( ( eventFlags & VanillaEventFlag.FrostLegion ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Frost Legion event ended." );
 					}
 					eventsChanged = true;
 
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
-					this.FrostLegionConquered++;
+					this.AddFrostLegionConquered( 1 );
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
-				if( (eventFlags & VanillaEventFlag.Pirates) == 0 ) {
+				if( ( eventFlags & VanillaEventFlag.Pirates ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Pirates event ended." );
 					}
 					eventsChanged = true;
 
 					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
-					this.PiratesConquered++;
+					this.AddPiratesConquered( 1 );
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
-				if( (eventFlags & VanillaEventFlag.Martians) == 0 ) {
+				if( ( eventFlags & VanillaEventFlag.Martians ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Martians event ended." );
 					}
 					eventsChanged = true;
 
 					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
-					this.MartiansConquered++;
+					this.AddMartiansConquered( 1 );
 				}
 			}
 
 			if( this.CurrentEvents.Contains( VanillaEventFlag.PumpkinMoon ) ) {
 				//if( Main.pumpkinMoon ) {
-				if( (eventFlags & VanillaEventFlag.PumpkinMoon) != 0 ) {
-					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) { // Change wave
-						if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-							LogHelpers.Alert( "Pumpkin Moon event wave: "+NPC.waveNumber );
-						}
-						eventsChanged = true;
-
-						this.PumpkinMoonWavesConquered = NPC.waveNumber;
-					}
+				if( ( eventFlags & VanillaEventFlag.PumpkinMoon ) != 0 ) {
+					this.UpdatePumpkinMoonWaves();
 				} else {    // End event
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Pumpkin Moon event ended." );
@@ -128,15 +121,8 @@ namespace Rewards.Logic {
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostMoon ) ) {
 				//if( Main.snowMoon ) {
-				if( (eventFlags & VanillaEventFlag.FrostMoon) != 0 ) {
-					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {   // Change wave
-						if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-							LogHelpers.Alert( "Frost Moon event wave: " + NPC.waveNumber );
-						}
-						eventsChanged = true;
-
-						this.FrostMoonWavesConquered = NPC.waveNumber;
-					}
+				if( ( eventFlags & VanillaEventFlag.FrostMoon ) != 0 ) {
+					this.UpdateFrostMoonWaves();
 				} else {    // End event
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 						LogHelpers.Alert( "Frost Moon event ended." );
@@ -147,9 +133,11 @@ namespace Rewards.Logic {
 				}
 			}
 
+			////
+
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Sandstorm ) ) {
 				//if( !Sandstorm.Happening ) {
-				if( (eventFlags & VanillaEventFlag.Sandstorm ) != 0 ) {
+				if( ( eventFlags & VanillaEventFlag.Sandstorm ) != 0 ) {
 					//eventsChanged = true;
 					this.CurrentEvents.Remove( VanillaEventFlag.Sandstorm );
 				}
