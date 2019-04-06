@@ -52,7 +52,7 @@
     <Compile Include="Logic\KillData_Kills.cs" />
     <Compile Include="Logic\KillData.cs" />
     <Compile Include="Logic\KillData_PP.cs" />
-    <Compile Include="Logic\KillData_Update.cs" />
+    <Compile Include="Logic\WorldLogic_Update.cs" />
     <Compile Include="Logic\WorldLogic_Kills.cs" />
     <Compile Include="NetProtocols\EventsSyncProtocol.cs" />
     <Compile Include="NetProtocols\PointsSettingsProtocol.cs" />

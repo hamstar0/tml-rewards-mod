@@ -44,5 +44,94 @@ namespace Rewards.Logic {
 			data.RewardKill_Host( toPlayer, npc );
 			data.RecordKill( npc, out _, out _ );
 		}
+
+
+		////////////////
+
+		public void ClearGoblinsConquered() {
+			this.WorldData.GoblinsConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.GoblinsConquered = 0;
+			}
+		}
+
+		public void ClearFrostLegionConquered() {
+			this.WorldData.FrostLegionConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.FrostLegionConquered = 0;
+			}
+		}
+
+		public void ClearPiratesConquered() {
+			this.WorldData.PiratesConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.PiratesConquered = 0;
+			}
+		}
+
+		public void ClearMartiansConquered() {
+			this.WorldData.MartiansConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.MartiansConquered = 0;
+			}
+		}
+
+		public void ClearPumpkinMoonWavesConquered() {
+			this.WorldData.PumpkinMoonWavesConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.PumpkinMoonWavesConquered = 0;
+			}
+		}
+
+		public void ClearFrostMoonWavesConquered() {
+			this.WorldData.FrostMoonWavesConquered = 0;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.FrostMoonWavesConquered = 0;
+			}
+		}
+
+		////
+
+		public void AddGoblinsConquered( int amt ) {
+			this.WorldData.GoblinsConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.GoblinsConquered += amt;
+			}
+		}
+
+		public void AddFrostLegionConquered( int amt ) {
+			this.WorldData.FrostLegionConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.FrostLegionConquered += amt;
+			}
+		}
+
+		public void AddPiratesConquered( int amt ) {
+			this.WorldData.PiratesConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.PiratesConquered += amt;
+			}
+		}
+
+		public void AddMartiansConquered( int amt ) {
+			this.WorldData.MartiansConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.MartiansConquered += amt;
+			}
+		}
+
+		public void AddPumpkinMoonWavesConquered( int amt ) {
+			this.WorldData.PumpkinMoonWavesConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.PumpkinMoonWavesConquered += amt;
+			}
+		}
+
+		public void AddFrostMoonWavesConquered( int amt ) {
+			this.WorldData.FrostMoonWavesConquered += amt;
+			foreach( KillData data in this.PlayerData.Values ) {
+				data.FrostMoonWavesConquered += amt;
+			}
+		}
 	}
 }

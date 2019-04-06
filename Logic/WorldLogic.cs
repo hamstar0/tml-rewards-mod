@@ -114,11 +114,7 @@ namespace Rewards.Logic {
 			}
 
 			lock( WorldLogic.MyLock ) {
-				this.WorldData.Update();
-
-				foreach( KillData killData in this.PlayerData.Values ) {
-					killData.Update();
-				}
+				this.UpdateEvents();
 			}
 		}
 
