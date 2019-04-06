@@ -19,7 +19,7 @@ namespace Rewards.NetProtocols {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 
-			this.Events = myworld.Logic.WorldData.CurrentEvents
+			this.Events = myworld.Logic.CurrentEvents
 				.Select( e => (int)e )
 				.ToArray();
 		}
@@ -29,8 +29,8 @@ namespace Rewards.NetProtocols {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			var eventsFlags = (VanillaEventFlag)this.Events.Sum();
 
-			myworld.Logic.WorldData.UpdateForEventChangesAndEndings( eventsFlags );
-			myworld.Logic.WorldData.UpdateForEventsBeginnings( eventsFlags );
+			myworld.Logic.UpdateForEventChangesAndEndings( eventsFlags );
+			myworld.Logic.UpdateForEventsBeginnings( eventsFlags );
 		}
 	}
 }

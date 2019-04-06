@@ -8,12 +8,13 @@ namespace Rewards.Logic {
 	partial class KillData {
 		public float CalculateKillReward( NPC npc, out bool isGrind, out bool isExpired ) {
 			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
 			isGrind = false;
 			isExpired = false;
 
 			float points = 0;
 
-			if( this.CurrentEvents.Count != 0 ) {
+			if( myworld.Logic.CurrentEvents.Count != 0 ) {
 				points += this.CalculateInvasionReward( npc, ref isGrind );
 			}
 
