@@ -1,14 +1,16 @@
 ﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
 using Rewards.NetProtocols;
+using System;
 using System.Collections.Generic;
 using Terraria;
 
 
 namespace Rewards.Logic {
-	partial class KillData {
-		public void Update() {
+	partial class WorldLogic {
+		public void UpdateEvents() {
 			if( Main.netMode == 1 ) { return; }
 
 			VanillaEventFlag currentEventFlags = NPCInvasionHelpers.GetCurrentEventTypeSet();
@@ -42,6 +44,9 @@ namespace Rewards.Logic {
 				case VanillaEventFlag.LunarApocalypse:
 					break;
 				default:
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Event added: "+Enum.GetName(typeof(VanillaEventFlag), flag) );
+					}
 					eventsChanged = true;
 					break;
 				}
@@ -58,28 +63,44 @@ namespace Rewards.Logic {
 
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
 				if( (eventFlags & VanillaEventFlag.Goblins) == 0 ) {
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Goblin event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.Goblins );
 					this.GoblinsConquered++;
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
 				if( (eventFlags & VanillaEventFlag.FrostLegion) == 0 ) {
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Frost Legion event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostLegion );
 					this.FrostLegionConquered++;
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
 				if( (eventFlags & VanillaEventFlag.Pirates) == 0 ) {
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Pirates event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.Pirates );
 					this.PiratesConquered++;
 				}
 			}
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
 				if( (eventFlags & VanillaEventFlag.Martians) == 0 ) {
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Martians event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.Martians );
 					this.MartiansConquered++;
 				}
@@ -89,11 +110,19 @@ namespace Rewards.Logic {
 				//if( Main.pumpkinMoon ) {
 				if( (eventFlags & VanillaEventFlag.PumpkinMoon) != 0 ) {
 					if( NPC.waveNumber > this.PumpkinMoonWavesConquered ) { // Change wave
+						if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+							LogHelpers.Alert( "Pumpkin Moon event wave: "+NPC.waveNumber );
+						}
 						eventsChanged = true;
+
 						this.PumpkinMoonWavesConquered = NPC.waveNumber;
 					}
-				} else {	// End event
+				} else {    // End event
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Pumpkin Moon event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.PumpkinMoon );
 				}
 			}
@@ -101,11 +130,19 @@ namespace Rewards.Logic {
 				//if( Main.snowMoon ) {
 				if( (eventFlags & VanillaEventFlag.FrostMoon) != 0 ) {
 					if( NPC.waveNumber > this.FrostMoonWavesConquered ) {   // Change wave
+						if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+							LogHelpers.Alert( "Frost Moon event wave: " + NPC.waveNumber );
+						}
 						eventsChanged = true;
+
 						this.FrostMoonWavesConquered = NPC.waveNumber;
 					}
 				} else {    // End event
+					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
+						LogHelpers.Alert( "Frost Moon event ended." );
+					}
 					eventsChanged = true;
+
 					this.CurrentEvents.Remove( VanillaEventFlag.FrostMoon );
 				}
 			}

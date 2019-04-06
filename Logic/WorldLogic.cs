@@ -22,9 +22,25 @@ namespace Rewards.Logic {
 
 		private bool HasCheckedInstantWayfarer = false;
 
+		////
+
+		internal ISet<VanillaEventFlag> CurrentEvents = new HashSet<VanillaEventFlag>();
+
 
 
 		////////////////
+
+		public WorldLogic() {
+			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+
+			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+					.Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
+			);*/
+			this.CurrentEvents = new HashSet<VanillaEventFlag>(
+				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+			);
+		}
 
 		public void LoadStateData( TagCompound tags ) {
 			if( tags.ContainsKey("has_checked_instant_wayfarer") ) {
@@ -98,6 +114,8 @@ namespace Rewards.Logic {
 			}
 
 			lock( WorldLogic.MyLock ) {
+				this.WorldData.Update();
+
 				foreach( KillData killData in this.PlayerData.Values ) {
 					killData.Update();
 				}

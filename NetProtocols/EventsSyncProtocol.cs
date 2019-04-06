@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Components.Network;
+using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.NPCHelpers;
 using System;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace Rewards.NetProtocols {
 		private EventsSyncProtocol() { }
 
 		protected override void InitializeServerSendData( int toWho ) {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
 
 			this.Events = myworld.Logic.WorldData.CurrentEvents
 				.Select( e => (int)e )
@@ -23,7 +25,8 @@ namespace Rewards.NetProtocols {
 		}
 
 		protected override void Receive() {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var mymod = RewardsMod.Instance;
+			var myworld = mymod.GetModWorld<RewardsWorld>();
 			var eventsFlags = (VanillaEventFlag)this.Events.Sum();
 
 			myworld.Logic.WorldData.UpdateForEventChangesAndEndings( eventsFlags );

@@ -3,7 +3,6 @@ using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.MiscHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -22,22 +21,11 @@ namespace Rewards.Logic {
 
 		public float ProgressPoints = 0f;
 
-		internal ISet<VanillaEventFlag> CurrentEvents = new HashSet<VanillaEventFlag>();
-
 
 
 		////////////////
 
 		public KillData() {
-			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
-
-			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
-					.Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
-			);*/
-			this.CurrentEvents = new HashSet<VanillaEventFlag>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
-			);
 		}
 
 		public void ClearKills() {
@@ -52,16 +40,6 @@ namespace Rewards.Logic {
 
 		public void ResetAll( Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;
-
-			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
-
-			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
-					.Select( t => new KeyValuePair<VanillaEventFlag, byte>( t, 0 ) )
-			);*/
-			this.CurrentEvents = new HashSet<VanillaEventFlag>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
-			);
 
 			this.ClearKills();
 			this.ProgressPoints = 0;
