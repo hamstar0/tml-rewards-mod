@@ -48,10 +48,10 @@ namespace Rewards.Logic {
 						LogHelpers.Alert( "Event added: " + Enum.GetName( typeof( VanillaEventFlag ), flag ) );
 					}
 					eventsChanged = true;
+
+					this.CurrentEvents.Add( flag );
 					break;
 				}
-
-				this.CurrentEvents.Add( flag );
 			}
 
 			return eventsChanged;
