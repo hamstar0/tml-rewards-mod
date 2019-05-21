@@ -52,6 +52,7 @@ namespace Rewards.NetProtocols {
 
 			if( !data.Spend( (int)this.Pack.Price, player ) ) {
 				LogHelpers.Warn( "Not enough PP. PP out of sync." );
+				//return;	// TODO: Add validation of purchases
 			}
 
 			Item[] items = ShopPackDefinition.OpenPack( player, this.Pack );

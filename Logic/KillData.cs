@@ -1,7 +1,6 @@
 ﻿using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.DotNetHelpers;
 using HamstarHelpers.Helpers.MiscHelpers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,6 +27,8 @@ namespace Rewards.Logic {
 		public KillData() {
 		}
 
+		////
+
 		public void ClearKills() {
 			this.KilledNpcs = new Dictionary<int, int>();
 			this.GoblinsConquered = 0;
@@ -48,6 +49,8 @@ namespace Rewards.Logic {
 				LogHelpers.Alert( "PP reset (for " + ( forPlayer?.name ?? "world" ) + ")" );
 			}
 		}
+
+		////
 
 		public void AddToMe( KillData data, Player forPlayer=null ) {
 			var mymod = RewardsMod.Instance;

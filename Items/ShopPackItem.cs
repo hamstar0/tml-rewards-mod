@@ -181,8 +181,8 @@ namespace Rewards.Items {
 			return -1;
 		}
 
-		////////////////
 
+		////////////////
 
 		public bool BuyAndOpenPack_Synced( Player player, out string output ) {
 			var mymod = RewardsMod.Instance;

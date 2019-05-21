@@ -21,7 +21,7 @@ namespace Rewards.Logic {
 						this.AddKillRewardForPlayer_Host( toPlayer, npc );
 					}
 				} else {
-					Player toPlayer = Main.player[npc.lastInteraction];
+					Player toPlayer = Main.player[ npc.lastInteraction ];
 					if( toPlayer != null && toPlayer.active ) {
 						this.AddKillRewardForPlayer_Host( Main.player[npc.lastInteraction], npc );
 					}

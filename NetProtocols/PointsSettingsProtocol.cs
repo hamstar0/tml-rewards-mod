@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Rewards.Configs;
 using Terraria;
 
@@ -33,10 +34,10 @@ namespace Rewards.NetProtocols {
 		////////////////
 
 		protected override void ReceiveReply() {
-			RewardsMod.Instance.PointsConfigJson.SetData( this.Data );
+			var mymod = RewardsMod.Instance;
+			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, mymod, "RewardsPlayer" );
 
-			Player player = Main.LocalPlayer;
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
+			mymod.PointsConfigJson.SetData( this.Data );
 
 			myplayer.FinishLocalPointsSettingsSync();
 		}

@@ -159,7 +159,8 @@ namespace Rewards {
 		////////////////
 
 		private void OnFinishPlayerEnterWorldForSingle() {
-			this.OnFinishPlayerEnterWorldForHost();
+			bool _;
+			this.OnFinishPlayerEnterWorldForHost( out _ );
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
@@ -167,14 +168,14 @@ namespace Rewards {
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
-		internal void OnFinishPlayerEnterWorldForServer() {
-			this.OnFinishPlayerEnterWorldForHost();
+		internal void OnFinishPlayerEnterWorldForServer( out bool isSynced ) {
+			this.OnFinishPlayerEnterWorldForHost( out isSynced );
 			this.OnFinishPlayerEnterWorldForAny();
 		}
 
 		////
 
-		private void OnFinishPlayerEnterWorldForHost() {
+		private void OnFinishPlayerEnterWorldForHost( out bool isSynced ) {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			bool success = false;
@@ -184,6 +185,7 @@ namespace Rewards {
 			KillData plrData = myworld.Logic.GetPlayerData( this.player );
 			if( plrData == null ) {
 				LogHelpers.Warn( "Could not get player " + this.player.name + "'s (" + this.player.whoAmI + ") kill data." );
+				isSynced = false;
 				return;
 			}
 			
@@ -197,6 +199,8 @@ namespace Rewards {
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
 				LogHelpers.Alert( "who: " + this.player.whoAmI + " success: " + success + ", " + plrData.ToString() );
 			}
+
+			isSynced = success;
 		}
 
 		private void OnFinishPlayerEnterWorldForAny() {

@@ -7,6 +7,7 @@ using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader.IO;
+using HamstarHelpers.Helpers.TmlHelpers;
 
 
 namespace Rewards.Logic {
@@ -90,7 +91,7 @@ namespace Rewards.Logic {
 				Player player = Main.player[i];
 				if( player == null || !player.active ) { continue; }
 
-				var myplayer = player.GetModPlayer<RewardsPlayer>();
+				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
 				myplayer.SaveKillData();
 			}
 

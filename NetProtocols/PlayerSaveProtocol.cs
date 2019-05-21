@@ -2,6 +2,7 @@
 using HamstarHelpers.Components.Network;
 using HamstarHelpers.Helpers.DebugHelpers;
 using HamstarHelpers.Helpers.PlayerHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Terraria;
 
 
@@ -30,7 +31,8 @@ namespace Rewards.NetProtocols {
 				throw new HamstarException( "Player id " + fromWho + " invalid?" );
 			}
 
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
+			var mymod = RewardsMod.Instance;
+			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
 
 			if( PlayerIdentityHelpers.GetProperUniqueId(player) != this.Uid ) {
 				throw new HamstarException( "Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );

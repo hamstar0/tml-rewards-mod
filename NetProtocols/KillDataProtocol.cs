@@ -49,12 +49,14 @@ namespace Rewards.NetProtocols {
 				return true;
 			}
 
+			var mymod = RewardsMod.Instance;
 			Player player = Main.player[ fromWho ];
-			var myplayer = player.GetModPlayer<RewardsPlayer>();
+			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
 
-			myplayer.OnFinishPlayerEnterWorldForServer();
+			bool isSynced;
+			myplayer.OnFinishPlayerEnterWorldForServer( out isSynced );
 
-			return false;
+			return !isSynced;
 		}
 
 		protected override void ReceiveReply() {

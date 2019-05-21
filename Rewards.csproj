@@ -66,6 +66,7 @@
     <Compile Include="NPCs\WayfarerTownNPC_Shop.cs" />
     <Compile Include="NPCs\WayfarerTownNPC.cs" />
     <Compile Include="Logic\WorldLogic.cs" />
+    <Compile Include="RewardsMod_Load.cs" />
     <Compile Include="RewardsMod_Draw.cs" />
     <Compile Include="RewardsMod_Meta.cs" />
     <Compile Include="RewardsMod.cs" />
