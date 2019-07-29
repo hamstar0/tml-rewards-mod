@@ -10,7 +10,12 @@ using Terraria.ModLoader;
 namespace Rewards {
 	partial class RewardsMod : Mod {
 		public override void Load() {
-			this.LoadConfigs_OnPostModLoadPromise();
+			LoadHooks.AddPostWorldUnloadEachHook( () => {
+				try {
+					var myworld = this.GetModWorld<RewardsWorld>();
+					myworld.Logic = null;
+				} catch { }
+			} );
 
 			DataDumper.SetDumpSource( "Rewards", () => {
 				if( Main.netMode == 2 ) {
@@ -25,25 +30,6 @@ namespace Rewards {
 				return "  IsFullySynced: " + myplayer.IsFullySynced
 					+ ", HasKillData: " + myplayer.HasKillData
 					+ ", HasModSettings: " + myplayer.HasModSettings;
-			} );
-		}
-
-
-		private void LoadConfigs_OnPostModLoadPromise() {
-			bool isLoaded = false;
-
-			LoadHooks.AddPostModLoadHook( () => {
-				if( !isLoaded ) { isLoaded = true; }    // <- Paranoid failsafe?
-				else { return; }
-
-				this.LoadConfigs();
-			} );
-
-			LoadHooks.AddPostWorldUnloadEachHook( () => {
-				try {
-					var myworld = this.GetModWorld<RewardsWorld>();
-					myworld.Logic = null;
-				} catch { }
 			} );
 		}
 

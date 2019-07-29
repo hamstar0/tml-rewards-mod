@@ -33,10 +33,7 @@ namespace Rewards.Commands {
 				caller.Reply( "Cheat mode on.", Color.LimeGreen );
 			}
 
-			if( Main.netMode == 2 ) {
-				ConfigHelpers.SyncConfigToServer( mymod.SettingsConfig );
-				//PacketProtocol.QuickSendToClient<ModSettingsProtocol>( -1, -1 ); TODO: Sync changes to client
-			}
+			ConfigHelpers.SyncConfig( mymod.SettingsConfig );
 		}
 	}
 }

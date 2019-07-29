@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HamstarHelpers.Helpers.TModLoader.Configs;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Terraria.ModLoader.Config;
@@ -48,7 +50,13 @@ namespace Rewards.Configs {
 		////////////////
 
 		public void Reset() {
-			d
+			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
+			this.NpcRewards = new Dictionary<string, float>();
+			this.NpcRewardTogetherSets = new Dictionary<string, int>();
+			this.NpcRewardRequiredAsBoss = new HashSet<string>();
+			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
+
+			ConfigHelpers.SyncConfig( this );
 		}
 	}
 }

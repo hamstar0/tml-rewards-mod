@@ -1,5 +1,7 @@
 ﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.TModLoader.Configs;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
@@ -72,7 +74,10 @@ namespace Rewards.Configs {
 		////////////////
 
 		public void Reset() {
-			d
+			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
+			this.PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
+
+			ConfigHelpers.SyncConfig( this );
 		}
 	}
 }

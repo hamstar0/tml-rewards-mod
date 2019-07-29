@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
 using HamstarHelpers.Helpers.NPCs;
-using Rewards.Configs;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NPCs;
@@ -11,27 +10,6 @@ using Terraria;
 
 namespace Rewards {
 	public static partial class RewardsAPI {
-		public static RewardsPointsConfig GetPointsSettings() {
-			return RewardsMod.Instance.PointsConfig;
-		}
-
-		////
-
-		public static void SaveModSettingsChanges() {
-			RewardsMod.Instance.SettingsConfigJson.SaveFile();
-		}
-
-		////////////////
-
-		[Obsolete( "use SuppressConfigAutoSavingOn", true)]
-		public static void SuppressAutoSavingOn() {
-			RewardsAPI.SuppressConfigAutoSavingOn();
-		}
-		[Obsolete( "use SuppressConfigAutoSavingOff", true )]
-		public static void SuppressAutoSavingOff() {
-			RewardsAPI.SuppressConfigAutoSavingOff();
-		}
-
 		public static void SuppressConfigAutoSavingOn() {
 			RewardsMod.Instance.MemoryOnlyConfig = true;
 		}

@@ -1,4 +1,6 @@
-﻿using Rewards.Items;
+﻿using HamstarHelpers.Helpers.TModLoader.Configs;
+using Newtonsoft.Json;
+using Rewards.Items;
 using System;
 using System.Collections.Generic;
 using Terraria.ModLoader.Config;
@@ -38,7 +40,10 @@ namespace Rewards.Configs {
 		////////////////
 
 		public void Reset() {
-			d
+			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
+			this.ShopLoadout = new List<ShopPackDefinition>();
+
+			ConfigHelpers.SyncConfig( this );
 		}
 	}
 }
