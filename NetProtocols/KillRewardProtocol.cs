@@ -57,8 +57,8 @@ namespace Rewards.NetProtocols {
 
 			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				int kills = data.KilledNpcs.ContainsKey( npc.type ) ? data.KilledNpcs[npc.type] : -1;
-				string name = NPCIdentityHelpers.GetQualifiedName( npc );
-				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+				string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
+				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
 
 				string msg = "ReceiveOnClient npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", isExpired: "+isExpired+", reward: " + reward

@@ -67,22 +67,22 @@ namespace Rewards.Logic {
 
 		private float CalculateNpcKillReward( NPC npc, ref bool isGrind, ref bool isExpired ) {
 			var mymod = RewardsMod.Instance;
-			string name = NPCIdentityHelpers.GetQualifiedName( npc );
+			string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
 			float points = 0;
-			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
 			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
 			isGrind = false;
 			isExpired = false;
 			
-			if( mymod.PointsConfig.NpcRewards.ContainsKey( name ) ) {
+			if( mymod.PointsConfig.NpcRewards.ContainsKey( npcKey ) ) {
 				if( canReward ) {
-					points = mymod.PointsConfig.NpcRewards[name];
+					points = mymod.PointsConfig.NpcRewards[npcKey];
 				}
 			}
 			
-			if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey( name ) ) {
-				string blockingNpcName = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[name];
+			if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey( npcKey ) ) {
+				string blockingNpcName = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[npcKey];
 
 				if( NPCIdentityHelpers.NamesToIds.ContainsKey( blockingNpcName ) ) {
 					int blockingNpcType = NPCIdentityHelpers.NamesToIds[blockingNpcName];

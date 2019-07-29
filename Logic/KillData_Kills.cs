@@ -19,8 +19,8 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 
-			string name = NPCIdentityHelpers.GetQualifiedName( npc );
-			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+			string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
+			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
 			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
 			if( canReward ) {
@@ -41,8 +41,8 @@ namespace Rewards.Logic {
 
 			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
-				string name = NPCIdentityHelpers.GetQualifiedName( npc );
-				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( name );
+				string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
+				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
 
 				string msg = "RewardKill_SyncsFromHost to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")";
