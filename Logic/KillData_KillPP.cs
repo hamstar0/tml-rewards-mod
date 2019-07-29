@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.NPCs;
 using System;
 using Terraria;
 
@@ -34,22 +34,22 @@ namespace Rewards.Logic {
 
 			isGrind = false;
 
-			if( NPCIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
+			if( NPCGroupIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.GoblinInvasionReward;
 				isGrind = this.GoblinsConquered > 0;
-			} else if( NPCIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
+			} else if( NPCGroupIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.FrostLegionInvasionReward;
 				isGrind = this.FrostLegionConquered > 0;
-			} else if( NPCIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
+			} else if( NPCGroupIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.PirateInvasionReward;
 				isGrind = this.PiratesConquered > 0;
-			} else if( NPCIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
+			} else if( NPCGroupIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.MartianInvasionReward;
 				isGrind = this.MartiansConquered > 0;
-			} else if( NPCIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
+			} else if( NPCGroupIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.PumpkingMoonWaveReward;
 				isGrind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
-			} else if( NPCIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
+			} else if( NPCGroupIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.FrostMoonWaveReward;
 				isGrind = NPC.waveNumber < this.FrostMoonWavesConquered;
 			}

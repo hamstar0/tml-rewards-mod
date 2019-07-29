@@ -1,7 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
+using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.NPCs;
 using Rewards.Logic;
 using Terraria;
 
@@ -45,7 +45,7 @@ namespace Rewards.NetProtocols {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
-				throw new HamstarException( "No player data for " + Main.LocalPlayer.name );
+				throw new ModHelpersException( "No player data for " + Main.LocalPlayer.name );
 			}
 
 			NPC npc = new NPC();

@@ -1,11 +1,6 @@
-using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
-using HamstarHelpers.Services.DataDumper;
-using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Helpers.TModLoader;
+using HamstarHelpers.Helpers.TModLoader.Mods;
 using Rewards.Configs;
 using Rewards.NetProtocols;
 using System;
@@ -22,19 +17,16 @@ namespace Rewards {
 
 		////////////////
 
-		internal JsonConfig<RewardsSettingsConfigData> SettingsConfigJson;
-		public RewardsSettingsConfigData SettingsConfig => SettingsConfigJson.Data;
+		public RewardsSettingsConfig SettingsConfig => this.GetConfig<RewardsSettingsConfig>();
 
-		internal JsonConfig<RewardsPointsConfigData> PointsConfigJson;
-		public RewardsPointsConfigData PointsConfig => PointsConfigJson.Data;
+		public RewardsPointsConfig PointsConfig => this.GetConfig<RewardsPointsConfig>();
 
-		internal JsonConfig<RewardsShopConfigData> ShopConfigJson;
-		public RewardsShopConfigData ShopConfig => ShopConfigJson.Data;
+		public RewardsShopConfig ShopConfig => this.GetConfig<RewardsShopConfig>();
 
 
 		////
 
-		public bool SuppressConfigAutoSaving { get; internal set; }
+		public bool MemoryOnlyConfig { get; internal set; }
 
 
 		////////////////
@@ -68,13 +60,6 @@ namespace Rewards {
 
 		public RewardsMod() {
 			RewardsMod.Instance = this;
-			
-			this.SettingsConfigJson = new JsonConfig<RewardsSettingsConfigData>( RewardsSettingsConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath );
-			this.PointsConfigJson = new JsonConfig<RewardsPointsConfigData>( RewardsPointsConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath );
-			this.ShopConfigJson = new JsonConfig<RewardsShopConfigData>( RewardsShopConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath );
 		}
 
 
@@ -87,7 +72,7 @@ namespace Rewards {
 				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
 				myplayer.SaveKillData();
 			} else if( Main.netMode == 1 ) {
-				PacketProtocolSendToServer.QuickSendToServer<PlayerSaveProtocol>();
+				PlayerSaveProtocol.QuickSend();
 			}
 		}
 

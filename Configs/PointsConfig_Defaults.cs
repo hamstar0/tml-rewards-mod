@@ -1,12 +1,18 @@
-﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Helpers.NPCs;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Terraria.ID;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Configs {
-	public partial class RewardsPointsConfigData : ConfigurationDataBase {
-		public void SetDefaults() {
+	public partial class RewardsPointsConfig : ModConfig {
+		[OnDeserialized]
+		internal void OnDeserializedMethod( StreamingContext context ) {
+			if( this.NpcRewards != null ) {
+				return;
+			}
+
 			string wofName = NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh );
 			string planteraName = NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera );
 			string golemName = NPCIdentityHelpers.GetQualifiedName( NPCID.Golem );

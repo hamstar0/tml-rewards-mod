@@ -35,7 +35,7 @@ namespace Rewards.Commands {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
-				throw new HamstarException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
+				throw new ModHelpersException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
 			}
 
 			data.AddRewardForPlayer( Main.LocalPlayer, false, false, reward );

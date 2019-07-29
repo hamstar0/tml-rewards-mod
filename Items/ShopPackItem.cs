@@ -1,5 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.ItemHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Items;
+using HamstarHelpers.Helpers.Items.Attributes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Rewards.Logic;
@@ -60,7 +61,7 @@ namespace Rewards.Items {
 			this.item.width = 22;
 			this.item.height = 22;
 			this.item.value = 0;
-			this.item.rare = ItemAttributeHelpers.QuestItemRarity;
+			this.item.rare = ItemRarityAttributeHelpers.QuestItemRarity;
 		}
 
 
@@ -80,7 +81,7 @@ namespace Rewards.Items {
 
 				var itemTip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
 
-				if( ItemAttributeHelpers.RarityColor.TryGetValue( item.rare, out rareColor ) ) {
+				if( ItemRarityAttributeHelpers.RarityColor.TryGetValue( item.rare, out rareColor ) ) {
 					itemTip.overrideColor = rareColor;
 				}
 

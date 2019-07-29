@@ -1,5 +1,5 @@
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Helpers.TModLoader;
 using Rewards.Logic;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace Rewards {
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 
 						if( data == null ) {
-							throw new HamstarException( "No player data for " + Main.LocalPlayer.name );
+							throw new ModHelpersException( "No player data for " + Main.LocalPlayer.name );
 						}
 
 						if( data.CanDrawPoints() ) {

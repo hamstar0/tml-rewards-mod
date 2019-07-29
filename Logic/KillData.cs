@@ -1,7 +1,7 @@
-﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.MiscHelpers;
+﻿using HamstarHelpers.Components.Errors;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Misc;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -86,13 +86,13 @@ namespace Rewards.Logic {
 
 			try {
 				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
-					data = DataFileHelpers.LoadJson<KillData>( mymod, baseFileName, out success );
+					data = ModCustomDataFileHelpers.LoadJson<KillData>( mymod, baseFileName );
 				} else {
-					data = DataFileHelpers.LoadBinary<KillData>( mymod, baseFileName, false );
+					data = ModCustomDataFileHelpers.LoadBinaryJson<KillData>( mymod, baseFileName );
 					success = data != null;
 				}
 			} catch( IOException e ) {
-				throw new HamstarException( "Failed to load file: "+ baseFileName, e );
+				throw new ModHelpersException( "Failed to load file: "+ baseFileName, e );
 			}
 
 			if( success ) {
@@ -118,12 +118,12 @@ namespace Rewards.Logic {
 
 			try {
 				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
-					DataFileHelpers.SaveAsJson( mymod, baseFileName, this );
+					ModCustomDataFileHelpers.SaveAsJson( mymod, baseFileName, true, this ); // false?
 				} else {
-					DataFileHelpers.SaveAsBinary( mymod, baseFileName, false, this );
+					ModCustomDataFileHelpers.SaveAsBinaryJson( mymod, baseFileName, true, this );	// false?
 				}
 			} catch( IOException e ) {
-				throw new HamstarException( "Failed to save file: "+ baseFileName, e );
+				throw new ModHelpersException( "Failed to save file: "+ baseFileName, e );
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace Rewards.Logic {
 		////////////////
 
 		public override string ToString() {
-			return JsonConfig<KillData>.Serialize( this ).Replace( "\r\n  ", "" ).Replace( "\r\n", "" );
+			return JsonConvert.SerializeObject( this ).Replace( "\r\n  ", "" ).Replace( "\r\n", "" );
 		}
 	}
 }

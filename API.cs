@@ -1,5 +1,5 @@
 ﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.NPCHelpers;
+using HamstarHelpers.Helpers.NPCs;
 using Rewards.Configs;
 using Rewards.Items;
 using Rewards.Logic;
@@ -11,15 +11,7 @@ using Terraria;
 
 namespace Rewards {
 	public static partial class RewardsAPI {
-		public static RewardsSettingsConfigData GetModSettings() {
-			return RewardsMod.Instance.SettingsConfig;
-		}
-
-		public static RewardsShopConfigData GetShopSettings() {
-			return RewardsMod.Instance.ShopConfig;
-		}
-
-		public static RewardsPointsConfigData GetPointsSettings() {
+		public static RewardsPointsConfig GetPointsSettings() {
 			return RewardsMod.Instance.PointsConfig;
 		}
 
@@ -41,11 +33,11 @@ namespace Rewards {
 		}
 
 		public static void SuppressConfigAutoSavingOn() {
-			RewardsMod.Instance.SuppressConfigAutoSaving = true;
+			RewardsMod.Instance.MemoryOnlyConfig = true;
 		}
 
 		public static void SuppressConfigAutoSavingOff() {
-			RewardsMod.Instance.SuppressConfigAutoSaving = false;
+			RewardsMod.Instance.MemoryOnlyConfig = false;
 		}
 
 
@@ -54,7 +46,7 @@ namespace Rewards {
 		public static float GetPoints( Player player ) {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new HamstarException( "No player data for "+player.name ); }
+			if( data == null ) { throw new ModHelpersException( "No player data for "+player.name ); }
 
 			return data.ProgressPoints;
 		}
@@ -63,7 +55,7 @@ namespace Rewards {
 			var mymod = RewardsMod.Instance;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new HamstarException( "No player data for " + player.name ); }
+			if( data == null ) { throw new ModHelpersException( "No player data for " + player.name ); }
 
 			data.AddRewardForPlayer( player, false, false, points );
 		}
@@ -132,7 +124,7 @@ namespace Rewards {
 		public static void ShopAddPack( ShopPackDefinition pack ) {
 			var mymod = RewardsMod.Instance;
 			string fail;
-			if( !pack.Validate(out fail) ) { throw new HamstarException("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
+			if( !pack.Validate(out fail) ) { throw new ModHelpersException("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.ShopConfig.ShopLoadout.Add( pack );
 		}

@@ -1,13 +1,13 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.DotNetHelpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
-using HamstarHelpers.Helpers.WorldHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.DotNET;
+using HamstarHelpers.Helpers.Players;
+using HamstarHelpers.Helpers.NPCs;
+using HamstarHelpers.Helpers.World;
 using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader.IO;
-using HamstarHelpers.Helpers.TmlHelpers;
+using HamstarHelpers.Helpers.TModLoader;
 
 
 namespace Rewards.Logic {
@@ -39,7 +39,7 @@ namespace Rewards.Logic {
 					.Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
 			);*/
 			this.CurrentEvents = new HashSet<VanillaEventFlag>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+				DotNetHelpers.FlagsToCollection<VanillaEventFlag>( (int)flags )
 			);
 		}
 
@@ -64,7 +64,7 @@ namespace Rewards.Logic {
 
 		public string GetDataFileBaseName() {
 			if( RewardsMod.Instance.SettingsConfig.UseUpdatedWorldFileNameConvention ) {
-				return WorldHelpers.GetUniqueIdWithSeed();
+				return WorldHelpers.GetUniqueIdForCurrentWorld(true);
 			} else {
 				return "World_" + FileHelpers.SanitizePath( Main.worldName ) + "_" + Main.worldID;
 			}
@@ -76,7 +76,7 @@ namespace Rewards.Logic {
 			bool success = this.WorldData.Load( this.GetDataFileBaseName() );
 
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", success: "+success+", "+ this.WorldData.ToString() );
+				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdForCurrentWorld(true)+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdWithSeed()+", "+ this.WorldData.ToString() );
+				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdForCurrentWorld(true)+", "+ this.WorldData.ToString() );
 			}
 			
 			for( int i = 0; i < Main.player.Length; i++ ) {
@@ -123,7 +123,7 @@ namespace Rewards.Logic {
 		////////////////
 		
 		public KillData GetPlayerData( Player player ) {
-			string uid = PlayerIdentityHelpers.GetProperUniqueId( player );
+			string uid = PlayerIdentityHelpers.GetUniqueId( player );
 			if( uid == null ) {
 				return null;
 			}

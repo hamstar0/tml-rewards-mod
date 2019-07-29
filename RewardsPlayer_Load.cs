@@ -1,8 +1,7 @@
 ﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.PlayerHelpers;
-using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Players;
+using HamstarHelpers.Services.Hooks.LoadHooks;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;
@@ -13,14 +12,14 @@ using Terraria.ModLoader;
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
 		internal readonly static object MyValidatorKey;
-		public readonly static PromiseValidator EnterWorldValidator;
+		public readonly static CustomLoadHookValidator<object> EnterWorldValidator;
 
 
 		////////////////
 
 		static RewardsPlayer() {
 			RewardsPlayer.MyValidatorKey = new object();
-			RewardsPlayer.EnterWorldValidator = new PromiseValidator( RewardsPlayer.MyValidatorKey );
+			RewardsPlayer.EnterWorldValidator = new CustomLoadHookValidator<object>( RewardsPlayer.MyValidatorKey );
 		}
 
 
@@ -35,16 +34,6 @@ namespace Rewards {
 			this.HasModSettings = false;
 			this.HasPointsSettings = false;
 			this.HasShopSettings = false;
-
-			if( !mymod.SuppressConfigAutoSaving ) {
-				mymod.SettingsConfigJson.LoadFileAsync( ( success ) => {
-					if( !success ) {
-						//mymod.ConfigJson.SaveFile();
-						LogHelpers.Alert( "Rewards config could not be loaded." );
-						Main.NewText( "Invalid config file. Consider using the /rew-shop-add command or a JSON editor program or site.", Color.Red );
-					}
-				} );
-			}
 
 			this.FinishLocalKillDataSync();
 			this.FinishLocalModSettingsSync();
@@ -73,10 +62,7 @@ namespace Rewards {
 				LogHelpers.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
 			}
 
-			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>( -1 );
-			PacketProtocolRequestToServer.QuickRequestToServer<ModSettingsProtocol>( -1 );
-			PacketProtocolRequestToServer.QuickRequestToServer<PointsSettingsProtocol>( -1 );
-			PacketProtocolRequestToServer.QuickRequestToServer<ShopSettingsProtocol>( -1 );
+			KillDataProtocol.QuickRequest();
 		}
 
 		private void OnConnectServer( Player player ) {
@@ -151,7 +137,7 @@ namespace Rewards {
 			} else if( Main.netMode == 1 ) {
 				this.OnFinishPlayerEnterWorldForClient();
 			} else {
-				throw new HamstarException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
+				throw new ModHelpersException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
 			}
 		}
 
@@ -180,7 +166,7 @@ namespace Rewards {
 			var myworld = mymod.GetModWorld<RewardsWorld>();
 			bool success = false;
 			
-			string playerUid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
+			string playerUid = PlayerIdentityHelpers.GetUniqueId( this.player );
 
 			KillData plrData = myworld.Logic.GetPlayerData( this.player );
 			if( plrData == null ) {
@@ -204,10 +190,10 @@ namespace Rewards {
 		}
 
 		private void OnFinishPlayerEnterWorldForAny() {
-			Promises.TriggerValidatedPromise( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
+			CustomLoadHooks.TriggerHook( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 
-			Promises.AddWorldUnloadOncePromise( () => {
-				Promises.ClearValidatedPromise( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
+			LoadHooks.AddWorldUnloadOnceHook( () => {
+				CustomLoadHooks.ClearHook( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 			} );
 		}
 
@@ -217,7 +203,7 @@ namespace Rewards {
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
 			var myworld = mymod.GetModWorld<RewardsWorld>();
-			string uid = PlayerIdentityHelpers.GetProperUniqueId( this.player );
+			string uid = PlayerIdentityHelpers.GetUniqueId( this.player );
 
 			KillData plrData = myworld.Logic.GetPlayerData( this.player );
 			if( plrData == null ) {

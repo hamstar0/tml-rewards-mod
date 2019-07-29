@@ -1,128 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="C:\Users\Spinach\Documents\My Games\Terraria\ModLoader\references\tModLoader.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8298EAB6-0586-4BDA-9483-83624B66B13A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rewards</RootNamespace>
     <AssemblyName>Rewards</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <TargetFramework>net452</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  <Target Name="BuildMod" AfterTargets="Build">
+    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
+  </Target>
   <ItemGroup>
-    <Compile Include="API_Compat.cs" />
-    <Compile Include="API.cs" />
-    <Compile Include="Commands\CheatToggleCommand.cs" />
-    <Compile Include="Commands\ShopRemoveLastCommand.cs" />
-    <Compile Include="Commands\ShopAddCommand.cs" />
-    <Compile Include="Commands\ShopClearCommand.cs" />
-    <Compile Include="Commands\AddPointsCommand.cs" />
-    <Compile Include="Configs\PointsConfig.cs" />
-    <Compile Include="Configs\PointsConfig_Defaults.cs" />
-    <Compile Include="Configs\ShopConfig_Defaults.cs" />
-    <Compile Include="Configs\ShopConfig.cs" />
-    <Compile Include="Configs\SettingsConfig.cs" />
-    <Compile Include="Items\ShopPackDefinition.cs" />
-    <Compile Include="Items\ShopPackItem.cs" />
-    <Compile Include="Logic\KillData_KillPP.cs" />
-    <Compile Include="Logic\KillData_Kills.cs" />
-    <Compile Include="Logic\KillData.cs" />
-    <Compile Include="Logic\KillData_PP.cs" />
-    <Compile Include="Logic\WorldLogic_Update.cs" />
-    <Compile Include="Logic\WorldLogic_Kills.cs" />
-    <Compile Include="NetProtocols\EventsSyncProtocol.cs" />
-    <Compile Include="NetProtocols\PointsSettingsProtocol.cs" />
-    <Compile Include="NetProtocols\ShopSettingsProtocol.cs" />
-    <Compile Include="NetProtocols\PlayerSaveProtocol.cs" />
-    <Compile Include="NetProtocols\PackPurchaseProtocol.cs" />
-    <Compile Include="NetProtocols\KillRewardProtocol.cs" />
-    <Compile Include="NetProtocols\KillDataProtocol.cs" />
-    <Compile Include="NetProtocols\ModSettingsProtocol.cs" />
-    <Compile Include="NPCs\WayfarerTownNPC_Spawn.cs" />
-    <Compile Include="NPCs\WayfarerTownNPC_Shop.cs" />
-    <Compile Include="NPCs\WayfarerTownNPC.cs" />
-    <Compile Include="Logic\WorldLogic.cs" />
-    <Compile Include="RewardsMod_Load.cs" />
-    <Compile Include="RewardsMod_Draw.cs" />
-    <Compile Include="RewardsMod_Meta.cs" />
-    <Compile Include="RewardsMod.cs" />
-    <Compile Include="RewardsNPC.cs" />
-    <Compile Include="RewardsPlayer_Load.cs" />
-    <Compile Include="RewardsPlayer.cs" />
-    <Compile Include="RewardsWorld.cs" />
+    <None Remove=".gitignore" />
+    <None Remove="desktop.ini" />
+    <None Remove="icon.pdn" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HamstarHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Game\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Game.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Graphics\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Xact\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Xact.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\Libraries\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Web" />
-    <Reference Include="Terraria">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\terraria\Terraria.exe</HintPath>
-    </Reference>
-    <Reference Include="Terraria.Libraries.ReLogic.ReLogic">
-      <HintPath>..\..\..\Reference\Terraria.Libraries.ReLogic.ReLogic.dll</HintPath>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\..\Mod Helpers\v5 (tML11)\HamstarHelpers\bin\Release\net452\HamstarHelpers.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="build.txt" />
-    <Content Include="description.txt" />
-    <Content Include="Items\ShopPackItem.png" />
-    <Content Include="NPCs\WayfarerTownNPC.png" />
-    <Content Include="NPCs\WayfarerTownNPC_Head.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServer.exe" -build "$(ProjectDir)\" -eac "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
 </Project>

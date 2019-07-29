@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.ItemHelpers;
-using HamstarHelpers.Services.Messages;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.Items;
+using HamstarHelpers.Services.Messages.Inbox;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using Terraria;
@@ -91,8 +91,8 @@ namespace Rewards {
 				if( !this.IsFullySynced ) {
 					Main.NewText( "Cannot open pack: An error occurred synchronizing with the server.", Color.Red );
 					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server. "
-						+"(HasKillData:"+this.HasKillData+", HasModSettings:"+this.HasModSettings
-						+", HasPointsSettings:"+this.HasPointsSettings+", HasShopSettings:"+this.HasShopSettings+")" );
+							+"(HasKillData:"+this.HasKillData+", HasModSettings:"+this.HasModSettings
+							+", HasPointsSettings:"+this.HasPointsSettings+", HasShopSettings:"+this.HasShopSettings+")" );
 
 					ItemHelpers.DestroyItem( item );
 					this.player.inventory[i] = new Item();

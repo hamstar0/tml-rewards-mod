@@ -1,7 +1,6 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.DotNetHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.DotNET;
+using HamstarHelpers.Helpers.NPCs;
 using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Rewards.Logic {
 
 			if( eventsChanged ) {
 				if( Main.netMode == 2 ) {
-					PacketProtocolSendToClient.QuickSend<EventsSyncProtocol>( -1, -1 );
+					EventsSyncProtocol.QuickSend();
 				}
 			}
 		}
@@ -31,7 +30,7 @@ namespace Rewards.Logic {
 
 		internal bool UpdateForEventsBeginnings( VanillaEventFlag eventFlags ) {
 			bool eventsChanged = false;
-			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)eventFlags );
+			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToCollection<VanillaEventFlag>( (int)eventFlags );
 
 			foreach( VanillaEventFlag flag in eventFlagSet ) {
 				if( this.CurrentEvents.Contains( flag ) ) { continue; }

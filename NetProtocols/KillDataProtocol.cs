@@ -1,12 +1,20 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
+﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.TModLoader;
 using Rewards.Logic;
 using Terraria;
 
 
 namespace Rewards.NetProtocols {
 	class KillDataProtocol : PacketProtocolRequestToServer {
+		public static void QuickRequest() {
+			PacketProtocolRequestToServer.QuickRequestToServer<KillDataProtocol>( -1 );
+		}
+
+
+
+		////////////////
+
 		public KillData WorldData = null;
 		public KillData PlayerData = null;
 

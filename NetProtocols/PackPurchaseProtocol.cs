@@ -1,6 +1,6 @@
 ﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
+using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+using HamstarHelpers.Helpers.Debug;
 using Rewards.Items;
 using Rewards.Logic;
 using Terraria;
@@ -47,7 +47,7 @@ namespace Rewards.NetProtocols {
 
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
-				throw new HamstarException( "No player data for " + player.name );
+				throw new ModHelpersException( "No player data for " + player.name );
 			}
 
 			if( !data.Spend( (int)this.Pack.Price, player ) ) {

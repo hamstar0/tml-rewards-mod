@@ -1,14 +1,20 @@
-﻿using HamstarHelpers.Components.Config;
-using HamstarHelpers.Helpers.ItemHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Helpers.Items;
+using HamstarHelpers.Helpers.NPCs;
 using Rewards.Items;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Terraria.ID;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Configs {
-	public partial class RewardsShopConfigData : ConfigurationDataBase {
-		public bool SetDefaults() {
+	public partial class RewardsShopConfig : ModConfig {
+		[OnDeserialized]
+		internal void OnDeserializedMethod( StreamingContext context ) {
+			if( this.ShopLoadout != null ) {
+				return;
+			}
+
 			string wofName = NPCIdentityHelpers.GetQualifiedName( NPCID.WallofFlesh );
 			string planteraName = NPCIdentityHelpers.GetQualifiedName( NPCID.Plantera );
 			string golemName = NPCIdentityHelpers.GetQualifiedName( NPCID.Golem );
@@ -128,8 +134,6 @@ namespace Rewards.Configs {
 						new ShopPackItemDefinition( ItemIdentityHelpers.GetQualifiedName(ItemID.MoonlordTurretStaff), 1 )
 					} )
 			};
-
-			return true;
 		}
 	}
 }

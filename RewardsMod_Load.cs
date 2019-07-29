@@ -1,9 +1,7 @@
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
-using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
-using HamstarHelpers.Services.DataDumper;
-using HamstarHelpers.Services.Promises;
+using HamstarHelpers.Helpers.TModLoader;
+using HamstarHelpers.Services.Debug.DataDumper;
+using HamstarHelpers.Services.Hooks.LoadHooks;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,9 +10,6 @@ using Terraria.ModLoader;
 namespace Rewards {
 	partial class RewardsMod : Mod {
 		public override void Load() {
-			string depErr = ModIdentityHelpers.FormatBadDependencyModList( this );
-			if( depErr != null ) { throw new HamstarException( depErr ); }
-
 			this.LoadConfigs_OnPostModLoadPromise();
 
 			DataDumper.SetDumpSource( "Rewards", () => {
@@ -35,29 +30,16 @@ namespace Rewards {
 
 
 		private void LoadConfigs_OnPostModLoadPromise() {
-			if( !this.SettingsConfigJson.LoadFile() ) {
-				ErrorLogger.Log( "Creating rewards configs anew..." );
-				this.SettingsConfigJson.SaveFile();
-			}
-			if( !this.PointsConfigJson.LoadFile() ) {
-				ErrorLogger.Log( "Creating rewards points configs anew..." );
-				this.PointsConfigJson.SaveFile();
-			}
-			if( !this.ShopConfigJson.LoadFile() ) {
-				ErrorLogger.Log( "Creating rewards shop configs anew..." );
-				this.ShopConfigJson.SaveFile();
-			}
-
 			bool isLoaded = false;
 
-			Promises.AddPostModLoadPromise( () => {
+			LoadHooks.AddPostModLoadHook( () => {
 				if( !isLoaded ) { isLoaded = true; }    // <- Paranoid failsafe?
 				else { return; }
 
 				this.LoadConfigs();
 			} );
 
-			Promises.AddPostWorldUnloadEachPromise( () => {
+			LoadHooks.AddPostWorldUnloadEachHook( () => {
 				try {
 					var myworld = this.GetModWorld<RewardsWorld>();
 					myworld.Logic = null;
@@ -68,42 +50,6 @@ namespace Rewards {
 		
 		public override void Unload() {
 			RewardsMod.Instance = null;
-		}
-
-
-		////////////////
-		
-		private void LoadConfigs() {
-			if( this.SettingsConfig == null ) {
-				throw new HamstarException( "Could not load settings config data." );
-			}
-			if( this.PointsConfig == null ) {
-				throw new HamstarException( "Could not load points config data." );
-			}
-			if( this.ShopConfig == null ) {
-				throw new HamstarException( "Could not load shop config data." );
-			}
-
-			if( this.SettingsConfig.CanUpdateVersion( out this.RecentlyUpdatedConfig ) ) {
-				this.SettingsConfig.UpdateToLatestVersion();
-				ErrorLogger.Log( "Rewards settings updated to " + this.Version.ToString() );
-
-				this.SettingsConfigJson.SaveFile();
-			}
-
-			if( this.PointsConfig.CanUpdateVersion() ) {
-				this.PointsConfig.UpdateToLatestVersion();
-				ErrorLogger.Log( "Rewards points settings to " + this.Version.ToString() );
-
-				this.PointsConfigJson.SaveFileAsync( () => { } );
-			}
-
-			if( this.ShopConfig.CanUpdateVersion() ) {
-				this.ShopConfig.UpdateToLatestVersion();
-				ErrorLogger.Log( "Rewards shop settings updated to " + this.Version.ToString() );
-
-				this.ShopConfigJson.SaveFileAsync( () => { } );
-			}
 		}
 	}
 }

@@ -1,5 +1,4 @@
 using HamstarHelpers.Components.Errors;
-using Microsoft.Xna.Framework;
 using Rewards.Items;
 using System;
 using Terraria;

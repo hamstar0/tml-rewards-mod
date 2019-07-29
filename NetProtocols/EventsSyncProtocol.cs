@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Components.Network;
-using HamstarHelpers.Helpers.DebugHelpers;
-using HamstarHelpers.Helpers.NPCHelpers;
+﻿using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.NPCs;
 using System;
 using System.Linq;
 using Terraria;
@@ -8,6 +8,14 @@ using Terraria;
 
 namespace Rewards.NetProtocols {
 	class EventsSyncProtocol : PacketProtocolSendToClient {
+		public static void QuickSend() {
+			PacketProtocolSendToClient.QuickSend<EventsSyncProtocol>( -1, -1 );
+		}
+
+
+
+		////////////////
+
 		public int[] Events;
 		public int InvasionSizeStart;
 

@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Components.Network;
+﻿using HamstarHelpers.Helpers.TModLoader.Configs;
 using Microsoft.Xna.Framework;
-using Rewards.NetProtocols;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -35,7 +34,8 @@ namespace Rewards.Commands {
 			}
 
 			if( Main.netMode == 2 ) {
-				PacketProtocol.QuickSendToClient<ModSettingsProtocol>( -1, -1 );
+				ConfigHelpers.SyncConfigToServer( mymod.SettingsConfig );
+				//PacketProtocol.QuickSendToClient<ModSettingsProtocol>( -1, -1 ); TODO: Sync changes to client
 			}
 		}
 	}
