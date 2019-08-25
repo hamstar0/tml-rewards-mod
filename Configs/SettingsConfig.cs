@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using Terraria.ModLoader.Config;
 
 
@@ -57,18 +56,6 @@ namespace Rewards.Configs {
 		[DefaultValue( true )]
 		public bool UseUpdatedWorldFileNameConvention = true;
 
-
-
-		////////////////
-
-		[OnDeserialized]
-		internal void OnDeserializedMethod( StreamingContext context ) {
-			if( this.PointsDisplayColorRGB != null ) {
-				return;
-			}
-
-			this.PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
-		}
 
 
 		////////////////

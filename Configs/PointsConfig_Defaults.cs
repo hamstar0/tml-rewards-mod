@@ -1,17 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Configs {
 	public partial class RewardsPointsConfig : ModConfig {
-		[OnDeserialized]
-		internal void OnDeserializedMethod( StreamingContext context ) {
-			if( this.NpcRewards != null ) {
-				return;
-			}
-
+		public RewardsPointsConfig() {
 			var wofDef = new NPCDefinition( NPCID.WallofFlesh );
 			var planteraDef = new NPCDefinition( NPCID.Plantera );
 			var golemDef = new NPCDefinition( NPCID.Golem );
