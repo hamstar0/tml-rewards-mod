@@ -5,14 +5,15 @@ using Terraria.ModLoader.Config;
 
 namespace Rewards.Items {
 	public class ShopPackItemDefinition {
-		public ItemDefinition ItemDef;
-		public int Stack;
-		public bool? CrimsonWorldOnly;
+		public ItemDefinition ItemDef { get; private set; }
+		public int Stack { get; private set; }
+		public bool? CrimsonWorldOnly { get; private set; }
+
 
 
 		////////////////
 
-		internal ShopPackItemDefinition( ItemDefinition itemDef, int stack, bool? crimsonOnly = null ) {
+		public ShopPackItemDefinition( ItemDefinition itemDef, int stack, bool? crimsonOnly = null ) {
 			this.ItemDef = itemDef;
 			this.Stack = stack;
 			this.CrimsonWorldOnly = crimsonOnly;
