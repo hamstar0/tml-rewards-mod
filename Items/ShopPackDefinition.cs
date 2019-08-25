@@ -58,16 +58,16 @@ namespace Rewards.Items {
 
 		////////////////
 
-		public NPCDefinition NeededBossKill;
-		public string Name;
-		public int Price;
-		public ShopPackItemDefinition[] Items;
+		public NPCDefinition NeededBossKill { get; private set; }
+		public string Name { get; private set; }
+		public int Price { get; private set; }
+		public ShopPackItemDefinition[] Items { get; private set; }
 
 
 
 		////////////////
 
-		internal ShopPackDefinition( NPCDefinition neededBoss, string name, int price, ShopPackItemDefinition[] items ) {
+		public ShopPackDefinition( NPCDefinition neededBoss, string name, int price, ShopPackItemDefinition[] items ) {
 			this.NeededBossKill = neededBoss;
 			this.Name = name;
 			this.Price = price;
