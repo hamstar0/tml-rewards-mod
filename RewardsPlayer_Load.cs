@@ -1,8 +1,7 @@
-﻿using HamstarHelpers.Components.Errors;
+﻿using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Players;
 using HamstarHelpers.Services.Hooks.LoadHooks;
-using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Rewards.NetProtocols;
 using Terraria;

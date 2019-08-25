@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Components.Errors;
+﻿using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.NPCs;
 using Rewards.Items;
 using Rewards.Logic;
@@ -82,11 +82,11 @@ namespace Rewards {
 			mymod.ShopConfig.ShopLoadout = new List<ShopPackDefinition>();
 		}
 		
-		public static ShopPackDefinition? ShopRemoveLastPack() {
+		public static ShopPackDefinition ShopRemoveLastPack() {
 			var mymod = RewardsMod.Instance;
 			IList<ShopPackDefinition> shop = mymod.ShopConfig.ShopLoadout;
 			int last = shop.Count - 1;
-			ShopPackDefinition? def = null;
+			ShopPackDefinition def = null;
 			string _;
 
 			for( int i=last; i>=0; i-- ) {

@@ -36,13 +36,13 @@ namespace Rewards.Configs {
 		public float FrostMoonWaveReward = 10f;
 
 
-		public IDictionary<string, float> NpcRewards = new Dictionary<string, float>();
+		public IDictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
 
-		public IDictionary<string, int> NpcRewardTogetherSets = new Dictionary<string, int>();
+		public IDictionary<NPCDefinition, int> NpcRewardTogetherSets = new Dictionary<NPCDefinition, int>();
 
-		public ISet<string> NpcRewardRequiredAsBoss = new HashSet<string>();
+		public ISet<NPCDefinition> NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
 
-		public IDictionary<string, string> NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
+		public IDictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
 		//public bool NpcRewardPrediction = true;
 
@@ -51,10 +51,10 @@ namespace Rewards.Configs {
 
 		public void Reset() {
 			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
-			this.NpcRewards = new Dictionary<string, float>();
-			this.NpcRewardTogetherSets = new Dictionary<string, int>();
-			this.NpcRewardRequiredAsBoss = new HashSet<string>();
-			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string>();
+			this.NpcRewards = new Dictionary<NPCDefinition, float>();
+			this.NpcRewardTogetherSets = new Dictionary<NPCDefinition, int>();
+			this.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
+			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
 			ConfigHelpers.SyncConfig( this );
 		}

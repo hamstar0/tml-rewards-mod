@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.Helpers.NPCs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Terraria.ID;
 using Terraria.ModLoader.Config;
@@ -13,53 +12,53 @@ namespace Rewards.Configs {
 				return;
 			}
 
-			string wofName = NPCIdentityHelpers.GetUniqueKey( NPCID.WallofFlesh );
-			string planteraName = NPCIdentityHelpers.GetUniqueKey( NPCID.Plantera );
-			string golemName = NPCIdentityHelpers.GetUniqueKey( NPCID.Golem );
-			string moonlordName = NPCIdentityHelpers.GetUniqueKey( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
+			var wofDef = new NPCDefinition( NPCID.WallofFlesh );
+			var planteraDef = new NPCDefinition( NPCID.Plantera );
+			var golemDef = new NPCDefinition( NPCID.Golem );
+			var moonlordDef = new NPCDefinition( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
 
-			this.NpcRewards = new Dictionary<string, float> {
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.KingSlime ), 10f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.EyeofCthulhu ), 10f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.EaterofWorldsHead ), 25f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.BrainofCthulhu ), 25f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.QueenBee ), 20f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.SkeletronHead ), 30f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.WallofFlesh ), 50f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.TheDestroyer ), 50f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Retinazer ), 50f / 2 },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Spazmatism ), 50f / 2 },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.SkeletronPrime ), 50f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Plantera ), 100f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Golem ), 100f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.DukeFishron ), 100f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.CultistBoss ), 50f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.DD2Betsy ), 100f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.LunarTowerSolar ), 35f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.LunarTowerVortex ), 35f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.LunarTowerNebula ), 35f },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.LunarTowerStardust ), 35f },
-				{ moonlordName, 250f }
+			this.NpcRewards = new Dictionary<NPCDefinition, float> {
+				{ new NPCDefinition( NPCID.KingSlime ), 10f },
+				{ new NPCDefinition( NPCID.EyeofCthulhu ), 10f },
+				{ new NPCDefinition( NPCID.EaterofWorldsHead ), 25f },
+				{ new NPCDefinition( NPCID.BrainofCthulhu ), 25f },
+				{ new NPCDefinition( NPCID.QueenBee ), 20f },
+				{ new NPCDefinition( NPCID.SkeletronHead ), 30f },
+				{ new NPCDefinition( NPCID.WallofFlesh ), 50f },
+				{ new NPCDefinition( NPCID.TheDestroyer ), 50f },
+				{ new NPCDefinition( NPCID.Retinazer ), 50f / 2 },
+				{ new NPCDefinition( NPCID.Spazmatism ), 50f / 2 },
+				{ new NPCDefinition( NPCID.SkeletronPrime ), 50f },
+				{ new NPCDefinition( NPCID.Plantera ), 100f },
+				{ new NPCDefinition( NPCID.Golem ), 100f },
+				{ new NPCDefinition( NPCID.DukeFishron ), 100f },
+				{ new NPCDefinition( NPCID.CultistBoss ), 50f },
+				{ new NPCDefinition( NPCID.DD2Betsy ), 100f },
+				{ new NPCDefinition( NPCID.LunarTowerSolar ), 35f },
+				{ new NPCDefinition( NPCID.LunarTowerVortex ), 35f },
+				{ new NPCDefinition( NPCID.LunarTowerNebula ), 35f },
+				{ new NPCDefinition( NPCID.LunarTowerStardust ), 35f },
+				{ moonlordDef, 250f }
 			};
 
-			this.NpcRewardRequiredAsBoss = new HashSet<string> {
-				NPCIdentityHelpers.GetUniqueKey( NPCID.EaterofWorldsHead )
+			this.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition> {
+				new NPCDefinition( NPCID.EaterofWorldsHead )
 			};
 
-			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<string, string> {
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.KingSlime ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.EyeofCthulhu ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.EaterofWorldsHead ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.BrainofCthulhu ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.QueenBee ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.SkeletronHead ), wofName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.WallofFlesh ), planteraName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.TheDestroyer ), golemName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Retinazer ), golemName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Spazmatism ), golemName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.SkeletronPrime ), golemName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Plantera ), moonlordName },
-				{ NPCIdentityHelpers.GetUniqueKey( NPCID.Golem ), moonlordName }
+			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition> {
+				{ new NPCDefinition( NPCID.KingSlime ), wofDef },
+				{ new NPCDefinition( NPCID.EyeofCthulhu ), wofDef },
+				{ new NPCDefinition( NPCID.EaterofWorldsHead ), wofDef },
+				{ new NPCDefinition( NPCID.BrainofCthulhu ), wofDef },
+				{ new NPCDefinition( NPCID.QueenBee ), wofDef },
+				{ new NPCDefinition( NPCID.SkeletronHead ), wofDef },
+				{ new NPCDefinition( NPCID.WallofFlesh ), planteraDef },
+				{ new NPCDefinition( NPCID.TheDestroyer ), golemDef },
+				{ new NPCDefinition( NPCID.Retinazer ), golemDef },
+				{ new NPCDefinition( NPCID.Spazmatism ), golemDef },
+				{ new NPCDefinition( NPCID.SkeletronPrime ), golemDef },
+				{ new NPCDefinition( NPCID.Plantera ), moonlordDef },
+				{ new NPCDefinition( NPCID.Golem ), moonlordDef }
 			};
 		}
 	}

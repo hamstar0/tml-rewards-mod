@@ -1,9 +1,10 @@
-﻿using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Components.Protocols.Packet.Interfaces;
+﻿using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.NPCs;
 using Rewards.Logic;
 using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.NetProtocols {
@@ -57,8 +58,8 @@ namespace Rewards.NetProtocols {
 
 			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				int kills = data.KilledNpcs.ContainsKey( npc.type ) ? data.KilledNpcs[npc.type] : -1;
-				string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
-				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
+				var npcDef = new NPCDefinition( npc.type );
+				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
 
 				string msg = "ReceiveOnClient npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", isExpired: "+isExpired+", reward: " + reward

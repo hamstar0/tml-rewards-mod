@@ -30,7 +30,7 @@ namespace Rewards.Items {
 
 		public override bool CloneNewInstances => true;
 
-		internal ShopPackDefinition? Info = null;
+		internal ShopPackDefinition Info = null;
 
 
 		////////////////
@@ -77,9 +77,9 @@ namespace Rewards.Items {
 			for( int i=0; i< info.Items.Length; i++ ) {
 				Color rareColor = Color.Gray;
 				Item item = new Item();
-				item.SetDefaults( info.Items[i].ItemType );
+				item.SetDefaults( info.Items[i].ItemDef.Type );
 
-				var itemTip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].Name );
+				var itemTip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].ItemDef );
 
 				if( ItemRarityAttributeHelpers.RarityColor.TryGetValue( item.rare, out rareColor ) ) {
 					itemTip.overrideColor = rareColor;
@@ -171,7 +171,7 @@ namespace Rewards.Items {
 
 			for( int i = 0; i < info.Items.Length; i++ ) {
 				ShopPackItemDefinition itemInfo = info.Items[i];
-				int bagItemType = itemInfo.ItemType;
+				int bagItemType = itemInfo.ItemDef.Type;
 
 				if( bagItemType <= 0 ) { continue; }
 				if( bagItemType >= Main.itemTexture.Length ) { continue; }

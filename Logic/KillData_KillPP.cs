@@ -2,6 +2,7 @@
 using HamstarHelpers.Helpers.NPCs;
 using System;
 using Terraria;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Logic {
@@ -67,29 +68,26 @@ namespace Rewards.Logic {
 
 		private float CalculateNpcKillReward( NPC npc, ref bool isGrind, ref bool isExpired ) {
 			var mymod = RewardsMod.Instance;
-			string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
+			var npcDef = new NPCDefinition( npc.type );
 			float points = 0;
-			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
+			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
 			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
 			isGrind = false;
 			isExpired = false;
 			
-			if( mymod.PointsConfig.NpcRewards.ContainsKey( npcKey ) ) {
+			if( mymod.PointsConfig.NpcRewards.ContainsKey( npcDef ) ) {
 				if( canReward ) {
-					points = mymod.PointsConfig.NpcRewards[npcKey];
+					points = mymod.PointsConfig.NpcRewards[npcDef];
 				}
 			}
 			
-			if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey( npcKey ) ) {
-				string blockingNpcName = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[npcKey];
+			if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey( npcDef ) ) {
+				NPCDefinition blockingNpcDef = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[npcDef];
+				int blockingNpcType = blockingNpcDef.Type;
 
-				if( NPCIdentityHelpers.NamesToIds.ContainsKey( blockingNpcName ) ) {
-					int blockingNpcType = NPCIdentityHelpers.NamesToIds[blockingNpcName];
-
-					if( this.KilledNpcs.ContainsKey( blockingNpcType ) && this.KilledNpcs[blockingNpcType] > 0 ) {
-						isExpired = true;
-					}
+				if( this.KilledNpcs.ContainsKey( blockingNpcType ) && this.KilledNpcs[blockingNpcType] > 0 ) {
+					isExpired = true;
 				}
 			}
 			

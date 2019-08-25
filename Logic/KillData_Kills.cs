@@ -1,8 +1,8 @@
 ﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.NPCs;
 using Rewards.NetProtocols;
 using System;
 using Terraria;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Logic {
@@ -19,8 +19,8 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 			float reward = this.CalculateKillReward( npc, out isGrind, out isExpired );
 
-			string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
-			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
+			var npcDef = new NPCDefinition( npc.type );
+			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
 			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
 			if( canReward ) {
@@ -41,8 +41,8 @@ namespace Rewards.Logic {
 
 			if( mymod.SettingsConfig.DebugModeKillInfo ) {
 				int kills = this.KilledNpcs.ContainsKey(npc.type) ? this.KilledNpcs[ npc.type ] : -1;
-				string npcKey = NPCIdentityHelpers.GetUniqueKey( npc );
-				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcKey );
+				var npcDef = new NPCDefinition( npc.type );
+				bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
 
 				string msg = "RewardKill_SyncsFromHost to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")";
