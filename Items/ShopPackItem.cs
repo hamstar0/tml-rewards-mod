@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 
 namespace Rewards.Items {
-	class ShopPackItem : ModItem {
+	public class ShopPackItem : ModItem {
 		public static Item CreateItem( ShopPackDefinition packInfo ) {
 			Item item = new Item();
 			item.SetDefaults( RewardsMod.Instance.ItemType<ShopPackItem>() );

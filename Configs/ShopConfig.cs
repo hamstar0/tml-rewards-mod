@@ -28,6 +28,7 @@ namespace Rewards.Configs {
 
 
 		////////////////
+
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 
