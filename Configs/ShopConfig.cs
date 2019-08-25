@@ -33,7 +33,7 @@ namespace Rewards.Configs {
 
 		////
 
-		public IList<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
+		public List<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
 
 
 

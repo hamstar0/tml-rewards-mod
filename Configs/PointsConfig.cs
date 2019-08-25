@@ -36,13 +36,13 @@ namespace Rewards.Configs {
 		public float FrostMoonWaveReward = 10f;
 
 
-		public IDictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
+		public Dictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
 
-		public IDictionary<NPCDefinition, int> NpcRewardTogetherSets = new Dictionary<NPCDefinition, int>();
+		public Dictionary<NPCDefinition, int> NpcRewardTogetherSets = new Dictionary<NPCDefinition, int>();
 
-		public ISet<NPCDefinition> NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
+		public HashSet<NPCDefinition> NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
 
-		public IDictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
+		public Dictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
 		//public bool NpcRewardPrediction = true;
 
