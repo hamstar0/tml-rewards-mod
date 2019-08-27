@@ -60,6 +60,17 @@ namespace Rewards.Configs {
 
 		////////////////
 
+		public override ModConfig Clone() {
+			var clone = (RewardsSettingsConfig)base.Clone();
+
+			clone.PointsDisplayColorRGB = (byte[])this.PointsDisplayColorRGB.Clone();
+
+			return clone;
+		}
+
+
+		////////////////
+
 		public void Reset() {
 			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
 			this.PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };

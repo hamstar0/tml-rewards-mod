@@ -110,9 +110,13 @@ namespace Rewards.Items {
 		public bool RequirementsMet() {
 			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
 
+			if( this.NeededBossKill == null ) {
+				return true;
+			}
 			if( myworld.Logic.WorldData.GetKillsOfNpc( this.NeededBossKill.Type ) > 0 ) {
 				return true;
 			}
+
 			return false;
 		}
 	}

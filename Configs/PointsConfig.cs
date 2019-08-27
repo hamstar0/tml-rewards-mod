@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Terraria.ModLoader.Config;
 
 
@@ -45,6 +46,22 @@ namespace Rewards.Configs {
 		public Dictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
 		//public bool NpcRewardPrediction = true;
+
+
+
+		////////////////
+
+		public override ModConfig Clone() {
+			var clone = (RewardsPointsConfig)base.Clone();
+
+			clone.NpcRewards = this.NpcRewards.ToDictionary( kv => kv.Key, kv => kv.Value );
+			clone.NpcRewardTogetherSets = this.NpcRewardTogetherSets.ToDictionary( kv=>kv.Key, kv=>kv.Value );
+			clone.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>( this.NpcRewardRequiredAsBoss );
+			clone.NpcRewardNotGivenAfterNpcKilled = this.NpcRewardNotGivenAfterNpcKilled
+				.ToDictionary( kv => kv.Key, kv => kv.Value );
+
+			return clone;
+		}
 
 
 		////////////////

@@ -40,6 +40,17 @@ namespace Rewards.Configs {
 
 		////////////////
 
+		public override ModConfig Clone() {
+			var clone = (RewardsShopConfig)base.Clone();
+
+			clone.ShopLoadout = new List<ShopPackDefinition>( this.ShopLoadout );
+
+			return clone;
+		}
+
+
+		////////////////
+
 		public void Reset() {
 			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
 			this.ShopLoadout = new List<ShopPackDefinition>();
