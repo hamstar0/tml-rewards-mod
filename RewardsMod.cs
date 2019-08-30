@@ -50,10 +50,6 @@ namespace Rewards {
 			}
 		}
 
-		////
-
-		internal bool RecentlyUpdatedConfig = false;
-
 
 
 		////////////////
