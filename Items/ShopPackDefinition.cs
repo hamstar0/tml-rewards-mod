@@ -10,7 +10,7 @@ using Terraria.ModLoader.Config;
 namespace Rewards.Items {
 	public class ShopPackDefinition {
 		public static Item[] OpenPack( Player player, ShopPackDefinition packDef ) {
-			Item[] packItems = new Item[ packDef.Items.Length ];
+			Item[] packItems = new Item[ packDef.Items.Count ];
 			int i = 0;
 
 			foreach( ShopPackItemDefinition itemInfo in packDef.Items ) {
@@ -58,16 +58,16 @@ namespace Rewards.Items {
 
 		////////////////
 
-		public NPCDefinition NeededBossKill { get; private set; }
-		public string Name { get; private set; }
-		public int Price { get; private set; }
-		public ShopPackItemDefinition[] Items { get; private set; }
+		public NPCDefinition NeededBossKill { get; set; }
+		public string Name { get; set; }
+		public int Price { get; set; }
+		public List<ShopPackItemDefinition> Items { get; set; }
 
 
 
 		////////////////
 
-		public ShopPackDefinition( NPCDefinition neededBoss, string name, int price, ShopPackItemDefinition[] items ) {
+		public ShopPackDefinition( NPCDefinition neededBoss, string name, int price, List<ShopPackItemDefinition> items ) {
 			this.NeededBossKill = neededBoss;
 			this.Name = name;
 			this.Price = price;
@@ -81,7 +81,7 @@ namespace Rewards.Items {
 				error = "bad name";
 				return false;
 			}
-			if( this.Items.Length == 0 ) {
+			if( this.Items.Count == 0 ) {
 				error = "no items";
 				return false;
 			}
@@ -96,11 +96,14 @@ namespace Rewards.Items {
 		}
 
 		public bool IsSameAs( ShopPackDefinition def ) {
+			int count = this.Items.Count;
+
 			if( !def.Name.Equals(this.Name) ) { return false; }
 			if( def.Price != this.Price ) { return false; }
 			if( def.NeededBossKill != this.NeededBossKill ) { return false; }
-			if( def.Items.Length != this.Items.Length ) { return false; }
-			for( int i=0; i<this.Items.Length; i++ ) {
+			if( def.Items.Count != count ) { return false; }
+
+			for( int i=0; i<count; i++ ) {
 				if( this.Items[i].IsSameAs( def.Items[i] ) ) { return false; }
 			}
 			return true;

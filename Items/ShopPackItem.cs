@@ -74,7 +74,8 @@ namespace Rewards.Items {
 			var itemSetTip = new TooltipLine( this.mod, "Items", "Items included:" );
 			tooltips.Add( itemSetTip );
 
-			for( int i=0; i< info.Items.Length; i++ ) {
+			int count = info.Items.Count;
+			for( int i=0; i<count; i++ ) {
 				Color rareColor = Color.Gray;
 				Item item = new Item();
 				item.SetDefaults( info.Items[i].ItemDef.Type );
@@ -169,7 +170,8 @@ namespace Rewards.Items {
 			string _;
 			if( !info.Validate(out _) ) { return -1; }
 
-			for( int i = 0; i < info.Items.Length; i++ ) {
+			int count = info.Items.Count;
+			for( int i = 0; i < count; i++ ) {
 				ShopPackItemDefinition itemInfo = info.Items[i];
 				int bagItemType = itemInfo.ItemDef.Type;
 
