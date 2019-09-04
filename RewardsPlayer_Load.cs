@@ -30,14 +30,8 @@ namespace Rewards {
 
 			this.IsFullySynced = false;
 			this.HasKillData = false;
-			this.HasModSettings = false;
-			this.HasPointsSettings = false;
-			this.HasShopSettings = false;
 
 			this.FinishLocalKillDataSync();
-			this.FinishLocalModSettingsSync();
-			this.FinishLocalPointsSettingsSync();
-			this.FinishLocalShopSettingsSync();
 		}
 
 		private void OnConnectCurrentClient() {
@@ -53,9 +47,6 @@ namespace Rewards {
 
 			this.IsFullySynced = false;
 			this.HasKillData = false;
-			this.HasModSettings = false;
-			this.HasPointsSettings = false;
-			this.HasShopSettings = false;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
@@ -79,9 +70,6 @@ namespace Rewards {
 			}
 
 			this.HasKillData = true;
-			this.HasModSettings = true;
-			this.HasShopSettings = true;
-			this.HasPointsSettings = true;
 		}
 		
 
@@ -95,34 +83,10 @@ namespace Rewards {
 			this.AttemptFinishLocalSync();
 		}
 
-		public void FinishLocalModSettingsSync() {
-			this.HasModSettings = true;
-			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert();
-			}
-			this.AttemptFinishLocalSync();
-		}
-
-		public void FinishLocalShopSettingsSync() {
-			this.HasShopSettings = true;
-			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert();
-			}
-			this.AttemptFinishLocalSync();
-		}
-
-		public void FinishLocalPointsSettingsSync() {
-			this.HasPointsSettings = true;
-			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert();
-			}
-			this.AttemptFinishLocalSync();
-		}
-
 		////////////////
 
 		private void AttemptFinishLocalSync() {
-			if( !this.HasModSettings || !this.HasKillData || !this.HasShopSettings || !this.HasPointsSettings ) { return; }
+			if( !this.HasKillData ) { return; }
 
 			if( this.IsFullySynced ) { return; }
 			this.IsFullySynced = true;

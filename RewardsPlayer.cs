@@ -11,9 +11,6 @@ namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
 		public bool IsFullySynced { get; private set; }
 		public bool HasKillData { get; private set; }
-		public bool HasModSettings { get; private set; }
-		public bool HasShopSettings { get; private set; }
-		public bool HasPointsSettings { get; private set; }
 
 		////////////////
 
@@ -26,18 +23,12 @@ namespace Rewards {
 		public override void Initialize() {
 			this.IsFullySynced = false;
 			this.HasKillData = false;
-			this.HasModSettings = false;
-			this.HasShopSettings = false;
-			this.HasPointsSettings = false;
 		}
 
 		public override void clientClone( ModPlayer clientClone ) {
 			var myclone = (RewardsPlayer)clientClone;
 			myclone.IsFullySynced = this.IsFullySynced;
 			myclone.HasKillData = this.HasKillData;
-			myclone.HasModSettings = this.HasModSettings;
-			myclone.HasShopSettings = this.HasShopSettings;
-			myclone.HasPointsSettings = this.HasPointsSettings;
 		}
 
 
@@ -89,8 +80,7 @@ namespace Rewards {
 				if( !this.IsFullySynced ) {
 					Main.NewText( "Cannot open pack: An error occurred synchronizing with the server.", Color.Red );
 					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server. "
-							+"(HasKillData:"+this.HasKillData+", HasModSettings:"+this.HasModSettings
-							+", HasPointsSettings:"+this.HasPointsSettings+", HasShopSettings:"+this.HasShopSettings+")" );
+							+"(HasKillData:"+this.HasKillData+")" );
 
 					ItemHelpers.DestroyItem( item );
 					this.player.inventory[i] = new Item();

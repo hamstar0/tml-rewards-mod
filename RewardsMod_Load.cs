@@ -28,8 +28,7 @@ namespace Rewards {
 				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
 
 				return "  IsFullySynced: " + myplayer.IsFullySynced
-					+ ", HasKillData: " + myplayer.HasKillData
-					+ ", HasModSettings: " + myplayer.HasModSettings;
+					+ ", HasKillData: " + myplayer.HasKillData;
 			} );
 		}
 
