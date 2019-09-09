@@ -67,6 +67,8 @@ namespace Rewards.Items {
 
 		////////////////
 
+		public ShopPackDefinition() { }
+
 		public ShopPackDefinition( NPCDefinition neededBoss, string name, int price, List<ShopPackItemDefinition> items ) {
 			this.NeededBossKill = neededBoss;
 			this.Name = name;

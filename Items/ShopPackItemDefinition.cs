@@ -13,6 +13,8 @@ namespace Rewards.Items {
 
 		////////////////
 
+		public ShopPackItemDefinition() { }
+
 		public ShopPackItemDefinition( ItemDefinition itemDef, int stack, bool? crimsonOnly = null ) {
 			this.ItemDef = itemDef;
 			this.Stack = stack;
