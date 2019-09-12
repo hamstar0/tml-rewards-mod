@@ -61,13 +61,27 @@ namespace Rewards.Items {
 		public NPCDefinition NeededBossKill { get; set; }
 		public string Name { get; set; }
 		public int Price { get; set; }
-		public List<ShopPackItemDefinition> Items { get; set; }
+		public List<ShopPackItemDefinition> Items { get; set; } = new List<ShopPackItemDefinition>();
 
 
 
 		////////////////
 
 		public ShopPackDefinition() { }
+
+		internal ShopPackDefinition( ShopPackDefinition clone ) {
+			var itemList = new List<ShopPackItemDefinition>();
+			foreach( ShopPackItemDefinition packItemDef in clone.Items ) {
+				itemList.Add( new ShopPackItemDefinition( packItemDef ) );
+			}
+
+			this.NeededBossKill = clone.NeededBossKill != null ?
+				new NPCDefinition( clone.NeededBossKill.mod, clone.NeededBossKill.name ) :
+				null;
+			this.Name = clone.Name;
+			this.Price = clone.Price;
+			this.Items = itemList;
+		}
 
 		public ShopPackDefinition( NPCDefinition neededBoss, string name, int price, List<ShopPackItemDefinition> items ) {
 			this.NeededBossKill = neededBoss;
@@ -118,7 +132,7 @@ namespace Rewards.Items {
 			if( this.NeededBossKill == null ) {
 				return true;
 			}
-			if( myworld.Logic.WorldData.GetKillsOfNpc( this.NeededBossKill.Type ) > 0 ) {
+			if( myworld.Logic.WorldData.GetKillsOfNpc(this.NeededBossKill.Type) > 0 ) {
 				return true;
 			}
 

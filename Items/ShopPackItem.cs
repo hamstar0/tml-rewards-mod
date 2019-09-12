@@ -5,10 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Rewards.Logic;
 using Rewards.NetProtocols;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Items {
@@ -33,6 +35,18 @@ namespace Rewards.Items {
 		internal ShopPackDefinition Info = null;
 
 
+
+		////////////////
+
+		public ShopPackItem() { }
+
+		internal ShopPackItem( ShopPackItem clone ) {
+			this.Info = clone.Info != null ?
+				new ShopPackDefinition( clone.Info ) :
+				null;
+		}
+
+
 		////////////////
 
 		public bool IsClone( Item item ) {
@@ -46,7 +60,7 @@ namespace Rewards.Items {
 		
 		public override ModItem Clone() {
 			var clone = (ShopPackItem)base.Clone();
-			clone.Info = this.Info;
+			clone.Info = new ShopPackDefinition( this.Info );
 			return clone;
 		}
 
@@ -68,41 +82,62 @@ namespace Rewards.Items {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			if( this.Info == null ) { return; }
 
-			tooltips.RemoveRange( 1, tooltips.Count - 1 );
-
 			var info = (ShopPackDefinition)this.Info;
 			var itemSetTip = new TooltipLine( this.mod, "Items", "Items included:" );
-			tooltips.Add( itemSetTip );
 
-			int count = info.Items.Count;
-			for( int i=0; i<count; i++ ) {
-				Color rareColor = Color.Gray;
-				Item item = new Item();
-				item.SetDefaults( info.Items[i].ItemDef.Type );
+			try {
+				tooltips.RemoveRange( 1, tooltips.Count - 1 );
+				tooltips.Add( itemSetTip );
 
-				var itemTip = new TooltipLine( this.mod, "Item "+i, "  "+ info.Items[i].Stack + " " + info.Items[i].ItemDef );
+				int count = info.Items.Count;
+				for( int i = 0; i < count; i++ ) {
+					ShopPackItemDefinition packItemDef = info.Items[i];
+					if( packItemDef == null ) {
+						LogHelpers.WarnOnce( "Invalid pack item for " + this.DisplayName + " at " + i );
+						continue;
+					}
 
-				if( ItemRarityAttributeHelpers.RarityColor.TryGetValue( item.rare, out rareColor ) ) {
-					itemTip.overrideColor = rareColor;
+					ItemDefinition itemDef = packItemDef.ItemDef;
+					if( itemDef == null || itemDef.Type == 0 ) {
+						LogHelpers.WarnOnce( "Undefined pack item for " + this.DisplayName + " at " + i );
+						continue;
+					}
+
+					Item item = new Item();
+					item.SetDefaults( itemDef.Type, true );
+					item.stack = packItemDef.Stack;
+
+					var itemTip = new TooltipLine( this.mod, "Item " + i, "  " + item.HoverName );
+
+					Color rarityColor;
+					if( ItemRarityAttributeHelpers.RarityColor.TryGetValue( item.rare, out rarityColor ) ) {
+						itemTip.overrideColor = rarityColor;
+					}
+
+					tooltips.Add( itemTip );
 				}
-
-				tooltips.Add( itemTip );
+			} catch( Exception e ) {
+				LogHelpers.WarnOnce( "!!1 " + e.ToString() );
 			}
+			
+			try {
+				Color tipColor = info.Price <= 10 ?
+					Colors.CoinCopper :
+					( info.Price < 100 ?
+						Colors.CoinSilver :
+						( info.Price < 1000 ?
+							Colors.CoinGold :
+							Colors.CoinPlatinum ) );
+				var ppTip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
+					overrideColor = tipColor
+				};
+				tooltips.Add( ppTip );
 
-			Color tipColor = info.Price <= 10 ?
-				Colors.CoinCopper :
-				( info.Price < 100 ?
-					Colors.CoinSilver :
-					( info.Price < 1000 ?
-						Colors.CoinGold :
-						Colors.CoinPlatinum ) );
-			var ppTip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
-				overrideColor = tipColor
-			};
-			tooltips.Add( ppTip );
-
-			var instructTip = new TooltipLine( this.mod, "Items", "Click to purchase" );
-			tooltips.Add( instructTip );
+				var instructTip = new TooltipLine( this.mod, "Items", "Click to purchase" );
+				tooltips.Add( instructTip );
+			} catch( Exception e ) {
+				LogHelpers.WarnOnce( "!!2 " + e.ToString() );
+			}
 		}
 
 
@@ -166,21 +201,26 @@ namespace Rewards.Items {
 		public int GetItemTypeOfIcon() {
 			if( this.Info == null ) { return -1; }
 
-			var info = (ShopPackDefinition)this.Info;
-			string _;
-			if( !info.Validate(out _) ) { return -1; }
+			try {
+				var info = (ShopPackDefinition)this.Info;
+				string _;
+				if( !info.Validate( out _ ) ) { return -1; }
 
-			int count = info.Items.Count;
-			for( int i = 0; i < count; i++ ) {
-				ShopPackItemDefinition itemInfo = info.Items[i];
-				int bagItemType = itemInfo.ItemDef.Type;
+				int count = info.Items.Count;
+				for( int i = 0; i < count; i++ ) {
+					ShopPackItemDefinition itemInfo = info.Items[i];
+					int bagItemType = itemInfo.ItemDef?.Type ?? 0;
 
-				if( bagItemType <= 0 ) { continue; }
-				if( bagItemType >= Main.itemTexture.Length ) { continue; }
-				if( Main.itemTexture[ bagItemType ] == null ) { continue; }
+					if( bagItemType <= 0 ) { continue; }
+					if( bagItemType >= Main.itemTexture.Length ) { continue; }
+					if( Main.itemTexture[bagItemType] == null ) { continue; }
 
-				return bagItemType;
+					return bagItemType;
+				}
+			} catch( Exception e ) {
+				LogHelpers.WarnOnce( "!!3 " + e.ToString() );
 			}
+
 			return -1;
 		}
 
