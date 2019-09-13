@@ -71,8 +71,13 @@ namespace Rewards.Items {
 
 		internal ShopPackDefinition( ShopPackDefinition clone ) {
 			var itemList = new List<ShopPackItemDefinition>();
-			foreach( ShopPackItemDefinition packItemDef in clone.Items ) {
-				itemList.Add( new ShopPackItemDefinition( packItemDef ) );
+
+			if( clone.Items == null ) {
+				LogHelpers.WarnOnce( "No pack item definitions present for pack "+clone.Name );
+			} else {
+				foreach( ShopPackItemDefinition packItemDef in clone.Items ) {
+					itemList.Add( new ShopPackItemDefinition( packItemDef ) );
+				}
 			}
 
 			this.NeededBossKill = clone.NeededBossKill != null ?

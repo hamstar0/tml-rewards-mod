@@ -60,7 +60,9 @@ namespace Rewards.Items {
 		
 		public override ModItem Clone() {
 			var clone = (ShopPackItem)base.Clone();
-			clone.Info = new ShopPackDefinition( this.Info );
+			clone.Info = this.Info == null ?
+				new ShopPackDefinition( this.Info ) :
+				null;
 			return clone;
 		}
 
