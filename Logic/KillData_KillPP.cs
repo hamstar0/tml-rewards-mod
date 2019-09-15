@@ -66,19 +66,19 @@ namespace Rewards.Logic {
 			return points;
 		}
 
-		private float CalculateNpcKillReward( NPC npc, ref bool isGrind, ref bool isExpired ) {
+		private int CalculateNpcKillReward( NPC npc, ref bool isGrind, ref bool isExpired ) {
 			var mymod = RewardsMod.Instance;
 			var npcDef = new NPCDefinition( npc.type );
-			float points = 0;
+			int points = 0;
 			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
 			bool canReward = !needsBoss || ( needsBoss && npc.boss );
 
 			isGrind = false;
 			isExpired = false;
 			
-			if( mymod.PointsConfig.NpcRewards.ContainsKey( npcDef ) ) {
+			if( mymod.PointsConfig.NpcRewardsOnKill.ContainsKey( npcDef ) ) {
 				if( canReward ) {
-					points = mymod.PointsConfig.NpcRewards[npcDef];
+					points = mymod.PointsConfig.NpcRewardsOnKill[ npcDef ].PP;
 				}
 			}
 			

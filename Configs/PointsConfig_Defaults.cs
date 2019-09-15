@@ -11,28 +11,28 @@ namespace Rewards.Configs {
 			var golemDef = new NPCDefinition( NPCID.Golem );
 			var moonlordDef = new NPCDefinition( NPCID.MoonLordCore );  //NPCID.MoonLordHead?
 
-			this.NpcRewards = new Dictionary<NPCDefinition, float> {
-				{ new NPCDefinition( NPCID.KingSlime ), 10f },
-				{ new NPCDefinition( NPCID.EyeofCthulhu ), 10f },
-				{ new NPCDefinition( NPCID.EaterofWorldsHead ), 25f },
-				{ new NPCDefinition( NPCID.BrainofCthulhu ), 25f },
-				{ new NPCDefinition( NPCID.QueenBee ), 20f },
-				{ new NPCDefinition( NPCID.SkeletronHead ), 30f },
-				{ new NPCDefinition( NPCID.WallofFlesh ), 50f },
-				{ new NPCDefinition( NPCID.TheDestroyer ), 50f },
-				{ new NPCDefinition( NPCID.Retinazer ), 50f / 2 },
-				{ new NPCDefinition( NPCID.Spazmatism ), 50f / 2 },
-				{ new NPCDefinition( NPCID.SkeletronPrime ), 50f },
-				{ new NPCDefinition( NPCID.Plantera ), 100f },
-				{ new NPCDefinition( NPCID.Golem ), 100f },
-				{ new NPCDefinition( NPCID.DukeFishron ), 100f },
-				{ new NPCDefinition( NPCID.CultistBoss ), 50f },
-				{ new NPCDefinition( NPCID.DD2Betsy ), 100f },
-				{ new NPCDefinition( NPCID.LunarTowerSolar ), 35f },
-				{ new NPCDefinition( NPCID.LunarTowerVortex ), 35f },
-				{ new NPCDefinition( NPCID.LunarTowerNebula ), 35f },
-				{ new NPCDefinition( NPCID.LunarTowerStardust ), 35f },
-				{ moonlordDef, 250f }
+			this.NpcRewardsOnKill = new Dictionary<NPCDefinition, NPCKillRewardValue> {
+				{ new NPCDefinition( NPCID.KingSlime ), new NPCKillRewardValue(10) },
+				{ new NPCDefinition( NPCID.EyeofCthulhu ), new NPCKillRewardValue(10) },
+				{ new NPCDefinition( NPCID.EaterofWorldsHead ), new NPCKillRewardValue(25) },
+				{ new NPCDefinition( NPCID.BrainofCthulhu ), new NPCKillRewardValue(25) },
+				{ new NPCDefinition( NPCID.QueenBee ), new NPCKillRewardValue(20) },
+				{ new NPCDefinition( NPCID.SkeletronHead ), new NPCKillRewardValue(30) },
+				{ new NPCDefinition( NPCID.WallofFlesh ), new NPCKillRewardValue(50) },
+				{ new NPCDefinition( NPCID.TheDestroyer ), new NPCKillRewardValue(50) },
+				{ new NPCDefinition( NPCID.Retinazer ), new NPCKillRewardValue(50 / 2) },
+				{ new NPCDefinition( NPCID.Spazmatism ), new NPCKillRewardValue(50 / 2) },
+				{ new NPCDefinition( NPCID.SkeletronPrime ), new NPCKillRewardValue(50) },
+				{ new NPCDefinition( NPCID.Plantera ), new NPCKillRewardValue(100) },
+				{ new NPCDefinition( NPCID.Golem ), new NPCKillRewardValue(100) },
+				{ new NPCDefinition( NPCID.DukeFishron ), new NPCKillRewardValue(100) },
+				{ new NPCDefinition( NPCID.CultistBoss ), new NPCKillRewardValue(50) },
+				{ new NPCDefinition( NPCID.DD2Betsy ), new NPCKillRewardValue(100) },
+				{ new NPCDefinition( NPCID.LunarTowerSolar ), new NPCKillRewardValue(35) },
+				{ new NPCDefinition( NPCID.LunarTowerVortex ), new NPCKillRewardValue(35) },
+				{ new NPCDefinition( NPCID.LunarTowerNebula ), new NPCKillRewardValue(35) },
+				{ new NPCDefinition( NPCID.LunarTowerStardust ), new NPCKillRewardValue(35) },
+				{ moonlordDef, new NPCKillRewardValue(250) }
 			};
 
 			this.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition> {

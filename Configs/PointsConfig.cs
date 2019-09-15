@@ -8,6 +8,20 @@ using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Configs {
+	public class NPCKillRewardValue {
+		[Range( 0f, 99999f )]
+		public int PP;
+
+
+		public NPCKillRewardValue() { }
+		public NPCKillRewardValue( int pp ) {
+			this.PP = pp;
+		}
+	}
+
+
+
+
 	public partial class RewardsPointsConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
@@ -52,7 +66,7 @@ namespace Rewards.Configs {
 
 
 		[Label( "PP awarded from kills of the given NPCs" )]
-		public Dictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
+		public Dictionary<NPCDefinition, NPCKillRewardValue> NpcRewardsOnKill = new Dictionary<NPCDefinition, NPCKillRewardValue>();
 
 		[Label( "NPCs required as bosses (npc.boss=true) to get PP awards" )]
 		public HashSet<NPCDefinition> NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
@@ -64,12 +78,18 @@ namespace Rewards.Configs {
 
 
 
+		[Header("OLD SETTINGS; DO NOT USE")]
+		[Label( "(Obsolete) PP awarded from kills of the given NPCs" )]
+		public Dictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
+
+
+
 		////////////////
 
 		public override ModConfig Clone() {
 			var clone = (RewardsPointsConfig)base.Clone();
 
-			clone.NpcRewards = this.NpcRewards.ToDictionary( kv => kv.Key, kv => kv.Value );
+			clone.NpcRewardsOnKill = this.NpcRewardsOnKill.ToDictionary( kv => kv.Key, kv => kv.Value );
 			clone.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>( this.NpcRewardRequiredAsBoss );
 			clone.NpcRewardNotGivenAfterNpcKilled = this.NpcRewardNotGivenAfterNpcKilled
 				.ToDictionary( kv => kv.Key, kv => kv.Value );
@@ -82,7 +102,7 @@ namespace Rewards.Configs {
 
 		public void Reset() {
 			JsonConvert.PopulateObject( "{}", this, ConfigManager.serializerSettings );
-			this.NpcRewards = new Dictionary<NPCDefinition, float>();
+			this.NpcRewardsOnKill = new Dictionary<NPCDefinition, NPCKillRewardValue>();
 			this.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
 			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
