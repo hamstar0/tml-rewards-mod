@@ -2,6 +2,7 @@
 using HamstarHelpers.Helpers.NPCs;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 
@@ -9,7 +10,7 @@ namespace Rewards.Logic {
 	partial class KillData {
 		public float CalculateKillReward( NPC npc, out bool isGrind, out bool isExpired ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			isGrind = false;
 			isExpired = false;
 

@@ -6,7 +6,7 @@ namespace Rewards.NPCs {
 	partial class WayfarerTownNPC : ModNPC {
 		public static bool CanWayfarerSpawn() {
 			var mymod = RewardsMod.Instance;
-			int npcType = mymod.NPCType<WayfarerTownNPC>();
+			int npcType = ModContent.NPCType<WayfarerTownNPC>();
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {
 				NPC thatNpc = Main.npc[i];
@@ -26,7 +26,7 @@ namespace Rewards.NPCs {
 		public override bool CanTownNPCSpawn( int numTownNpcs, int money ) {
 			if( numTownNpcs == 0 ) { return true; }
 			
-			int npcType = this.mod.NPCType<WayfarerTownNPC>();
+			int npcType = ModContent.NPCType<WayfarerTownNPC>();
 			int countedTownNpcs = 0;
 
 			for( int i = 0; i < Main.npc.Length; i++ ) {

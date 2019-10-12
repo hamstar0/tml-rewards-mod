@@ -4,7 +4,7 @@ using HamstarHelpers.Helpers.Debug;
 using Rewards.Items;
 using Rewards.Logic;
 using Terraria;
-
+using Terraria.ModLoader;
 
 namespace Rewards.NetProtocols {
 	class PackPurchaseProtocol : PacketProtocolSentToEither {
@@ -43,7 +43,7 @@ namespace Rewards.NetProtocols {
 
 		private void ReceiveMe( Player player ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {

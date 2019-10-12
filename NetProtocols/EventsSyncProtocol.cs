@@ -4,6 +4,7 @@ using HamstarHelpers.Helpers.NPCs;
 using System;
 using System.Linq;
 using Terraria;
+using Terraria.ModLoader;
 
 
 namespace Rewards.NetProtocols {
@@ -27,7 +28,7 @@ namespace Rewards.NetProtocols {
 
 		protected override void InitializeServerSendData( int toWho ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 
 			this.Events = myworld.Logic.CurrentEvents
 				.Select( e => (int)e )
@@ -37,7 +38,7 @@ namespace Rewards.NetProtocols {
 
 		protected override void Receive() {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			var eventsFlags = (VanillaEventFlag)this.Events.Sum();
 
 			Main.invasionSizeStart = this.InvasionSizeStart;

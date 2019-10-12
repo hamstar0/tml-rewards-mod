@@ -70,7 +70,7 @@ namespace Rewards {
 		public override void PreUpdate() {
 			if( Main.myPlayer != this.player.whoAmI ) { return; }
 
-			int packType = this.mod.ItemType<ShopPackItem>();
+			int packType = ModContent.ItemType<ShopPackItem>();
 
 			for( int i = 0; i < this.player.inventory.Length; i++ ) {
 				Item item = this.player.inventory[i];

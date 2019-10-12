@@ -7,10 +7,12 @@ using Terraria.ModLoader.Config;
 namespace Rewards.Items {
 	public class ShopPackItemDefinition {
 		public ItemDefinition ItemDef { get; set; }
+
 		[Label("Item stack size")]
 		[Range(1, 9999)]
 		[DefaultValue(1)]
 		public int Stack { get; set; }
+
 		public bool? CrimsonWorldOnly { get; set; }
 
 

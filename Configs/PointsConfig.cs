@@ -1,4 +1,5 @@
-﻿using HamstarHelpers.Helpers.TModLoader.Configs;
+﻿using HamstarHelpers.Classes.UI.ModConfig;
+using HamstarHelpers.Helpers.TModLoader.Configs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using Terraria.ModLoader.Config;
 
 namespace Rewards.Configs {
 	public class NPCKillRewardValue {
-		[Range( 0f, 99999f )]
+		[Range( 0, 99999 )]
 		public int PP;
 
 
@@ -31,37 +32,44 @@ namespace Rewards.Configs {
 		[Label("PP multiplier for subsequent kills (anti-grinding measure)")]
 		[Range(0f, 100f)]
 		[DefaultValue( 0.1f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float GrindKillMultiplier = 0.1f;
 
 
 		[Label("PP awarded from a goblin invasion")]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 15f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float GoblinInvasionReward = 15f;
 
 		[Label( "PP awarded from a frost legion invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 15f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float FrostLegionInvasionReward = 15f;
 
 		[Label( "PP awarded from a pirate invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 25f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float PirateInvasionReward = 25f;
 
 		[Label( "PP awarded from a martian invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 200f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float MartianInvasionReward = 200f;
 
 		[Label( "PP awarded from a given wave of the pumpkin moon" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 10f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float PumpkingMoonWaveReward = 10f;
 
 		[Label( "PP awarded from a given wave of the frost moon" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 10f )]
+		[CustomModConfigItem( typeof( FloatInputElement ) )]
 		public float FrostMoonWaveReward = 10f;
 
 

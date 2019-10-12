@@ -3,7 +3,7 @@ using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Debug;
 using Rewards.Logic;
 using Terraria;
-using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 
@@ -43,7 +43,7 @@ namespace Rewards.NetProtocols {
 
 		protected override void ReceiveOnClient() {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
 				throw new ModHelpersException( "No player data for " + Main.LocalPlayer.name );

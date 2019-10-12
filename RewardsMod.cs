@@ -17,11 +17,11 @@ namespace Rewards {
 
 		////////////////
 
-		public RewardsSettingsConfig SettingsConfig => this.GetConfig<RewardsSettingsConfig>();
+		public RewardsSettingsConfig SettingsConfig => ModContent.GetInstance<RewardsSettingsConfig>();
 
-		public RewardsPointsConfig PointsConfig => this.GetConfig<RewardsPointsConfig>();
+		public RewardsPointsConfig PointsConfig => ModContent.GetInstance<RewardsPointsConfig>();
 
-		public RewardsShopConfig ShopConfig => this.GetConfig<RewardsShopConfig>();
+		public RewardsShopConfig ShopConfig => ModContent.GetInstance<RewardsShopConfig>();
 
 
 		////

@@ -32,7 +32,7 @@ namespace Rewards.Commands {
 				throw new UsageException( "Invalid numeric parameter." );
 			}
 			
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
 				throw new ModHelpersException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );

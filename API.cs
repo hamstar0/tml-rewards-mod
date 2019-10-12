@@ -6,6 +6,7 @@ using Rewards.NPCs;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ModLoader;
 
 
 namespace Rewards {
@@ -22,7 +23,7 @@ namespace Rewards {
 		////////////////
 
 		public static float GetPoints( Player player ) {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new ModHelpersException( "No player data for "+player.name ); }
 
@@ -31,7 +32,7 @@ namespace Rewards {
 
 		public static void AddPoints( Player player, float points ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) { throw new ModHelpersException( "No player data for " + player.name ); }
 
@@ -43,7 +44,7 @@ namespace Rewards {
 
 		public static void ResetKills( Player player ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 
 			data.ClearKills();
@@ -111,7 +112,7 @@ namespace Rewards {
 		
 		public static void SpawnWayfarer( bool ignoreClones ) {
 			var mymod = RewardsMod.Instance;
-			int wayfarerType = mymod.NPCType<WayfarerTownNPC>();
+			int wayfarerType = ModContent.NPCType<WayfarerTownNPC>();
 			bool isSpawned = false;
 
 			for( int i=0; i<Main.npc.Length; i++ ) {
@@ -123,7 +124,7 @@ namespace Rewards {
 			}
 
 			if( !isSpawned || ignoreClones ) {
-				NPCTownHelpers.Spawn( mymod.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+				NPCTownHelpers.Spawn( ModContent.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 			}
 		}
 	}

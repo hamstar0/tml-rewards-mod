@@ -1,5 +1,6 @@
 ﻿using HamstarHelpers.Helpers.Debug;
 using Terraria;
+using Terraria.ModLoader;
 
 
 namespace Rewards.Logic {
@@ -8,7 +9,7 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
 
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 
 			bool toAll = KillData.CanReceiveOtherPlayerKillRewards();
 

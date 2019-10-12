@@ -126,7 +126,7 @@ namespace Rewards {
 
 		private void OnFinishPlayerEnterWorldForHost( out bool isSynced ) {
 			var mymod = (RewardsMod)this.mod;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			bool success = false;
 			
 			string playerUid = PlayerIdentityHelpers.GetUniqueId( this.player );
@@ -165,7 +165,7 @@ namespace Rewards {
 
 		public void SaveKillData() {
 			var mymod = (RewardsMod)this.mod;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			string uid = PlayerIdentityHelpers.GetUniqueId( this.player );
 
 			KillData plrData = myworld.Logic.GetPlayerData( this.player );

@@ -17,7 +17,7 @@ namespace Rewards.Items {
 	public class ShopPackItem : ModItem {
 		public static Item CreateItem( ShopPackDefinition packInfo ) {
 			Item item = new Item();
-			item.SetDefaults( RewardsMod.Instance.ItemType<ShopPackItem>() );
+			item.SetDefaults( ModContent.ItemType<ShopPackItem>() );
 			item.SetNameOverride( packInfo.Name );
 
 			var myitem = (ShopPackItem)item.modItem;
@@ -241,7 +241,7 @@ namespace Rewards.Items {
 			var info = (ShopPackDefinition)this.Info;
 			int price = info.Price;
 
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 			if( data == null ) {
 				output = "No player data for " + player.name;

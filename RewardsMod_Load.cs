@@ -12,7 +12,7 @@ namespace Rewards {
 		public override void Load() {
 			LoadHooks.AddPostWorldUnloadEachHook( () => {
 				try {
-					var myworld = this.GetModWorld<RewardsWorld>();
+					var myworld = ModContent.GetInstance<RewardsWorld>();
 					myworld.Logic = null;
 				} catch { }
 			} );

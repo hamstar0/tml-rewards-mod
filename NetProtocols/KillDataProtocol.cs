@@ -3,6 +3,7 @@ using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.TModLoader;
 using Rewards.Logic;
 using Terraria;
+using Terraria.ModLoader;
 
 
 namespace Rewards.NetProtocols {
@@ -34,7 +35,7 @@ namespace Rewards.NetProtocols {
 			}
 
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 
 			var plrKillData = myworld.Logic.GetPlayerData( player );
 			if( plrKillData == null ) {
@@ -69,7 +70,7 @@ namespace Rewards.NetProtocols {
 
 		protected override void ReceiveReply() {
 			var mymod = RewardsMod.Instance;
-			var myworld = mymod.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, mymod, "RewardsPlayer" );
 
 			KillData plrData = myworld.Logic.GetPlayerData( Main.LocalPlayer );

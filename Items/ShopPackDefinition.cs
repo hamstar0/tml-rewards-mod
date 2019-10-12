@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 
@@ -59,8 +60,12 @@ namespace Rewards.Items {
 		////////////////
 
 		public NPCDefinition NeededBossKill { get; set; }
+
 		public string Name { get; set; }
+
+		[Range( 0, 10000 )]
 		public int Price { get; set; }
+
 		public List<ShopPackItemDefinition> Items { get; set; } = new List<ShopPackItemDefinition>();
 
 
@@ -132,7 +137,7 @@ namespace Rewards.Items {
 
 		
 		public bool RequirementsMet() {
-			var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsWorld>();
 
 			if( this.NeededBossKill == null ) {
 				return true;

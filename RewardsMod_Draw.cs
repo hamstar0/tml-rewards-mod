@@ -17,7 +17,7 @@ namespace Rewards {
 					if( !LoadHelpers.IsWorldSafelyBeingPlayed() ) { return true; }
 
 					try {
-						var myworld = RewardsMod.Instance.GetModWorld<RewardsWorld>();
+						var myworld = ModContent.GetInstance<RewardsWorld>();
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 
 						if( data == null ) {
