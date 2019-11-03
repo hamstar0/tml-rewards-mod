@@ -60,12 +60,12 @@ namespace Rewards.Configs {
 
 		[Label( "Share NPC kill PP awards with everyone on the server" )]
 		[DefaultValue( true )]
-		[ReloadRequired]
+		//[ReloadRequired]
 		public bool SharedRewards { get; set; } = true;
 
 
 		[Label( "Spawn the Wayfarere town NPC on game start" )]
-		[ReloadRequired]
+		//[ReloadRequired]
 		public bool InstantWayfarer { get; set; } = false;
 
 
