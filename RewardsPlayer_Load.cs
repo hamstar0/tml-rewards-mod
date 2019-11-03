@@ -25,7 +25,7 @@ namespace Rewards {
 
 		////////////////
 
-		private void OnConnectSingle() {
+		internal void OnConnectSingle() {
 			var mymod = (RewardsMod)this.mod;
 
 			this.IsFullySynced = false;
@@ -34,7 +34,7 @@ namespace Rewards {
 			this.FinishLocalKillDataSync();
 		}
 
-		private void OnConnectCurrentClient() {
+		internal void OnConnectCurrentClient() {
 			if( this.player == null ) {
 				LogHelpers.Warn( "Player null" );
 			}

@@ -15,60 +15,62 @@ namespace Rewards.Configs {
 		////
 
 		[Label( "Debug mode for general information output (mainly to log)" )]
-		public bool DebugModeInfo = false;
+		public bool DebugModeInfo { get; set; } = false;
 
 		[Label( "Debug mode for information on PP earnings and spendings" )]
 		[DefaultValue( true )]
-		public bool DebugModePPInfo = true; // Defaults true
+		public bool DebugModePPInfo { get; set; } = true; // Defaults true
 
 		[Label( "Debug mode for information on NPC kills and PP awards" )]
-		public bool DebugModeKillInfo = false;
+		public bool DebugModeKillInfo { get; set; } = false;
 
 		[Label( "Debug mode to enable cheats" )]
-		public bool DebugModeEnableCheats = false;
+		public bool DebugModeEnableCheats { get; set; } = false;
 
 		[Label( "Debug mode to save kill data into a non-binary (json) file" )]
-		public bool DebugModeSaveKillsAsJson = false;
+		public bool DebugModeSaveKillsAsJson { get; set; } = false;
 
 
 		[Label( "Show PP on screen" )]
 		[DefaultValue( true )]
-		public bool ShowPoints = true;
+		public bool ShowPoints { get; set; } = true;
 
 
 		[Label( "Show PP awards with NPC kills" )]
 		[DefaultValue( true )]
-		public bool ShowPointsPopups = true;
+		public bool ShowPointsPopups { get; set; } = true;
 
 
 		[Label( "Force PP display on screen even when inventory closed" )]
-		public bool PointsDisplayWithoutInventory = false;
+		public bool PointsDisplayWithoutInventory { get; set; } = false;
 
 		[Label( "Screen X coordinate for PP display" )]
 		[Range( -2048, 2048 )]
 		[DefaultValue( 448 )]
-		public int PointsDisplayX = 448;
+		public int PointsDisplayX { get; set; } = 448;
 
 		[Label( "Screen Y coordinate for PP display" )]
 		[Range( -2048, 2048 )]
 		[DefaultValue( 1 )]
-		public int PointsDisplayY = 1;
+		public int PointsDisplayY { get; set; } = 1;
 
 		[Label( "Color of PP display" )]
-		public byte[] PointsDisplayColorRGB = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
+		public byte[] PointsDisplayColorRGB { get; set; } = new byte[] { Color.YellowGreen.R, Color.YellowGreen.G, Color.YellowGreen.B };
 
 
 		[Label( "Share NPC kill PP awards with everyone on the server" )]
 		[DefaultValue( true )]
-		public bool SharedRewards = true;
+		[ReloadRequired]
+		public bool SharedRewards { get; set; } = true;
 
 
 		[Label( "Spawn the Wayfarere town NPC on game start" )]
-		public bool InstantWayfarer = false;
+		[ReloadRequired]
+		public bool InstantWayfarer { get; set; } = false;
 
 
 		[DefaultValue( true )]
-		public bool UseUpdatedWorldFileNameConvention = true;
+		public bool UseUpdatedWorldFileNameConventionv { get; set; } = true;
 
 
 

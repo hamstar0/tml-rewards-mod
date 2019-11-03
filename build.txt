@@ -1,6 +1,6 @@
 author = hamstar
-version = 2.2.3
+version = 2.2.4
 displayName = Rewards
-modReferences = HamstarHelpers@5.2.0
+modReferences = HamstarHelpers@5.3.1
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 homepage = https://forums.terraria.org/index.php?threads/rewards-receive-non-transferable-spendable-points-for-game-progress.65384/

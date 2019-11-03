@@ -1,6 +1,5 @@
 ﻿using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Items;
-using HamstarHelpers.Services.Messages.Inbox;
 using Microsoft.Xna.Framework;
 using Rewards.Items;
 using Terraria;
@@ -42,26 +41,6 @@ namespace Rewards {
 					this.OnConnectServer( Main.player[fromWho] );
 				}
 			}
-		}
-
-		public override void OnEnterWorld( Player player ) {
-			if( player.whoAmI != Main.myPlayer ) { return; }
-			if( this.player.whoAmI != Main.myPlayer ) { return; }
-
-			if( Main.netMode == 0 ) {
-				this.OnConnectSingle();
-			}
-			if( Main.netMode == 1 ) {
-				this.OnConnectCurrentClient();
-			}
-
-			InboxMessages.SetMessage( "RewardsModConfigUpdate",
-				"Rewards config files updated to use ModConfig (tML v0.11+). The old config files "+
-				"(Rewards Config.json, Rewards Points Config.json, Rewards Shop Config.json) are now obsolete. "+
-				"If any mod settings have been changed from their defaults in the past, you'll need to import them "+
-				"manually (preferably via. the menu's Mod Configuration).",
-				false
-			);
 		}
 
 

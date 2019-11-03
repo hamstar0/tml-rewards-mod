@@ -35,7 +35,8 @@ namespace Rewards.Configs {
 		////
 
 		[Label( "Wayfarer's shop loadout" )]
-		public List<ShopPackDefinition> ShopLoadout = new List<ShopPackDefinition>();
+		[ReloadRequired]
+		public List<ShopPackDefinition> ShopLoadout { get; set; } = new List<ShopPackDefinition>();
 
 
 

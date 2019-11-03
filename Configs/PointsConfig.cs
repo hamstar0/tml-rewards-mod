@@ -16,7 +16,7 @@ namespace Rewards.Configs {
 
 	public class NPCKillRewardValue {
 		[Range( 0, 99999 )]
-		public int PP;
+		public int PP { get; set; }
 
 
 		public NPCKillRewardValue() { }
@@ -34,58 +34,58 @@ namespace Rewards.Configs {
 
 		////
 		
-		[Label("PP multiplier for subsequent kills (anti-grinding measure)")]
-		[Range(0f, 100f)]
+		[Label( "PP multiplier for subsequent kills (anti-grinding measure)" )]
+		[Range( 0f, 100f )]
 		[DefaultValue( 0.1f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float GrindKillMultiplier = 0.1f;
+		public float GrindKillMultiplier { get; set; } = 0.1f;
 
 
 		[Label("PP awarded from a goblin invasion")]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 15f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float GoblinInvasionReward = 15f;
+		public float GoblinInvasionReward { get; set; } = 15f;
 
 		[Label( "PP awarded from a frost legion invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 15f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float FrostLegionInvasionReward = 15f;
+		public float FrostLegionInvasionReward { get; set; } = 15f;
 
 		[Label( "PP awarded from a pirate invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 25f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float PirateInvasionReward = 25f;
+		public float PirateInvasionReward { get; set; } = 25f;
 
 		[Label( "PP awarded from a martian invasion" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 200f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float MartianInvasionReward = 200f;
+		public float MartianInvasionReward { get; set; } = 200f;
 
 		[Label( "PP awarded from a given wave of the pumpkin moon" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 10f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float PumpkingMoonWaveReward = 10f;
+		public float PumpkingMoonWaveReward { get; set; } = 10f;
 
 		[Label( "PP awarded from a given wave of the frost moon" )]
 		[Range( 0f, 1000f )]
 		[DefaultValue( 10f )]
 		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
-		public float FrostMoonWaveReward = 10f;
+		public float FrostMoonWaveReward { get; set; } = 10f;
 
 
 		[Label( "PP awarded from kills of the given NPCs" )]
-		public Dictionary<NPCDefinition, NPCKillRewardValue> NpcRewardsOnKill = new Dictionary<NPCDefinition, NPCKillRewardValue>();
+		public Dictionary<NPCDefinition, NPCKillRewardValue> NpcRewardsOnKill { get; set; } = new Dictionary<NPCDefinition, NPCKillRewardValue>();
 
 		[Label( "NPCs required as bosses (npc.boss=true) to get PP awards" )]
-		public HashSet<NPCDefinition> NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
+		public HashSet<NPCDefinition> NpcRewardRequiredAsBoss { get; set; } = new HashSet<NPCDefinition>();
 
 		[Label( "NPC kill that blocks another NPC kill from awarding PP" )]
-		public Dictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
+		public Dictionary<NPCDefinition, NPCDefinition> NpcRewardNotGivenAfterNpcKilled { get; set; } = new Dictionary<NPCDefinition, NPCDefinition>();
 
 		//public bool NpcRewardPrediction = true;
 
@@ -93,7 +93,7 @@ namespace Rewards.Configs {
 
 		[Header("OLD SETTINGS; DO NOT USE")]
 		[Label( "(Obsolete) PP awarded from kills of the given NPCs" )]
-		public Dictionary<NPCDefinition, float> NpcRewards = new Dictionary<NPCDefinition, float>();
+		public Dictionary<NPCDefinition, float> NpcRewards { get; set; } = new Dictionary<NPCDefinition, float>();
 
 
 
