@@ -70,7 +70,7 @@ namespace Rewards.Configs {
 
 
 		[DefaultValue( true )]
-		public bool UseUpdatedWorldFileNameConventionv { get; set; } = true;
+		public bool UseUpdatedWorldFileNameConvention { get; set; } = true;
 
 
 
