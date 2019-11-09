@@ -19,17 +19,20 @@ namespace Rewards.Commands {
 		public override void Action( CommandCaller caller, string input, string[] args ) {
 			var mymod = (RewardsMod)this.mod;
 			if( !mymod.SettingsConfig.DebugModeEnableCheats ) {
-				throw new UsageException( "Cheat mode not enabled." );
+				caller.Reply( "Cheat mode not enabled.", Color.Yellow );
+				return;
 			}
 
 			if( args.Length < 1 ) {
-				throw new UsageException( "Insufficient arguments." );
+				caller.Reply( "Insufficient arguments.", Color.Red );
+				return;
 			}
 
 			float reward;
 
 			if( !float.TryParse( args[0], out reward ) ) {
-				throw new UsageException( "Invalid numeric parameter." );
+				caller.Reply( "Invalid numeric parameter.", Color.Red );
+				return;
 			}
 			
 			var myworld = ModContent.GetInstance<RewardsWorld>();

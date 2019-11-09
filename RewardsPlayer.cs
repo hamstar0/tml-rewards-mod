@@ -9,7 +9,6 @@ using Terraria.ModLoader;
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
 		public bool IsFullySynced { get; private set; }
-		public bool HasKillData { get; private set; }
 
 		////////////////
 
@@ -21,13 +20,11 @@ namespace Rewards {
 
 		public override void Initialize() {
 			this.IsFullySynced = false;
-			this.HasKillData = false;
 		}
 
 		public override void clientClone( ModPlayer clientClone ) {
 			var myclone = (RewardsPlayer)clientClone;
 			myclone.IsFullySynced = this.IsFullySynced;
-			myclone.HasKillData = this.HasKillData;
 		}
 
 
@@ -58,8 +55,7 @@ namespace Rewards {
 
 				if( !this.IsFullySynced ) {
 					Main.NewText( "Cannot open pack: An error occurred synchronizing with the server.", Color.Red );
-					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server. "
-							+"(HasKillData:"+this.HasKillData+")" );
+					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server." );
 
 					ItemHelpers.DestroyItem( item );
 					this.player.inventory[i] = new Item();
@@ -91,7 +87,7 @@ namespace Rewards {
 			}
 
 			string output;
-
+			
 			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
 				LogHelpers.Warn( output );
 			} else {

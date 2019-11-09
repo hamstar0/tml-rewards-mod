@@ -126,11 +126,11 @@ namespace Rewards.Items {
 
 			if( !def.Name.Equals(this.Name) ) { return false; }
 			if( def.Price != this.Price ) { return false; }
-			if( def.NeededBossKill != this.NeededBossKill ) { return false; }
+			if( !def.NeededBossKill?.Equals(this.NeededBossKill) ?? this.NeededBossKill != null ) { return false; }
 			if( def.Items.Count != count ) { return false; }
-
+			
 			for( int i=0; i<count; i++ ) {
-				if( this.Items[i].IsSameAs( def.Items[i] ) ) { return false; }
+				if( !this.Items[i].IsSameAs( def.Items[i] ) ) { return false; }
 			}
 			return true;
 		}

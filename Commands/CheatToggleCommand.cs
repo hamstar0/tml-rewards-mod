@@ -33,7 +33,9 @@ namespace Rewards.Commands {
 				caller.Reply( "Cheat mode on.", Color.LimeGreen );
 			}
 
-			ConfigHelpers.SyncConfig( mymod.SettingsConfig );
+			if( Main.netMode != 0 ) {
+				ConfigHelpers.SyncConfig( mymod.SettingsConfig );
+			}
 		}
 	}
 }

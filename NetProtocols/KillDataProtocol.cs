@@ -75,7 +75,10 @@ namespace Rewards.NetProtocols {
 
 			KillData plrData = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			KillData wldData = myworld.Logic.WorldData;
-			if( plrData == null || wldData == null ) { return; }
+			if( plrData == null || wldData == null ) {
+				LogHelpers.Alert( "Could not process reply. "+(plrData==null)+", "+(wldData==null) );
+				return;
+			}
 
 			wldData.ResetAll( Main.LocalPlayer );
 			wldData.AddToMe( this.WorldData );

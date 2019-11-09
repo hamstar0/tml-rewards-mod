@@ -26,10 +26,7 @@ namespace Rewards {
 		////////////////
 
 		internal void OnConnectSingle() {
-			var mymod = (RewardsMod)this.mod;
-
 			this.IsFullySynced = false;
-			this.HasKillData = false;
 
 			this.FinishLocalKillDataSync();
 		}
@@ -46,7 +43,6 @@ namespace Rewards {
 			}
 
 			this.IsFullySynced = false;
-			this.HasKillData = false;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
@@ -69,14 +65,14 @@ namespace Rewards {
 				LogHelpers.Warn( "Player " + player.name + " (" + player.whoAmI + ") does not match our ModPlayer.player" );
 			}
 
-			this.HasKillData = true;
+			this.IsFullySynced = true;
 		}
 		
 
 		////////////////
 
 		public void FinishLocalKillDataSync() {
-			this.HasKillData = true;
+			this.IsFullySynced = true;
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
 				LogHelpers.Alert();
 			}
@@ -86,8 +82,6 @@ namespace Rewards {
 		////////////////
 
 		private void AttemptFinishLocalSync() {
-			if( !this.HasKillData ) { return; }
-
 			if( this.IsFullySynced ) { return; }
 			this.IsFullySynced = true;
 

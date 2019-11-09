@@ -50,8 +50,7 @@ namespace Rewards.Items {
 
 		public bool IsSameAs( ShopPackItemDefinition itemDef ) {
 			if( this.ItemDef == null ) { return false; }
-			if( this.ItemDef.name == itemDef.ItemDef?.name ) { return false; }
-			if( this.ItemDef.mod == itemDef.ItemDef?.mod ) { return false; }
+			if( !this.ItemDef.Equals(itemDef.ItemDef) ) { return false; }
 			if( this.Stack != itemDef.Stack ) { return false; }
 			if( this.CrimsonWorldOnly != itemDef.CrimsonWorldOnly ) { return false; }
 			return true;

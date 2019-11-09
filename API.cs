@@ -11,17 +11,6 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	public static partial class RewardsAPI {
-		public static void SuppressConfigAutoSavingOn() {
-			RewardsMod.Instance.MemoryOnlyConfig = true;
-		}
-
-		public static void SuppressConfigAutoSavingOff() {
-			RewardsMod.Instance.MemoryOnlyConfig = false;
-		}
-
-
-		////////////////
-
 		public static float GetPoints( Player player ) {
 			var myworld = ModContent.GetInstance<RewardsWorld>();
 			KillData data = myworld.Logic.GetPlayerData( player );
