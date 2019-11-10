@@ -86,7 +86,7 @@ namespace Rewards.NetProtocols {
 			plrData.ResetAll( Main.LocalPlayer );
 			plrData.AddToMe( this.PlayerData, Main.LocalPlayer );
 
-			myplayer.FinishLocalKillDataSync();
+			myplayer.FinishLocalSync();
 		}
 	}
 }

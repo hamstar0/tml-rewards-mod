@@ -36,14 +36,14 @@ namespace Rewards.NetProtocols {
 		protected override void Receive( int fromWho ) {
 			Player player = Main.player[ fromWho ];
 			if( player == null || !player.active ) {
-				throw new ModHelpersException( "Player id " + fromWho + " invalid?" );
+				throw new ModHelpersException( "Could not save. Player id " + fromWho + " invalid?" );
 			}
 
 			var mymod = RewardsMod.Instance;
 			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
 
 			if( PlayerIdentityHelpers.GetUniqueId(player) != this.Uid ) {
-				throw new ModHelpersException( "Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
+				throw new ModHelpersException( "Could not save. Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
 			}
 
 			myplayer.SaveKillData();

@@ -28,7 +28,7 @@ namespace Rewards {
 		internal void OnConnectSingle() {
 			this.IsFullySynced = false;
 
-			this.FinishLocalKillDataSync();
+			this.FinishLocalSync();
 		}
 
 		internal void OnConnectCurrentClient() {
@@ -71,17 +71,7 @@ namespace Rewards {
 
 		////////////////
 
-		public void FinishLocalKillDataSync() {
-			this.IsFullySynced = true;
-			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert();
-			}
-			this.AttemptFinishLocalSync();
-		}
-
-		////////////////
-
-		private void AttemptFinishLocalSync() {
+		internal void FinishLocalSync() {
 			if( this.IsFullySynced ) { return; }
 			this.IsFullySynced = true;
 

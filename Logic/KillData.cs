@@ -108,6 +108,8 @@ namespace Rewards.Logic {
 				if( mymod.SettingsConfig.DebugModePPInfo ) {
 					LogHelpers.Alert( "PP set: "+this.ProgressPoints+" (for "+(forPlayer?.name??"world")+")" );
 				}
+			} else {
+				LogHelpers.Alert( "Could not load player's NPC kill (and PP) data. New player?" );
 			}
 
 			return success;
