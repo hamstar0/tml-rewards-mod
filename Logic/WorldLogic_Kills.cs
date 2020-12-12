@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace Rewards.Logic {
 	partial class WorldLogic {
 		public void AddKillReward_Host( NPC npc ) {
-			if( npc.lastInteraction < 0 && npc.lastInteraction >= Main.player.Length ) { return; }
+			if( npc.lastInteraction < 0 || npc.lastInteraction >= Main.player.Length ) { return; }
 
 			var mymod = RewardsMod.Instance;
 			var myworld = ModContent.GetInstance<RewardsWorld>();
