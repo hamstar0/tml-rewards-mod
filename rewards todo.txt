@@ -1,0 +1,91 @@
+Future
+-	Add MeritMode (points are split; requires jopo's mod)?
+-	Set DD2 invasion to give PP
+
+
+v3.0
+-	Implement wayfarer wandering (as setting; defaults true)
+-	Set shop to always have at least 2 free slots
+-	Implement item trading for PP
+-	Implement generic boss kill rewards
+-	Import Rewards configs for Calamity, Thorium, etc.
+-	Separate npc configs into another file
+
+v1.5.0
+-	Remove end game grinding of early game bosses
+-	Fix invasion repeat PP not scaling
+v1.4.7.1
+-	Reset config if shop loadout is empty
+-	Fix shop sync with server(?)
+v1.4.7
+-	Test empty shop error with progression runthrough
+-	Fix moon lord kill detection
+-	Fix LoadKillData runtime error
+v1.4
+-	Add config option to spawn Wayfarer at world start
+-	Fix modded items failing
+-	No weapon sound for hard mode Wayfarer
+-	Improve error reporting for invalid config files
+v1.3
+-	F&T
+	-	Only send kill packets when reward kills occur
+-	@Test single and MP
+-	@Fix HH assembly checking for PacketProtocols: foreach( var mod in ModLoader.LoadedMods )
+-	Add syncing of npc kills for new players
+-	Implement pagination for shop
+-	Upgrade net protocols
+-	Implement per-player rewards for kills
+	-	Implement kill sharing (if set)
+	-	Save kills per player with a server-side file
+v1.2
+-	Add string fields to use to check pack availability (instead of a buttload of bools)
+-	Add server-side kill tracking
+-	Improved alerts for PP gain
+v1.1
+-	Add commands for editing shop item
+-	Fix npc weapon; prehardmode and hardmode
+-	Add API method for adding shop packs
+-	Set API to work with Mod.Call
+v1
+-	Create icon
+-	Revise loadout
+-	Detect invasion kills
+-	Implement API
+-	Add npc dialog
+-	Restrict rewards to 1st occurrence only
+-	Implement 'Pack' items (non-resellable, openable)
+	-	@Test
+	-	Implement opening
+	-	Implement shop rendering
+	-	Define item
+-	@Test point accruing
+-	Wayfarer NPC
+	-	Create sprite
+	-	Define shop
+	-	Define npc
+-	Progress Points (PP)
+	-	Implement event point sources
+		-	Invasion completions
+		-	Invasion npc deaths
+		-	Boss npc deaths
+	-	Implement points display
+	-	Implement points store
+-	Setup config
+-	Create project
+
+
+
+@Shop items
+-	5 coins - 99 Iron Bars
+-	10 coins - 99 Gold Coins
+-	 15 coins - 99 Demonite/Crimtane Bars
+-	25 coins - 99 Shadow Orbs/Tissue Samples
+-	50 coins - 99 Hellstone Bars
+-	25 coins - Traveler's Pack - Spectre Boots, Ivy Whip, Obsidian Horseshoe
+-	 25 coins - Autonomous Worker Unit - See below
+-	75 coins - Jungle Key
+-	50 coins - Clentaminator, 999 Green Solution
+-	 35 coins - The Holy Handgrenade of Antioch - Deals 10k damage to a single target
+-	100 coins - Cultist's Pack - 1 of each event summon item (including moons)
+-	150 coins - Godslayer's Pack - 99 Chlorophyte Bars, 99 Ectoplasm, Turtle armor
+-	35 coins - Time Capsule - Saves 1 item between world changes. Reusable.
