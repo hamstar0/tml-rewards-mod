@@ -1,10 +1,38 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using ModLibsCore.Services.Network.SimplePacket;
+using NetSerializer;
 using Terraria;
 using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Items {
-	public class ShopPackItemDefinition {
+	public sealed class ShopPackItemDefinitionSerializer : IPacketSerialzer<ShopPackItemDefinition> {
+		IEnumerable<Type> ITypeSerializer.GetSubtypes( Type type ) {
+			yield return typeof(int);
+			yield return typeof(bool?);
+			yield return typeof(string);
+		}
+
+		public void Serialize( Serializer serializer, Stream stream, ShopPackItemDefinition obj ) {
+			serializer.Serialize( stream, obj.ItemDef.ToString() );
+			serializer.Serialize( stream, obj.Stack );
+			serializer.Serialize( stream, obj.CrimsonWorldOnly );
+		}
+
+		public void Deserialize( Serializer serializer, Stream stream, out ShopPackItemDefinition obj ) {
+			obj = new(
+				ItemDefinition.FromString( (string)serializer.Deserialize( stream ) ),
+				(int)serializer.Deserialize( stream ),
+				(bool?)serializer.Deserialize( stream )
+			);
+		}
+	}
+
+	[Serializable]
+	public sealed class ShopPackItemDefinition {
 		public ItemDefinition ItemDef { get; set; }
 
 		[Label("Item stack size")]

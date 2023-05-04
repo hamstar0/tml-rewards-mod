@@ -1,6 +1,7 @@
 ﻿using ModLibsCore.Libraries.Debug;
 using ModLibsGeneral.Libraries.Misc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +9,7 @@ using Terraria;
 
 
 namespace Rewards.Logic {
+	[Serializable]
 	partial class KillData {
 		public IDictionary<int, int> KilledNpcs = new ConcurrentDictionary<int, int>();
 		public int GoblinsConquered = 0;

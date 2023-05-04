@@ -27,6 +27,11 @@ namespace Rewards {
 			myclone.IsFullySynced = this.IsFullySynced;
 		}
 
+		// Don't remove.
+		public override void SendClientChanges( ModPlayer clientPlayer ) {
+			
+		}
+
 
 		////////////////
 
