@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Items;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Items;
 using Rewards.Items;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,7 +12,7 @@ namespace Rewards {
 
 		////////////////
 
-		public override bool CloneNewInstances => false;
+		protected override bool CloneNewInstances => false;
 
 
 
@@ -30,11 +30,38 @@ namespace Rewards {
 
 		////////////////
 
+		public override void OnEnterWorld( Player player ) {
+			if( player.whoAmI != Main.myPlayer ) {
+				return;
+			}
+
+			var myplayer = player.GetModPlayer<RewardsPlayer>();
+
+			if( Main.netMode == 0 ) {
+				myplayer.OnConnectSingle();
+			}
+			if( Main.netMode == 1 ) {
+				myplayer.OnConnectCurrentClient();
+			}
+
+			/*
+			InboxMessages.SetMessage( "RewardsModConfigUpdate",
+				"Rewards config files updated to use ModConfig (tML v0.11+). The old config files "+
+				"(Rewards Config.json, Rewards Points Config.json, Rewards Shop Config.json) are now obsolete. "+
+				"If any mod settings have been changed from their defaults in the past, you'll need to import them "+
+				"manually (preferably via. the menu's Mod Configuration).",
+				false
+			);
+			*/
+		}
+
+		////////////////
+
 		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 
 			if( Main.netMode == 2 ) {
-				if( toWho == -1 && fromWho == this.player.whoAmI ) {
+				if( toWho == -1 && fromWho == this.Player.whoAmI ) {
 					this.OnConnectServer( Main.player[fromWho] );
 				}
 			}
@@ -44,21 +71,21 @@ namespace Rewards {
 		////////////////
 
 		public override void PreUpdate() {
-			if( Main.myPlayer != this.player.whoAmI ) { return; }
+			if( Main.myPlayer != this.Player.whoAmI ) { return; }
 
 			int packType = ModContent.ItemType<ShopPackItem>();
 
-			for( int i = 0; i < this.player.inventory.Length; i++ ) {
-				Item item = this.player.inventory[i];
+			for( int i = 0; i < this.Player.inventory.Length; i++ ) {
+				Item item = this.Player.inventory[i];
 				if( item == null || !item.active ) { continue; }
 				if( item.type != packType ) { continue; }
 
 				if( !this.IsFullySynced ) {
 					Main.NewText( "Cannot open pack: An error occurred synchronizing with the server.", Color.Red );
-					LogHelpers.Alert( "Cannot open pack: An error occurred synchronizing with the server." );
+					LogLibraries.Alert( "Cannot open pack: An error occurred synchronizing with the server." );
 
-					ItemHelpers.DestroyItem( item );
-					this.player.inventory[i] = new Item();
+					ItemLibraries.DestroyItem( item );
+					this.Player.inventory[i] = new Item();
 				} else {
 					this.OpenPack( item );
 				}
@@ -67,9 +94,9 @@ namespace Rewards {
 			}
 
 			if( Main.mouseItem.active ) {
-				var myitem = Main.mouseItem.modItem as ShopPackItem;
+				var myitem = Main.mouseItem.ModItem as ShopPackItem;
 				if( myitem != null && myitem.Info == null ) {
-					ItemHelpers.DestroyItem( Main.mouseItem );
+					ItemLibraries.DestroyItem( Main.mouseItem );
 				}
 			}
 		}
@@ -78,26 +105,26 @@ namespace Rewards {
 		////////////////
 
 		public void OpenPack( Item packItem ) {
-			var mymod = (RewardsMod)this.mod;
-			var myitem = packItem.modItem as ShopPackItem;
+			var mymod = (RewardsMod)this.Mod;
+			var myitem = packItem.ModItem as ShopPackItem;
 			if( myitem == null) {
-				LogHelpers.Warn( "Pack item " + packItem.Name + " missing mod data" );
-				ItemHelpers.DestroyItem( packItem );
+				LogLibraries.Warn( "Pack item " + packItem.Name + " missing mod data" );
+				ItemLibraries.DestroyItem( packItem );
 				return;
 			}
 
 			string output;
 			
-			if( !myitem.BuyAndOpenPack_Synced( this.player, out output ) ) {
-				LogHelpers.Warn( output );
+			if( !myitem.BuyAndOpenPack_Synced( this.Player, out output ) ) {
+				LogLibraries.Warn( output );
 			} else {
 				if( mymod.SettingsConfig.DebugModeInfo ) {
-					LogHelpers.Alert( output );
+					LogLibraries.Alert( output );
 				}
 			}
 
 			if( myitem.IsClone( Main.mouseItem ) ) {
-				ItemHelpers.DestroyItem( Main.mouseItem );
+				ItemLibraries.DestroyItem( Main.mouseItem );
 				Main.mouseItem = new Item();
 			}
 		}

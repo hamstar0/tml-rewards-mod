@@ -1,20 +1,14 @@
-﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.NPCs;
-using System;
+﻿using System;
 using System.Linq;
+using ModLibsCore.Services.Network.SimplePacket;
+using ModLibsGeneral.Libraries.NPCs;
 using Terraria;
 using Terraria.ModLoader;
 
 
 namespace Rewards.NetProtocols {
-	class EventsSyncProtocol : PacketProtocolSendToClient {
-		public static void QuickSend() {
-			PacketProtocolSendToClient.QuickSend<EventsSyncProtocol>( -1, -1 );
-		}
-
-
-
+	[Serializable]
+	class EventsSyncProtocol : SimplePacketPayload {
 		////////////////
 
 		public int[] Events;
@@ -24,11 +18,9 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		private EventsSyncProtocol() { }
-
-		protected override void InitializeServerSendData( int toWho ) {
+		public EventsSyncProtocol() {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 
 			this.Events = myworld.Logic.CurrentEvents
 				.Select( e => (int)e )
@@ -36,15 +28,19 @@ namespace Rewards.NetProtocols {
 			this.InvasionSizeStart = Main.invasionSizeStart;
 		}
 
-		protected override void Receive() {
+		public override void ReceiveOnClient() {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			var eventsFlags = (VanillaEventFlag)this.Events.Sum();
 
 			Main.invasionSizeStart = this.InvasionSizeStart;
 
 			myworld.Logic.UpdateForEventChangesAndEndings( eventsFlags );
 			myworld.Logic.UpdateForEventsBeginnings( eventsFlags );
+		}
+
+		public override void ReceiveOnServer( int fromWho ) {
+			
 		}
 	}
 }

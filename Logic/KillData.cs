@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Misc;
+﻿using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Misc;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,7 +45,7 @@ namespace Rewards.Logic {
 			this.ProgressPoints = 0;
 
 			if( mymod.SettingsConfig.DebugModePPInfo ) {
-				LogHelpers.Alert( "PP reset (for " + ( forPlayer?.name ?? "world" ) + ")" );
+				LogLibraries.Alert( "PP reset (for " + ( forPlayer?.name ?? "world" ) + ")" );
 			}
 		}
 
@@ -71,7 +70,7 @@ namespace Rewards.Logic {
 			this.ProgressPoints += data.ProgressPoints;
 
 			if( mymod.SettingsConfig.DebugModePPInfo && data.ProgressPoints != 0 ) {
-				LogHelpers.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints
+				LogLibraries.Alert( "PP added: "+data.ProgressPoints + " (now "+this.ProgressPoints
 					+", for " + ( forPlayer?.name ?? "world?" ) + ")" );
 			}
 		}
@@ -86,13 +85,13 @@ namespace Rewards.Logic {
 
 			try {
 				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
-					data = ModCustomDataFileHelpers.LoadJson<KillData>( mymod, baseFileName );
+					data = ModCustomDataFileLibraries.LoadJson<KillData>( mymod, baseFileName );
 				} else {
-					data = ModCustomDataFileHelpers.LoadBinaryJson<KillData>( mymod, baseFileName );
+					data = ModCustomDataFileLibraries.LoadBinaryJson<KillData>( mymod, baseFileName );
 					success = data != null;
 				}
 			} catch( IOException e ) {
-				throw new ModHelpersException( "Failed to load file: "+ baseFileName, e );
+				throw new IOException( "Failed to load file: "+ baseFileName, e );
 			}
 
 			if( success ) {
@@ -106,10 +105,10 @@ namespace Rewards.Logic {
 				this.ProgressPoints = data.ProgressPoints;
 				
 				if( mymod.SettingsConfig.DebugModePPInfo ) {
-					LogHelpers.Alert( "PP set: "+this.ProgressPoints+" (for "+(forPlayer?.name??"world")+")" );
+					LogLibraries.Alert( "PP set: "+this.ProgressPoints+" (for "+(forPlayer?.name??"world")+")" );
 				}
 			} else {
-				LogHelpers.Alert( "Could not load player's NPC kill (and PP) data. New player?" );
+				LogLibraries.Alert( "Could not load player's NPC kill (and PP) data. New player?" );
 			}
 
 			return success;
@@ -120,12 +119,12 @@ namespace Rewards.Logic {
 
 			try {
 				if( mymod.SettingsConfig.DebugModeSaveKillsAsJson ) {
-					ModCustomDataFileHelpers.SaveAsJson( mymod, baseFileName, true, this ); // false?
+					ModCustomDataFileLibraries.SaveAsJson( mymod, baseFileName, true, this ); // false?
 				} else {
-					ModCustomDataFileHelpers.SaveAsBinaryJson( mymod, baseFileName, true, this );	// false?
+					ModCustomDataFileLibraries.SaveAsBinaryJson( mymod, baseFileName, true, this );	// false?
 				}
 			} catch( IOException e ) {
-				throw new ModHelpersException( "Failed to save file: "+ baseFileName, e );
+				throw new IOException( "Failed to save file: "+ baseFileName, e );
 			}
 		}
 

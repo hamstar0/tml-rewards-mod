@@ -1,6 +1,4 @@
-﻿using HamstarHelpers.Classes.Errors;
-using System;
-using Terraria;
+﻿using Terraria;
 
 
 namespace Rewards {

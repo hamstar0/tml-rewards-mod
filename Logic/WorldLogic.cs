@@ -1,15 +1,13 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.DotNET;
-using HamstarHelpers.Helpers.Players;
-using HamstarHelpers.Helpers.NPCs;
-using HamstarHelpers.Helpers.World;
-using Rewards.NPCs;
+﻿using Rewards.NPCs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader.IO;
-using HamstarHelpers.Helpers.TModLoader;
 using Terraria.ModLoader;
-
+using ModLibsGeneral.Libraries.NPCs;
+using ModLibsCore.Libraries.DotNET;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Players;
+using ModLibsCore.Libraries.World;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {
@@ -33,14 +31,14 @@ namespace Rewards.Logic {
 		////////////////
 
 		public WorldLogic() {
-			var flags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+			var flags = NPCInvasionLibraries.GetCurrentEventTypeSet();
 
 			/*this.CurrentEvents = new ConcurrentDictionary<VanillaEventFlag, byte>(
-				DotNetHelpers.FlagsToList<VanillaEventFlag>( (int)flags )
+				DotNetLibraries.FlagsToList<VanillaEventFlag>( (int)flags )
 					.Select( t => new KeyValuePair<VanillaEventFlag, byte>(t, 0) )
 			);*/
 			this.CurrentEvents = new HashSet<VanillaEventFlag>(
-				DotNetHelpers.FlagsToCollection<VanillaEventFlag>( (int)flags )
+				DotNetLibraries.FlagsToCollection<VanillaEventFlag>( (int)flags )
 			);
 		}
 
@@ -53,21 +51,17 @@ namespace Rewards.Logic {
 			}
 		}
 
-		public TagCompound SaveStateData() {
-			var tags = new TagCompound {
-				{ "has_checked_instant_wayfarer", this.HasCheckedInstantWayfarer }
-			};
-
-			return tags;
+		public void SaveStateData( TagCompound tags ) {
+			tags["has_checked_instant_wayfarer"] = this.HasCheckedInstantWayfarer;
 		}
 
 		////////////////
 
 		public string GetDataFileBaseName() {
 			if( RewardsMod.Instance.SettingsConfig.UseUpdatedWorldFileNameConvention ) {
-				return WorldHelpers.GetUniqueIdForCurrentWorld(true);
+				return WorldIdentityLibraries.GetUniqueIdForCurrentWorld(true);
 			} else {
-				return "World_" + FileHelpers.SanitizePath( Main.worldName ) + "_" + Main.worldID;
+				return "World_" + FileLibraries.SanitizePath( Main.worldName ) + "_" + Main.worldID;
 			}
 		}
 
@@ -77,7 +71,7 @@ namespace Rewards.Logic {
 			bool success = this.WorldData.Load( this.GetDataFileBaseName() );
 
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdForCurrentWorld(true)+", success: "+success+", "+ this.WorldData.ToString() );
+				LogLibraries.Alert( "World id: " + WorldIdentityLibraries.GetUniqueIdForCurrentWorld(true)+", success: "+success+", "+ this.WorldData.ToString() );
 			}
 		}
 
@@ -85,15 +79,16 @@ namespace Rewards.Logic {
 			var mymod = RewardsMod.Instance;
 
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Alert( "World id: " + WorldHelpers.GetUniqueIdForCurrentWorld(true)+", "+ this.WorldData.ToString() );
+				LogLibraries.Alert( "World id: " + WorldIdentityLibraries.GetUniqueIdForCurrentWorld(true)+", "+ this.WorldData.ToString() );
 			}
 			
 			for( int i = 0; i < Main.player.Length; i++ ) {
 				Player player = Main.player[i];
 				if( player == null || !player.active ) { continue; }
 
-				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
-				myplayer.SaveKillData();
+				if( player.TryGetModPlayer( out RewardsPlayer rewardsPlayer ) ) {
+					rewardsPlayer.SaveKillData();
+				}
 			}
 
 			this.WorldData.Save( this.GetDataFileBaseName() );
@@ -110,7 +105,9 @@ namespace Rewards.Logic {
 				
 				if( mymod.SettingsConfig.InstantWayfarer ) {
 					if( WayfarerTownNPC.CanWayfarerSpawn() ) {
-						NPCTownHelpers.Spawn( ModContent.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+						var source = NPC.GetSource_TownSpawn();
+
+						NPCTownLibraries.Spawn( source, ModContent.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 					}
 				}
 			}
@@ -124,7 +121,7 @@ namespace Rewards.Logic {
 		////////////////
 		
 		public KillData GetPlayerData( Player player ) {
-			string uid = PlayerIdentityHelpers.GetUniqueId( player );
+			string uid = PlayerIdentityLibraries.GetUniqueId( player );
 			if( uid == null ) {
 				return null;
 			}

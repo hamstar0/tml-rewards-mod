@@ -1,8 +1,9 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Items;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using ModLibsCore.Libraries.Debug;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -14,6 +15,8 @@ namespace Rewards.Items {
 			Item[] packItems = new Item[ packDef.Items.Count ];
 			int i = 0;
 
+			var itemSource = new EntitySource_ItemOpen ( player, ModContent.ItemType<ShopPackItem>() );
+
 			foreach( ShopPackItemDefinition itemInfo in packDef.Items ) {
 				if( !itemInfo.IsAvailable() ) { continue; }
 
@@ -21,12 +24,12 @@ namespace Rewards.Items {
 				Item newItem = new Item();
 				newItem.SetDefaults( itemType );
 
-				ItemHelpers.CreateItem( player.position, itemType, itemInfo.Stack, newItem.width, newItem.height );
+				Item.NewItem ( itemSource, player.position, itemType, itemInfo.Stack, newItem.width, newItem.height );
 
 				packItems[i++] = newItem;
 			}
 
-			Main.PlaySound( SoundID.Coins );
+			SoundEngine.PlaySound( SoundID.Coins );
 
 			return packItems;
 		}
@@ -78,7 +81,7 @@ namespace Rewards.Items {
 			var itemList = new List<ShopPackItemDefinition>();
 
 			if( clone.Items == null ) {
-				LogHelpers.WarnOnce( "No pack item definitions present for pack "+clone.Name );
+				LogLibraries.WarnOnce( "No pack item definitions present for pack "+clone.Name );
 			} else {
 				foreach( ShopPackItemDefinition packItemDef in clone.Items ) {
 					itemList.Add( new ShopPackItemDefinition( packItemDef ) );
@@ -86,7 +89,7 @@ namespace Rewards.Items {
 			}
 
 			this.NeededBossKill = clone.NeededBossKill != null ?
-				new NPCDefinition( clone.NeededBossKill.mod, clone.NeededBossKill.name ) :
+				new NPCDefinition( clone.NeededBossKill.Mod, clone.NeededBossKill.Name ) :
 				null;
 			this.Name = clone.Name;
 			this.Price = clone.Price;
@@ -137,7 +140,7 @@ namespace Rewards.Items {
 
 		
 		public bool RequirementsMet() {
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 
 			if( this.NeededBossKill == null ) {
 				return true;

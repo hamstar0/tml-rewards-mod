@@ -1,6 +1,5 @@
-﻿using HamstarHelpers.Helpers.Debug;
+﻿using ModLibsCore.Libraries.Debug;
 using Rewards.NetProtocols;
-using System;
 using Terraria;
 using Terraria.ModLoader.Config;
 
@@ -47,7 +46,7 @@ namespace Rewards.Logic {
 				string msg = "RewardKill_SyncsFromHost to: " + toPlayer.name + ", npc: " + npc.TypeName + " (" + npc.type + ")" + ", #: " + kills
 						+ ", isGrind: " + isGrind + ", reward: " + reward + ", needsBoss:" + needsBoss+" (is? "+npc.boss+")";
 				Main.NewText( msg );
-				LogHelpers.Log( " "+ msg );
+				LogLibraries.Log( " "+ msg );
 			}
 
 			float finalReward = this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );

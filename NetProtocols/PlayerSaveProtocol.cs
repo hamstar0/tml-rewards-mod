@@ -1,49 +1,42 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Players;
-using HamstarHelpers.Helpers.TModLoader;
+﻿using System;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Services.Network.SimplePacket;
+using ModLibsGeneral.Libraries.Players;
 using Terraria;
 
 
 namespace Rewards.NetProtocols {
-	class PlayerSaveProtocol : PacketProtocolSendToServer {
-		public static void QuickSend() {
-			PacketProtocolSendToServer.QuickSendToServer<PlayerSaveProtocol>();
-		}
-
-
-
-		////////////////
-
+	[Serializable]
+	class PlayerSaveProtocol : SimplePacketPayload {
 		public string Uid;  // Just in case?
 
 
 
 		////////////////
 
-		private PlayerSaveProtocol() { }
-
-		////
-
-		protected override void InitializeClientSendData() {
-			this.Uid = PlayerIdentityHelpers.GetUniqueId();
+		public PlayerSaveProtocol() {
+			this.Uid = PlayerIdentityLibraries.GetUniqueId();
 		}
-
 
 		////////////////
 
-		protected override void Receive( int fromWho ) {
+		public override void ReceiveOnClient() {
+			
+		}
+
+		public override void ReceiveOnServer( int fromWho ) {
 			Player player = Main.player[ fromWho ];
 			if( player == null || !player.active ) {
-				throw new ModHelpersException( "Could not save. Player id " + fromWho + " invalid?" );
+				LogLibraries.Warn( "Could not save. Player id " + fromWho + " invalid?" );
+				return;
 			}
 
 			var mymod = RewardsMod.Instance;
-			var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( player, mymod, "RewardsPlayer" );
+			var myplayer = player.GetModPlayer<RewardsPlayer>();
 
-			if( PlayerIdentityHelpers.GetUniqueId(player) != this.Uid ) {
-				throw new ModHelpersException( "Could not save. Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
+			if( PlayerIdentityLibraries.GetUniqueId(player) != this.Uid ) {
+				LogLibraries.Warn( "Could not save. Player UID mismatch for "+player.name+" ("+player.whoAmI+")" );
+				return;
 			}
 
 			myplayer.SaveKillData();

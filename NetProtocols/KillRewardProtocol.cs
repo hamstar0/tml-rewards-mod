@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using HamstarHelpers.Helpers.Debug;
+﻿using System;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Services.Network.SimplePacket;
 using Rewards.Logic;
 using Terraria;
 using Terraria.ModLoader;
@@ -8,17 +8,17 @@ using Terraria.ModLoader.Config;
 
 
 namespace Rewards.NetProtocols {
-	class KillRewardProtocol : PacketProtocolSentToEither {
+	[Serializable]
+	class KillRewardProtocol : SimplePacketPayload {
 		public static void SendRewardToClient( int toWho, int ignoreWho, NPC npc ) {
-			var protocol = new KillRewardProtocol( toWho, npc.type, npc.boss );
-			protocol.SendToClient( toWho, ignoreWho );
+			SimplePacket.SendToClient( new KillRewardProtocol( toWho, npc.type, npc.boss ), toWho, ignoreWho );
 		}
 
 
 
 		////////////////
 
-		public override bool IsVerbose => false;
+		//public override bool IsVerbose => false;
 		
 		////////////////
 
@@ -30,9 +30,7 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		private KillRewardProtocol() { }
-
-		private KillRewardProtocol( int killerWho, int npcType, bool isBoss ) {
+		public KillRewardProtocol( int killerWho, int npcType, bool isBoss ) {
 			this.KillerWho = killerWho;
 			this.NpcType = npcType;
 			this.IsBoss = isBoss;
@@ -41,12 +39,14 @@ namespace Rewards.NetProtocols {
 
 		////////////////
 
-		protected override void ReceiveOnClient() {
+		public override void ReceiveOnClient() {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
+
 			if( data == null ) {
-				throw new ModHelpersException( "No player data for " + Main.LocalPlayer.name );
+				LogLibraries.Warn( "No player data for " + Main.LocalPlayer.name );
+				return;
 			}
 
 			NPC npc = new NPC();
@@ -65,14 +65,14 @@ namespace Rewards.NetProtocols {
 						+ ", isGrind: " + isGrind + ", isExpired: "+isExpired+", reward: " + reward
 						+ ", needsBoss:" + needsBoss + " (is? " + npc.boss + ")";
 				Main.NewText( msg );
-				LogHelpers.Log( " " + msg );
+				LogLibraries.Log( " " + msg );
 			}
 
 			data.AddRewardForPlayer( Main.LocalPlayer, isGrind, isExpired, reward );
 		}
 
-		protected override void ReceiveOnServer( int fromWho ) {
-			throw new System.NotImplementedException();
+		public override void ReceiveOnServer( int fromWho ) {
+			
 		}
 	}
 }

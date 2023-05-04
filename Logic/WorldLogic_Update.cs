@@ -1,6 +1,7 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.DotNET;
-using HamstarHelpers.Helpers.NPCs;
+﻿using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Libraries.DotNET;
+using ModLibsCore.Services.Network.SimplePacket;
+using ModLibsGeneral.Libraries.NPCs;
 using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Rewards.Logic {
 		public void UpdateEvents() {
 			if( Main.netMode == 1 ) { return; }
 
-			VanillaEventFlag currentEventFlags = NPCInvasionHelpers.GetCurrentEventTypeSet();
+			VanillaEventFlag currentEventFlags = NPCInvasionLibraries.GetCurrentEventTypeSet();
 			bool eventsChanged = false;
 
 			eventsChanged = this.UpdateForEventChangesAndEndings( currentEventFlags );
@@ -20,7 +21,7 @@ namespace Rewards.Logic {
 
 			if( eventsChanged ) {
 				if( Main.netMode == 2 ) {
-					EventsSyncProtocol.QuickSend();
+					SimplePacket.SendToClient( new EventsSyncProtocol() );
 				}
 			}
 		}
@@ -30,7 +31,7 @@ namespace Rewards.Logic {
 
 		internal bool UpdateForEventsBeginnings( VanillaEventFlag eventFlags ) {
 			bool eventsChanged = false;
-			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetHelpers.FlagsToCollection<VanillaEventFlag>( (int)eventFlags );
+			IEnumerable<VanillaEventFlag> eventFlagSet = DotNetLibraries.FlagsToCollection<VanillaEventFlag>( (int)eventFlags );
 
 			foreach( VanillaEventFlag flag in eventFlagSet ) {
 				if( this.CurrentEvents.Contains( flag ) ) { continue; }
@@ -44,7 +45,7 @@ namespace Rewards.Logic {
 					break;
 				default:
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Event added: " + Enum.GetName( typeof( VanillaEventFlag ), flag ) );
+						LogLibraries.Alert( "Event added: " + Enum.GetName( typeof( VanillaEventFlag ), flag ) );
 					}
 					eventsChanged = true;
 
@@ -63,7 +64,7 @@ namespace Rewards.Logic {
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Goblins ) ) {
 				if( ( eventFlags & VanillaEventFlag.Goblins ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Goblin event ended." );
+						LogLibraries.Alert( "Goblin event ended." );
 					}
 					eventsChanged = true;
 
@@ -74,7 +75,7 @@ namespace Rewards.Logic {
 			if( this.CurrentEvents.Contains( VanillaEventFlag.FrostLegion ) ) {
 				if( ( eventFlags & VanillaEventFlag.FrostLegion ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Frost Legion event ended." );
+						LogLibraries.Alert( "Frost Legion event ended." );
 					}
 					eventsChanged = true;
 
@@ -85,7 +86,7 @@ namespace Rewards.Logic {
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Pirates ) ) {
 				if( ( eventFlags & VanillaEventFlag.Pirates ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Pirates event ended." );
+						LogLibraries.Alert( "Pirates event ended." );
 					}
 					eventsChanged = true;
 
@@ -96,7 +97,7 @@ namespace Rewards.Logic {
 			if( this.CurrentEvents.Contains( VanillaEventFlag.Martians ) ) {
 				if( ( eventFlags & VanillaEventFlag.Martians ) == 0 ) {
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Martians event ended." );
+						LogLibraries.Alert( "Martians event ended." );
 					}
 					eventsChanged = true;
 
@@ -111,7 +112,7 @@ namespace Rewards.Logic {
 					this.UpdatePumpkinMoonWaves();
 				} else {    // End event
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Pumpkin Moon event ended." );
+						LogLibraries.Alert( "Pumpkin Moon event ended." );
 					}
 					eventsChanged = true;
 
@@ -124,7 +125,7 @@ namespace Rewards.Logic {
 					this.UpdateFrostMoonWaves();
 				} else {    // End event
 					if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-						LogHelpers.Alert( "Frost Moon event ended." );
+						LogLibraries.Alert( "Frost Moon event ended." );
 					}
 					eventsChanged = true;
 

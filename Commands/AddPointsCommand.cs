@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Classes.Errors;
+﻿using System.IO;
 using Microsoft.Xna.Framework;
 using Rewards.Logic;
 using Terraria;
@@ -17,7 +17,7 @@ namespace Rewards.Commands {
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 			if( !mymod.SettingsConfig.DebugModeEnableCheats ) {
 				caller.Reply( "Cheat mode not enabled.", Color.Yellow );
 				return;
@@ -35,10 +35,10 @@ namespace Rewards.Commands {
 				return;
 			}
 			
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 			if( data == null ) {
-				throw new ModHelpersException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
+				throw new InvalidDataException( "Rewards - AddPointsCommand.Action() - No player data for " + Main.LocalPlayer.name );
 			}
 
 			data.AddRewardForPlayer( Main.LocalPlayer, false, false, reward );

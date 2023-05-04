@@ -1,10 +1,11 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Services.Messages.Player;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Services.Messages.Player;
 using ReLogic.Graphics;
 using System;
 using Terraria;
+using Terraria.GameContent;
 
 
 namespace Rewards.Logic {
@@ -40,14 +41,14 @@ namespace Rewards.Logic {
 			}
 
 			if( mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Log( "  AddRewardForPlayer - Player: " + player.name + " ("+player.whoAmI+ ")"
+				LogLibraries.Log( "  AddRewardForPlayer - Player: " + player.name + " ("+player.whoAmI+ ")"
 					+ ", reward: " + finalReward + ((finalReward != reward) ? (" (was " + reward + ")") : "" )
 					+ ", isGrind:" + isGrind + ", isExpired:" + isExpired
 					+ ", PP: " + this.ProgressPoints + " (was " + oldPP + ")"
 				);
 			}
 			if( mymod.SettingsConfig.DebugModePPInfo && finalReward != 0 ) {
-				LogHelpers.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints
+				LogLibraries.Alert( "PP added: " + finalReward + " (now "+this.ProgressPoints
 					+" for " + ( player?.name ?? "world" ) + ")" );
 			}
 
@@ -67,7 +68,7 @@ namespace Rewards.Logic {
 			this.ProgressPoints -= points;
 			
 			if( mymod.SettingsConfig.DebugModePPInfo && points != 0 ) {
-				LogHelpers.Alert( "PP spent: " + points + " (now "+this.ProgressPoints
+				LogLibraries.Alert( "PP spent: " + points + " (now "+this.ProgressPoints
 					+" for " + ( forPlayer.name ) + ")" );
 			}
 
@@ -102,11 +103,11 @@ namespace Rewards.Logic {
 			var color = new Color( c[0], c[1], c[2] );
 
 			//sb.DrawString( Main.fontMouseText, "PP: " + (int)this.ProgressPoints, pos, mymod.Config.PointsDisplayColor );
-			Utils.DrawBorderStringFourWay( sb, Main.fontMouseText, ppStr, pos.X, pos.Y, color, Color.Black, default( Vector2 ), 1f );
+			Utils.DrawBorderStringFourWay( sb, FontAssets.MouseText.Value, ppStr, pos.X, pos.Y, color, Color.Black, default( Vector2 ), 1f );
 
 			if( Main.mouseX >= posX && Main.mouseY >= posY && Main.mouseX < (posX + 40) && Main.mouseY < (posY + 16) ) {
 				var mousePos = new Vector2( Main.mouseX - 160, Main.mouseY + 10 );
-				sb.DrawString( Main.fontMouseText, "Progress Points (see Wayfarer)", mousePos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
+				sb.DrawString( FontAssets.MouseText.Value, "Progress Points (see Wayfarer)", mousePos, Color.White, 0f, default(Vector2), 0.75f, SpriteEffects.None, 1f );
 			}
 		}
 	}

@@ -1,5 +1,4 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Terraria;
 using Terraria.ModLoader.Config;
 
@@ -23,7 +22,7 @@ namespace Rewards.Items {
 
 		internal ShopPackItemDefinition( ShopPackItemDefinition clone ) {
 			this.ItemDef = clone.ItemDef != null ?
-				new ItemDefinition( clone.ItemDef.mod, clone.ItemDef.name ) :
+				new ItemDefinition( clone.ItemDef.Mod, clone.ItemDef.Name ) :
 				null;
 			this.Stack = clone.Stack;
 			this.CrimsonWorldOnly = clone.CrimsonWorldOnly;

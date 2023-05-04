@@ -1,7 +1,7 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Players;
-using HamstarHelpers.Services.Hooks.LoadHooks;
+﻿using System;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Services.Network.SimplePacket;
+using ModLibsGeneral.Libraries.Players;
 using Rewards.Logic;
 using Rewards.NetProtocols;
 using Terraria;
@@ -10,15 +10,19 @@ using Terraria.ModLoader;
 
 namespace Rewards {
 	partial class RewardsPlayer : ModPlayer {
+		/*
 		internal readonly static object MyValidatorKey;
 		public readonly static CustomLoadHookValidator<object> EnterWorldValidator;
+		*/
 
 
 		////////////////
 
 		static RewardsPlayer() {
+			/*
 			RewardsPlayer.MyValidatorKey = new object();
 			RewardsPlayer.EnterWorldValidator = new CustomLoadHookValidator<object>( RewardsPlayer.MyValidatorKey );
+			*/
 		}
 
 
@@ -32,37 +36,37 @@ namespace Rewards {
 		}
 
 		internal void OnConnectCurrentClient() {
-			if( this.player == null ) {
-				LogHelpers.Warn( "Player null" );
+			if( this.Player == null ) {
+				LogLibraries.Warn( "Player null" );
 			}
-			if( !this.player.active ) {
-				LogHelpers.Warn( "Player " + this.player.name + " (" + this.player.whoAmI + ") not active" );
+			if( !this.Player.active ) {
+				LogLibraries.Warn( "Player " + this.Player.name + " (" + this.Player.whoAmI + ") not active" );
 			}
-			if( Main.player[this.player.whoAmI] != this.player ) {
-				LogHelpers.Warn( "Player " + this.player.name + " (" + this.player.whoAmI + ") not found in Main array for some reason..." );
+			if( Main.player[this.Player.whoAmI] != this.Player ) {
+				LogLibraries.Warn( "Player " + this.Player.name + " (" + this.Player.whoAmI + ") not found in Main array for some reason..." );
 			}
 
 			this.IsFullySynced = false;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
+				LogLibraries.Alert( "Requesting kill data, kill point amounts, shop loadout, and mod settings from server..." );
 			}
 
-			KillDataProtocol.QuickRequest();
+			SimplePacket.SendToServer( new KillDataRequestPacket() );
 		}
 
 		private void OnConnectServer( Player player ) {
 			if( player == null ) {
-				LogHelpers.Warn( "Player null" );
+				LogLibraries.Warn( "Player null" );
 			}
 			if( !player.active ) {
-				LogHelpers.Alert( "Player "+player.name+" ("+player.whoAmI+") not active" );
+				LogLibraries.Alert( "Player "+player.name+" ("+player.whoAmI+") not active" );
 			}
 			if( Main.player[ player.whoAmI ] != player ) {
-				LogHelpers.Warn( "Player "+player.name+" ("+player.whoAmI+") not found in Main array for some reason..." );
+				LogLibraries.Warn( "Player "+player.name+" ("+player.whoAmI+") not found in Main array for some reason..." );
 			}
-			if( this.player != player ) {
-				LogHelpers.Warn( "Player " + player.name + " (" + player.whoAmI + ") does not match our ModPlayer.player" );
+			if( this.Player != player ) {
+				LogLibraries.Warn( "Player " + player.name + " (" + player.whoAmI + ") does not match our ModPlayer.player" );
 			}
 
 			this.IsFullySynced = true;
@@ -76,7 +80,7 @@ namespace Rewards {
 			this.IsFullySynced = true;
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert();
+				LogLibraries.Alert();
 			}
 
 			if( Main.netMode == 0 ) {
@@ -84,7 +88,7 @@ namespace Rewards {
 			} else if( Main.netMode == 1 ) {
 				this.OnFinishPlayerEnterWorldForClient();
 			} else {
-				throw new ModHelpersException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
+				throw new InvalidOperationException( "Servers load player data only after all other data uploaded to server (via. KillDataProtocol)." );
 			}
 		}
 
@@ -109,20 +113,20 @@ namespace Rewards {
 		////
 
 		private void OnFinishPlayerEnterWorldForHost( out bool isSynced ) {
-			var mymod = (RewardsMod)this.mod;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var mymod = (RewardsMod)this.Mod;
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			bool success = false;
 			
-			string playerUid = PlayerIdentityHelpers.GetUniqueId( this.player );
+			string playerUid = PlayerIdentityLibraries.GetUniqueId( this.Player );
 
-			KillData plrData = myworld.Logic.GetPlayerData( this.player );
+			KillData plrData = myworld.Logic.GetPlayerData( this.Player );
 			if( plrData == null ) {
-				LogHelpers.Warn( "Could not get player " + this.player.name + "'s (" + this.player.whoAmI + ") kill data." );
+				LogLibraries.Warn( "Could not get player " + this.Player.name + "'s (" + this.Player.whoAmI + ") kill data." );
 				isSynced = false;
 				return;
 			}
 			
-			success = plrData.Load( playerUid, this.player );
+			success = plrData.Load( playerUid, this.Player );
 			if( !success ) {
 				if( KillData.CanReceiveOtherPlayerKillRewards( ) ) {
 					plrData.AddToMe( myworld.Logic.WorldData );
@@ -130,38 +134,40 @@ namespace Rewards {
 			}
 
 			if( mymod.SettingsConfig.DebugModeInfo || mymod.SettingsConfig.DebugModeKillInfo ) {
-				LogHelpers.Alert( "who: " + this.player.whoAmI + " success: " + success + ", " + plrData.ToString() );
+				LogLibraries.Alert( "who: " + this.Player.whoAmI + " success: " + success + ", " + plrData.ToString() );
 			}
 
 			isSynced = success;
 		}
 
 		private void OnFinishPlayerEnterWorldForAny() {
+			/*
 			CustomLoadHooks.TriggerHook( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 
 			LoadHooks.AddWorldUnloadOnceHook( () => {
 				CustomLoadHooks.ClearHook( RewardsPlayer.EnterWorldValidator, RewardsPlayer.MyValidatorKey );
 			} );
+			*/
 		}
 
 
 		////////////////
 
 		public void SaveKillData() {
-			var mymod = (RewardsMod)this.mod;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
-			string uid = PlayerIdentityHelpers.GetUniqueId( this.player );
+			var mymod = (RewardsMod)this.Mod;
+			var myworld = ModContent.GetInstance<RewardsSystem>();
+			string uid = PlayerIdentityLibraries.GetUniqueId( this.Player );
 
-			KillData plrData = myworld.Logic.GetPlayerData( this.player );
+			KillData plrData = myworld.Logic.GetPlayerData( this.Player );
 			if( plrData == null ) {
-				LogHelpers.Warn( "Could not save player kill data; no data found." );
+				LogLibraries.Warn( "Could not save player kill data; no data found." );
 				return;
 			}
 
 			plrData.Save( uid );
 
 			if( mymod.SettingsConfig.DebugModeInfo ) {
-				LogHelpers.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
+				LogLibraries.Alert( "uid: " + uid + ", data: " + plrData.ToString() );
 			}
 		}
 	}

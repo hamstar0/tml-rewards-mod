@@ -1,6 +1,6 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.NPCs;
-using System;
+﻿using System;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.NPCs;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -10,7 +10,7 @@ namespace Rewards.Logic {
 	partial class KillData {
 		public float CalculateKillReward( NPC npc, out bool isGrind, out bool isExpired ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			isGrind = false;
 			isExpired = false;
 
@@ -36,22 +36,22 @@ namespace Rewards.Logic {
 
 			isGrind = false;
 
-			if( NPCGroupIdentityHelpers.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
+			if( NPCCommonGroupsLibraries.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.GoblinInvasionReward;
 				isGrind = this.GoblinsConquered > 0;
-			} else if( NPCGroupIdentityHelpers.VanillaFrostLegionTypes.Contains( npc.type ) ) {
+			} else if( NPCCommonGroupsLibraries.VanillaFrostLegionTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.FrostLegionInvasionReward;
 				isGrind = this.FrostLegionConquered > 0;
-			} else if( NPCGroupIdentityHelpers.VanillaPirateTypes.Contains( npc.type ) ) {
+			} else if( NPCCommonGroupsLibraries.VanillaPirateTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.PirateInvasionReward;
 				isGrind = this.PiratesConquered > 0;
-			} else if( NPCGroupIdentityHelpers.VanillaMartianTypes.Contains( npc.type ) ) {
+			} else if( NPCCommonGroupsLibraries.VanillaMartianTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.MartianInvasionReward;
 				isGrind = this.MartiansConquered > 0;
-			} else if( NPCGroupIdentityHelpers.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
+			} else if( NPCCommonGroupsLibraries.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.PumpkingMoonWaveReward;
 				isGrind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
-			} else if( NPCGroupIdentityHelpers.VanillaFrostMoonTypes.Contains( npc.type ) ) {
+			} else if( NPCCommonGroupsLibraries.VanillaFrostMoonTypes.Contains( npc.type ) ) {
 				ppAmt = mymod.PointsConfig.FrostMoonWaveReward;
 				isGrind = NPC.waveNumber < this.FrostMoonWavesConquered;
 			}
@@ -60,7 +60,7 @@ namespace Rewards.Logic {
 				points = ppAmt / (float)Main.invasionSizeStart;
 				if( Single.IsNaN(points) || points < 0 || points > ppAmt ) {
 					points = 0;
-					LogHelpers.Log( "Could not compute invasion kill reward (invasion total default reward: " + ppAmt + ", invasion size: " + Main.invasionSizeStart + ")" );
+					LogLibraries.Log( "Could not compute invasion kill reward (invasion total default reward: " + ppAmt + ", invasion size: " + Main.invasionSizeStart + ")" );
 				}
 			}
 

@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Helpers.TModLoader.Configs;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using ModLibsGeneral.Libraries.TModLoader.Configs;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -23,7 +23,7 @@ namespace Rewards.Commands {
 		////////////////
 
 		public override void Action( CommandCaller caller, string input, string[] args ) {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 
 			if( mymod.SettingsConfig.DebugModeEnableCheats ) {
 				mymod.SettingsConfig.DebugModeEnableCheats = false;
@@ -34,7 +34,7 @@ namespace Rewards.Commands {
 			}
 
 			if( Main.netMode != 0 ) {
-				ConfigHelpers.SyncConfig( mymod.SettingsConfig );
+				ConfigLibraries.SyncConfig( mymod.SettingsConfig );
 			}
 		}
 	}

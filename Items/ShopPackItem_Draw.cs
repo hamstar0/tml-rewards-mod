@@ -1,10 +1,11 @@
-﻿using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Items.Attributes;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Items.Attributes;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
@@ -16,7 +17,7 @@ namespace Rewards.Items {
 			if( this.Info == null ) { return; }
 
 			var info = (ShopPackDefinition)this.Info;
-			var itemSetTip = new TooltipLine( this.mod, "Items", "Items included:" );
+			var itemSetTip = new TooltipLine( this.Mod, "Items", "Items included:" );
 
 			try {
 				tooltips.RemoveRange( 1, tooltips.Count - 1 );
@@ -26,13 +27,13 @@ namespace Rewards.Items {
 				for( int i = 0; i < count; i++ ) {
 					ShopPackItemDefinition packItemDef = info.Items[i];
 					if( packItemDef == null ) {
-						LogHelpers.WarnOnce( "Invalid pack item for " + this.DisplayName + " at " + i );
+						LogLibraries.WarnOnce( "Invalid pack item for " + this.DisplayName + " at " + i );
 						continue;
 					}
 
 					ItemDefinition itemDef = packItemDef.ItemDef;
 					if( itemDef == null || itemDef.Type == 0 ) {
-						LogHelpers.WarnOnce( "Undefined pack item for " + this.DisplayName + " at " + i );
+						LogLibraries.WarnOnce( "Undefined pack item for " + this.DisplayName + " at " + i );
 						continue;
 					}
 
@@ -40,17 +41,17 @@ namespace Rewards.Items {
 					item.SetDefaults( itemDef.Type, true );
 					item.stack = packItemDef.Stack;
 
-					var itemTip = new TooltipLine( this.mod, "Item " + i, "  " + item.HoverName );
+					var itemTip = new TooltipLine( this.Mod, "Item " + i, "  " + item.HoverName );
 
 					Color rarityColor;
-					if( ItemRarityAttributeHelpers.RarityColor.TryGetValue( item.rare, out rarityColor ) ) {
-						itemTip.overrideColor = rarityColor;
+					if( ItemRarityAttributeLibraries.RarityColor.TryGetValue( item.rare, out rarityColor ) ) {
+						itemTip.OverrideColor = rarityColor;
 					}
 
 					tooltips.Add( itemTip );
 				}
 			} catch( Exception e ) {
-				LogHelpers.WarnOnce( "!!1 " + e.ToString() );
+				LogLibraries.WarnOnce( "!!1 " + e.ToString() );
 			}
 			
 			try {
@@ -61,15 +62,15 @@ namespace Rewards.Items {
 						( info.Price < 1000 ?
 							Colors.CoinGold :
 							Colors.CoinPlatinum ) );
-				var ppTip = new TooltipLine( this.mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
-					overrideColor = tipColor
+				var ppTip = new TooltipLine( this.Mod, "Custom Price", "Buy price: " + info.Price + " progress points" ) {
+					OverrideColor = tipColor
 				};
 				tooltips.Add( ppTip );
 
-				var instructTip = new TooltipLine( this.mod, "Items", "Click to purchase" );
+				var instructTip = new TooltipLine( this.Mod, "Items", "Click to purchase" );
 				tooltips.Add( instructTip );
 			} catch( Exception e ) {
-				LogHelpers.WarnOnce( "!!2 " + e.ToString() );
+				LogLibraries.WarnOnce( "!!2 " + e.ToString() );
 			}
 		}
 
@@ -80,7 +81,7 @@ namespace Rewards.Items {
 			int bagItemType = this.GetItemTypeOfIcon();
 			if( bagItemType == -1 ) { return; }
 			
-			Texture2D tex = Main.itemTexture[bagItemType];
+			Texture2D tex = TextureAssets.Item[bagItemType].Value;
 			float subScale = scale;
 
 			if( tex.Width >= tex.Height ) {
@@ -106,7 +107,7 @@ namespace Rewards.Items {
 			int bagItemType = this.GetItemTypeOfIcon();
 			if( bagItemType == -1 ) { return; }
 			
-			Texture2D tex = Main.itemTexture[ bagItemType ];
+			Texture2D tex = TextureAssets.Item[ bagItemType ].Value;
 			float subScale = scale;
 
 			if( tex.Width >= tex.Height ) {
@@ -121,8 +122,8 @@ namespace Rewards.Items {
 
 			var rect = new Rectangle( 0, 0, tex.Width, tex.Height );
 			var pos = new Vector2();
-			pos.X += (float)item.width * 0.5f * scale;
-			pos.Y += (float)(item.height + 6) * 0.5f * scale;
+			pos.X += (float)Item.width * 0.5f * scale;
+			pos.Y += (float)(Item.height + 6) * 0.5f * scale;
 			var origin = new Vector2( (float)tex.Width, (float)tex.Height ) * 0.5f;
 
 			sb.Draw( tex, pos, rect, lightColor, 0f, origin, subScale, SpriteEffects.None, 1f );
@@ -145,13 +146,13 @@ namespace Rewards.Items {
 					int bagItemType = itemInfo.ItemDef?.Type ?? 0;
 
 					if( bagItemType <= 0 ) { continue; }
-					if( bagItemType >= Main.itemTexture.Length ) { continue; }
-					if( Main.itemTexture[bagItemType] == null ) { continue; }
+					if( bagItemType >= TextureAssets.Item.Length ) { continue; }
+					if( TextureAssets.Item[bagItemType].Value == null ) { continue; }
 
 					return bagItemType;
 				}
 			} catch( Exception e ) {
-				LogHelpers.WarnOnce( "!!3 " + e.ToString() );
+				LogLibraries.WarnOnce( "!!3 " + e.ToString() );
 			}
 
 			return -1;

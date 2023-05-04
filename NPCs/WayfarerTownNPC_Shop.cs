@@ -1,4 +1,3 @@
-using HamstarHelpers.Classes.Errors;
 using Rewards.Items;
 using System;
 using Terraria;
@@ -8,7 +7,7 @@ using Terraria.ModLoader;
 namespace Rewards.NPCs {
 	partial class WayfarerTownNPC : ModNPC {
 		public override void SetChatButtons( ref string button1, ref string button2 ) {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 			int itemCount = this.CountShopItems();
 			bool hasButton2 = false;
 
@@ -45,7 +44,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public override void SetupShop( Chest shop, ref int nextSlot ) {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 			int shopStart = WayfarerTownNPC.CurrentShop * 40;
 			ShopPackDefinition[] defs = ShopPackDefinition.GetValidatedLoadout( true );
 			
@@ -62,7 +61,7 @@ namespace Rewards.NPCs {
 		////////////////
 
 		public int CountShopItems() {
-			var mymod = (RewardsMod)this.mod;
+			var mymod = (RewardsMod)this.Mod;
 			ShopPackDefinition[] defs = ShopPackDefinition.GetValidatedLoadout( false );
 			return defs.Length;
 		}

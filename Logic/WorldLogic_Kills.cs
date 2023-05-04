@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.Debug;
+﻿using ModLibsCore.Libraries.Debug;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -9,7 +9,7 @@ namespace Rewards.Logic {
 			if( npc.lastInteraction < 0 || npc.lastInteraction >= Main.player.Length ) { return; }
 
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 
 			bool toAll = KillData.CanReceiveOtherPlayerKillRewards();
 
@@ -144,7 +144,7 @@ namespace Rewards.Logic {
 			}
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo && isUpdated ) {
-				LogHelpers.Alert( "Pumpkin Moon event wave (for world only): " + NPC.waveNumber );
+				LogLibraries.Alert( "Pumpkin Moon event wave (for world only): " + NPC.waveNumber );
 			}
 
 			return isUpdated;
@@ -157,7 +157,7 @@ namespace Rewards.Logic {
 			}
 
 			if( RewardsMod.Instance.SettingsConfig.DebugModeInfo && isUpdated ) {
-				LogHelpers.Alert( "Frost Moon event wave (for world only): " + NPC.waveNumber );
+				LogLibraries.Alert( "Frost Moon event wave (for world only): " + NPC.waveNumber );
 			}
 
 			return isUpdated;

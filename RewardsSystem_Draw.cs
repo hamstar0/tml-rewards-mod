@@ -1,27 +1,27 @@
-using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.TModLoader;
+using ModLibsCore.Libraries.TModLoader;
 using Rewards.Logic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 
 
 namespace Rewards {
-	partial class RewardsMod : Mod {
+	partial class RewardsSystem {
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Mouse Text" ) );
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod drawMethod = delegate {
-					if( !LoadHelpers.IsWorldSafelyBeingPlayed() ) { return true; }
+					if( !LoadLibraries.IsWorldSafelyBeingPlayed() ) { return true; }
 
 					try {
-						var myworld = ModContent.GetInstance<RewardsWorld>();
+						var myworld = ModContent.GetInstance<RewardsSystem>();
 						KillData data = myworld.Logic.GetPlayerData( Main.LocalPlayer );
 
 						if( data == null ) {
-							throw new ModHelpersException( "No player data for " + Main.LocalPlayer.name );
+							throw new InvalidDataException( "No player data for " + Main.LocalPlayer.name );
 						}
 
 						if( data.CanDrawPoints() ) {

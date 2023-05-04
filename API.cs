@@ -1,10 +1,10 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.NPCs;
+﻿using ModLibsGeneral.Libraries.NPCs;
 using Rewards.Items;
 using Rewards.Logic;
 using Rewards.NPCs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,18 +12,18 @@ using Terraria.ModLoader;
 namespace Rewards {
 	public static partial class RewardsAPI {
 		public static float GetPoints( Player player ) {
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new ModHelpersException( "No player data for "+player.name ); }
+			if( data == null ) { throw new InvalidDataException( "No player data for "+player.name ); }
 
 			return data.ProgressPoints;
 		}
 
 		public static void AddPoints( Player player, float points ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			KillData data = myworld.Logic.GetPlayerData( player );
-			if( data == null ) { throw new ModHelpersException( "No player data for " + player.name ); }
+			if( data == null ) { throw new InvalidDataException( "No player data for " + player.name ); }
 
 			data.AddRewardForPlayer( player, false, false, points );
 		}
@@ -33,7 +33,7 @@ namespace Rewards {
 
 		public static void ResetKills( Player player ) {
 			var mymod = RewardsMod.Instance;
-			var myworld = ModContent.GetInstance<RewardsWorld>();
+			var myworld = ModContent.GetInstance<RewardsSystem>();
 			KillData data = myworld.Logic.GetPlayerData( player );
 
 			data.ClearKills();
@@ -92,7 +92,7 @@ namespace Rewards {
 		public static void ShopAddPack( ShopPackDefinition pack ) {
 			var mymod = RewardsMod.Instance;
 			string fail;
-			if( !pack.Validate(out fail) ) { throw new ModHelpersException("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
+			if( !pack.Validate(out fail) ) { throw new InvalidOperationException("Invalid shop pack by name "+pack.Name+" ("+fail+")"); }
 
 			mymod.ShopConfig.ShopLoadout.Add( pack );
 		}
@@ -113,7 +113,9 @@ namespace Rewards {
 			}
 
 			if( !isSpawned || ignoreClones ) {
-				NPCTownHelpers.Spawn( ModContent.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
+				var source = NPC.GetSource_TownSpawn();
+
+				NPCTownLibraries.Spawn( source, ModContent.NPCType<WayfarerTownNPC>(), Main.spawnTileX, Main.spawnTileY );
 			}
 		}
 	}

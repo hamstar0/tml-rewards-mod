@@ -1,8 +1,5 @@
-using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.TModLoader;
-using HamstarHelpers.Helpers.TModLoader.Mods;
+using ModLibsCore.Libraries.TModLoader.Mods;
 using Rewards.Configs;
-using Rewards.NetProtocols;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -58,25 +55,10 @@ namespace Rewards {
 			RewardsMod.Instance = this;
 		}
 
-
-		////////////////
-
-		public override void PreSaveAndQuit() {
-			if( Main.netMode == 2 ) { return; }	// Redundant?
-
-			if( Main.netMode == 0 ) {
-				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
-				myplayer.SaveKillData();
-			} else if( Main.netMode == 1 ) {
-				PlayerSaveProtocol.QuickSend();
-			}
-		}
-
-
 		////////////////
 
 		public override object Call( params object[] args ) {
-			return ModBoilerplateHelpers.HandleModCall( typeof( RewardsAPI ), args );
+			return ModBoilerplateLibraries.HandleModCall( typeof( RewardsAPI ), args );
 		}
 	}
 }

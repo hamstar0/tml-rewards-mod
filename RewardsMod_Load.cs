@@ -1,8 +1,5 @@
-using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.TModLoader;
-using HamstarHelpers.Services.Debug.DataDumper;
-using HamstarHelpers.Services.Hooks.LoadHooks;
-using System;
+using ModLibsCore.Services.Debug.DataDumper;
+using ModLibsCore.Services.Hooks.LoadHooks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -12,7 +9,7 @@ namespace Rewards {
 		public override void Load() {
 			LoadHooks.AddPostWorldUnloadEachHook( () => {
 				try {
-					var myworld = ModContent.GetInstance<RewardsWorld>();
+					var myworld = ModContent.GetInstance<RewardsSystem>();
 					myworld.Logic = null;
 				} catch { }
 			} );
@@ -25,7 +22,7 @@ namespace Rewards {
 					return "  Invalid player data";
 				}
 
-				var myplayer = (RewardsPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, this, "RewardsPlayer" );
+				var myplayer = Main.LocalPlayer.GetModPlayer<RewardsPlayer>();
 
 				return "  IsFullySynced: " + myplayer.IsFullySynced;
 			} );

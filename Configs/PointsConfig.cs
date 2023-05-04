@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Classes.UI.ModConfig;
-using HamstarHelpers.Helpers.TModLoader.Configs;
+﻿using ModLibsCore.Classes.UI.ModConfig;
+using ModLibsGeneral.Libraries.TModLoader.Configs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -119,7 +119,7 @@ namespace Rewards.Configs {
 			this.NpcRewardRequiredAsBoss = new HashSet<NPCDefinition>();
 			this.NpcRewardNotGivenAfterNpcKilled = new Dictionary<NPCDefinition, NPCDefinition>();
 
-			ConfigHelpers.SyncConfig( this );
+			ConfigLibraries.SyncConfig( this );
 		}
 	}
 }
