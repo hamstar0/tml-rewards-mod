@@ -14,7 +14,6 @@
 	<ItemGroup>
 		<Reference Include="ModLibsCore" HintPath="..\ModLibsCore\bin\ModLibsCore.dll"/>
 		<Reference Include="ModLibsGeneral" HintPath="..\ModLibsGeneral\bin\ModLibsGeneral.dll"/>
-		<Reference Include="ModLibsNet" HintPath="..\ModLibsNet\bin\ModLibsNet.dll"/>
 		<PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
 	</ItemGroup>
 
