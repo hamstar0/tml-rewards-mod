@@ -1,0 +1,113 @@
+﻿using System;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.NPCs;
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
+
+
+namespace Rewards.Logic {
+	partial class KillData {
+		public float CalculateKillReward( NPC npc, out bool isGrind, out bool isExpired ) {
+			var mymod = RewardsMod.Instance;
+			var myworld = ModContent.GetInstance<RewardsSystem>();
+			isGrind = false;
+			isExpired = false;
+
+			float points = 0;
+
+			if( myworld.Logic.CurrentEvents.Count != 0 ) {
+				points += this.CalculateInvasionReward( npc, ref isGrind );
+			}
+
+			if( points == 0 ) {
+				points += this.CalculateNpcKillReward( npc, ref isGrind, ref isExpired );
+			}
+
+			return points;
+		}
+
+		////
+
+		private float CalculateInvasionReward( NPC npc, ref bool isGrind ) {
+			var mymod = RewardsMod.Instance;
+			float points = 0;
+			float ppAmt = -1;
+
+			isGrind = false;
+
+			if( NPCCommonGroupsLibraries.VanillaGoblinArmyTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.GoblinInvasionReward;
+				isGrind = this.GoblinsConquered > 0;
+			} else if( NPCCommonGroupsLibraries.VanillaFrostLegionTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.FrostLegionInvasionReward;
+				isGrind = this.FrostLegionConquered > 0;
+			} else if( NPCCommonGroupsLibraries.VanillaPirateTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.PirateInvasionReward;
+				isGrind = this.PiratesConquered > 0;
+			} else if( NPCCommonGroupsLibraries.VanillaMartianTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.MartianInvasionReward;
+				isGrind = this.MartiansConquered > 0;
+			} else if( NPCCommonGroupsLibraries.VanillaPumpkingMoonTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.PumpkingMoonWaveReward;
+				isGrind = NPC.waveNumber < this.PumpkinMoonWavesConquered;
+			} else if( NPCCommonGroupsLibraries.VanillaFrostMoonTypes.Contains( npc.type ) ) {
+				ppAmt = mymod.PointsConfig.FrostMoonWaveReward;
+				isGrind = NPC.waveNumber < this.FrostMoonWavesConquered;
+			}
+
+			if( ppAmt != -1 ) {
+				points = ppAmt / (float)Main.invasionSizeStart;
+				if( Single.IsNaN(points) || points < 0 || points > ppAmt ) {
+					points = 0;
+					LogLibraries.Log( "Could not compute invasion kill reward (invasion total default reward: " + ppAmt + ", invasion size: " + Main.invasionSizeStart + ")" );
+				}
+			}
+
+			return points;
+		}
+
+		private int CalculateNpcKillReward( NPC npc, ref bool isGrind, ref bool isExpired ) {
+			var mymod = RewardsMod.Instance;
+			var npcDef = new NPCDefinition( npc.type );
+			int points = 0;
+			bool needsBoss = mymod.PointsConfig.NpcRewardRequiredAsBoss.Contains( npcDef );
+			bool canReward = !needsBoss || ( needsBoss && npc.boss );
+
+			isGrind = false;
+			isExpired = false;
+			
+			if( mymod.PointsConfig.NpcRewardsOnKill.ContainsKey( npcDef ) ) {
+				if( canReward ) {
+					points = mymod.PointsConfig.NpcRewardsOnKill[ npcDef ].PP;
+				}
+			}
+			
+			if( mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled.ContainsKey( npcDef ) ) {
+				NPCDefinition blockingNpcDef = mymod.PointsConfig.NpcRewardNotGivenAfterNpcKilled[npcDef];
+				int blockingNpcType = blockingNpcDef.Type;
+
+				if( this.KilledNpcs.ContainsKey( blockingNpcType ) && this.KilledNpcs[blockingNpcType] > 0 ) {
+					isExpired = true;
+				}
+			}
+			
+			if( this.KilledNpcs.ContainsKey( npc.type ) && this.KilledNpcs[npc.type] > 0 ) {
+				isGrind = canReward;
+			} else {
+				/*if( mymod.Config.NpcRewardPrediction ) {
+					Mod boss_list_mod = ModLoader.GetMod( "BossChecklist" );
+					if( boss_list_mod != null && boss_list_mod.Version >= new Version(0, 1, 5, 3) ) {
+						var boss_info = (Tuple<float, int, bool>)boss_list_mod.Call( "GetBossState", name );
+
+						if( boss_info != null && boss_info.Item2 == 0 ) {
+							points = this.EstimateKillReward( mymod, npc, boss_info.Item1 );
+						}
+					}
+				}*/
+			}
+
+			return points;
+		}
+	}
+}
