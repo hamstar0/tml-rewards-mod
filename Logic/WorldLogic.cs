@@ -8,6 +8,7 @@ using ModLibsCore.Libraries.DotNET;
 using ModLibsCore.Libraries.Debug;
 using ModLibsGeneral.Libraries.Players;
 using ModLibsCore.Libraries.World;
+using ModLibsCore.Libraries.Players;
 
 namespace Rewards.Logic {
 	partial class WorldLogic {

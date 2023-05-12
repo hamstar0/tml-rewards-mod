@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Services.Network.SimplePacket;
 using NetSerializer;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -16,31 +15,6 @@ using Terraria.ModLoader.Config;
 
 
 namespace Rewards.Items {
-	public sealed class ShopPackDefinitionSerializer : IPacketSerialzer<ShopPackDefinition> {
-		IEnumerable<Type> ITypeSerializer.GetSubtypes( Type type ) {
-			yield return typeof( string );
-			yield return typeof( int );
-			yield return typeof( ShopPackItemDefinition );
-		}
-
-		public void Serialize( Serializer serializer, Stream stream, ShopPackDefinition obj ) {
-			serializer.Serialize( stream, obj.NeededBossKill.ToString() );
-			serializer.Serialize( stream, obj.Name );
-			serializer.Serialize( stream, obj.Price );
-			serializer.Serialize( stream, obj.Items );
-		}
-
-		public void Deserialize( Serializer serializer, Stream stream, out ShopPackDefinition obj ) {
-			obj = new(
-				NPCDefinition.FromString( (string)serializer.Deserialize( stream ) ),
-				(string)serializer.Deserialize( stream ),
-				(int)serializer.Deserialize( stream ),
-				(List<ShopPackItemDefinition>)serializer.Deserialize( stream )
-			);
-		}
-	}
-
-	[Serializable]
 	public class ShopPackDefinition {
 		public static Item[] OpenPack( Player player, ShopPackDefinition packDef ) {
 			Item[] packItems = new Item[ packDef.Items.Count ];

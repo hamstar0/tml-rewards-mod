@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using ModLibsCore.Services.Network.ManualPackets;
 using ModLibsCore.Services.Network.SimplePacket;
 using ModLibsGeneral.Libraries.Items;
 using ModLibsGeneral.Libraries.Items.Attributes;
@@ -109,7 +110,8 @@ namespace Rewards.Items {
 					hook( player, info.Name, info.Price, items );
 				}
 			} else if( Main.netMode == 1 ) {
-				SimplePacket.SendToServer( new PackPurchaseProtocol( info ) );
+				//SimplePacket.SendToServer( new PackPurchaseProtocol( info ) );
+				ManualPacketSystem.SendPacket( new PackPurchasePacket( info ) );
 			}
 
 			output = player.name + " bought " + info.Name + " (" + info.Price + ")";

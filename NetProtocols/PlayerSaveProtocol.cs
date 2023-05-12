@@ -1,5 +1,6 @@
 ﻿using System;
 using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Libraries.Players;
 using ModLibsCore.Services.Network.SimplePacket;
 using ModLibsGeneral.Libraries.Players;
 using Terraria;

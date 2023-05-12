@@ -2,7 +2,7 @@
 using Rewards.NetProtocols;
 using Terraria;
 using Terraria.ModLoader.Config;
-
+using Terraria.ID;
 
 namespace Rewards.Logic {
 	partial class KillData {
@@ -51,7 +51,7 @@ namespace Rewards.Logic {
 
 			float finalReward = this.AddRewardForPlayer( toPlayer, isGrind, isExpired, reward );
 
-			if( Main.netMode == 2 ) {
+			if( Main.netMode == NetmodeID.Server ) {
 				if( finalReward > 0 ) {	// <- Careful! Any uses for 0 reward packets?
 					KillRewardProtocol.SendRewardToClient( toPlayer.whoAmI, -1, npc );
 				}

@@ -11,7 +11,7 @@ using Terraria;
 namespace Rewards.Logic {
 	[Serializable]
 	partial class KillData {
-		public IDictionary<int, int> KilledNpcs = new ConcurrentDictionary<int, int>();
+		public Dictionary<int, int> KilledNpcs = new();
 		public int GoblinsConquered = 0;
 		public int FrostLegionConquered = 0;
 		public int PiratesConquered = 0;
